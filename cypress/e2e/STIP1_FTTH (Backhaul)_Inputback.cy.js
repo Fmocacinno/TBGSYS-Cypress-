@@ -18,12 +18,12 @@ describe('template spec', () => {
       return result;
     }
     // Declare minLength and maxLength before use
-    const minLength = 5;
-    const maxLength = 15;
+    const minLengthString = 5;
+    const maxLengthString = 15;
 
     // Ensure that the minLength and maxLength variables are initialized before calling generateRandomString
-    
-    const randomString = generateRandomString(minLength, maxLength);
+
+    const randomString = generateRandomString(minLengthString, maxLengthString);
 
     // ---random Character----//
     const date = "25-Feb-2025";
@@ -43,7 +43,7 @@ describe('template spec', () => {
       return false
     })
 
-    cy.visit('http://tbgappdev111:8042/Login')
+    cy.visit('http://tbgappdev111.tbg.local:8042/Login')
 
     cy.get('#tbxUserID').type(user)
     cy.get('#tbxPassword').type(pass)
@@ -61,7 +61,8 @@ describe('template spec', () => {
 
     cy.wait(2000)
 
-    cy.visit('http://tbgappdev111:8042/STIP/Input')
+    cy.visit('http://tbgappdev111.tbg.local/STIP/Input')
+
 
     cy.wait(2000)
 

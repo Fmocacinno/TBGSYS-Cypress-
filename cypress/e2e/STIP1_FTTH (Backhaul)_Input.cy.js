@@ -37,7 +37,7 @@ describe('template spec', () => {
 
       Cypress.on('uncaught:exception', (err, runnable) => false);
 
-      cy.visit('http://tbgappdev111:8042/Login');
+      cy.visit('http://tbgappdev111.tbg.local:8042/Login')
 
       cy.get('#tbxUserID').type(user);
       cy.get('#tbxPassword').type(pass);
@@ -51,7 +51,7 @@ describe('template spec', () => {
 
       cy.get('#btnSubmit').click();
       cy.wait(2000);
-      cy.visit('http://tbgappdev111:8042/STIP/Input');
+      cy.visit('http://tbgappdev111.tbg.local/STIP/Input')
       cy.wait(2000);
 
       cy.get('#slsSTIPCategory').select('4', { force: true });

@@ -1,8 +1,10 @@
 {
-  "dependencies": {
-    "cypress": "^14.0.0"
-  },
   "devDependencies": {
-    "cypress-file-upload": "^5.0.8"
+    "cypress": "^14.0.1",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-real-events": "^1.14.0"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
   }
 }

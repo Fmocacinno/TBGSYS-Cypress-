@@ -17,7 +17,7 @@ describe('template spec', () => {
 
     // AM
 
-    cy.visit('http://tbgappdev111:8042')
+    cy.visit('http://tbgappdev111.tbg.local:8042/Login')
 
     cy.get('#tbxUserID').type(userAM)
     cy.get('#tbxPassword').type(pass)
