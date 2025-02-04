@@ -23,6 +23,23 @@ describe('template spec', () => {
     // Array to store test results
     const testResults = []; // Array to store test results
 
+
+    function generateRandomString(minLength, maxLength) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+      let result = '';
+
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+      }
+      return result;
+    }
+
+    const minLength = 5;
+    const maxLength = 15;
+    const randomString = generateRandomString(minLength, maxLength);
+
     const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
     const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
 
@@ -139,65 +156,97 @@ describe('template spec', () => {
 
     // handle HTML
 
-    cy.get('.slsBatchSLD').eq(0)
-      .select('180', { force: true });
+    // cy.get('.slsBatchSLD').eq(0)
+    //   .select('180', { force: true });
 
-    cy.get('.slsBatchSLD').eq(1)
-      .select('180', { force: true });
-
-
-    cy.get('.slsBatchSLD').eq(2)
-      .select('180', { force: true });
-
-    cy.get('.slsBatchSLD').eq(3)
-      .select('180', { force: true });
-
-    cy.get('.slsBatchSLD').eq(4)
-      .select('180', { force: true });
+    // cy.get('.slsBatchSLD').eq(1)
+    //   .select('180', { force: true });
 
 
-    cy.get('.slsBatchSLD').eq(5)
-      .select('180', { force: true });
+    // cy.get('.slsBatchSLD').eq(2)
+    //   .select('180', { force: true });
 
-    cy.get('.slsBatchSLD').eq(6)
-      .select('180', { force: true });
+    // cy.get('.slsBatchSLD').eq(3)
+    //   .select('180', { force: true });
 
-    cy.get('.slsBatchSLD').eq(7)
-      .select('180', { force: true });
+    // cy.get('.slsBatchSLD').eq(4)
+    //   .select('180', { force: true });
 
-    cy.get('.slsBatchSLD').eq(8)
-      .select('180', { force: true });
+
+    // cy.get('.slsBatchSLD').eq(5)
+    //   .select('180', { force: true });
+
+    // cy.get('.slsBatchSLD').eq(6)
+    //   .select('180', { force: true });
+
+    // cy.get('.slsBatchSLD').eq(7)
+    //   .select('180', { force: true });
+
+    // cy.get('.slsBatchSLD').eq(8)
+    //   .select('180', { force: true });
     // handle HTML
 
-    cy.get('#tbxNewSiteName').type('Site_' + unique);
-    cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique);
+    cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique);
+    cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique);
+    cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique);
 
-    cy.get('#slsNewDocumentOrder').then(($select) => {
+    cy.get('#slsIntersiteFODocumentOrder').then(($select) => {
       cy.wrap($select).select('7', { force: true })
     })
 
-    cy.get('#tbxNewDocumentName').type('DoctName_' + unique);
+    cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique);
 
-    cy.get('#fleNewDocument').attachFile(filePath);
+    cy.get('#fleIntersiteFODocument').attachFile(filePath);
 
-    cy.get('#slsNewProvince').then(($select) => {
+    cy.get('#slsIntersiteFOProvince').then(($select) => {
       cy.wrap($select).select('11', { force: true })
     })
     cy.wait(2000)
-    cy.get('#slsNewResidence').then(($select) => {
+    // Near ENd
+    cy.get('#slsIntersiteFOResidence').then(($select) => {
       cy.wrap($select).select('178', { force: true })
     })
+    cy.get('#slsIntersiteFOTowerProviderNearEnd').then(($select) => {
+      cy.wrap($select).select('10', { force: true })
+    })
+    cy.get('#tbxIntersiteFOTowerIDNearEnd').type('Site_' + unique);
+    cy.get('#tbxIntersiteFOTowerNameNearEnd').type('SiteName_' + unique);
+    cy.get('#tbxLatitudeA').type(lat);
+    cy.get('#tbxLongitudeA').type(long);
+
+    // Far end
+    cy.get('#slsIntersiteFOResidence').then(($select) => {
+      cy.wrap($select).select('178', { force: true })
+    })
+    cy.get('#slsIntersiteFOTowerProviderFarEnd').then(($select) => {
+      cy.wrap($select).select('11', { force: true })
+    })
+    cy.get('#tbxIntersiteFOTowerIDFarEnd').type('Site_' + unique);
+    cy.get('#tbxIntersiteFOTowerNameFarEnd').type('SiteName_' + unique);
+    cy.get('#tbxLatitudeB').type(lat);
+    cy.get('#tbxLongitudeB').type(long);
 
 
-    cy.get('#tbxNewNomLatitude').type(lat);
-    cy.get('#tbxNewNomLongitude').type(long);
 
-    cy.get('#slsNewLeadProjectManager').then(($select) => {
+
+
+    cy.get('#slsIntersiteFOLeadProjectManager').then(($select) => {
       cy.wrap($select).select('201103180014', { force: true })
     })
-    cy.get('#slsNewAccountManager').then(($select) => {
+    cy.wait(2000)
+
+    cy.get('#slsIntersiteFOAccountManager').then(($select) => {
       cy.wrap($select).select('201301180003', { force: true })
     })
+
+    cy.get('#tbxFOCore').type(RangerandomValue);
+    cy.get('#tbxFOLengthSPK').type(RangerandomValue);
+    cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique);
+
+
+
+
+    cy.get('.icheck-inline').should('be.visible');
 
     cy.get('#slsNewTowerHeight').then(($select) => {
       cy.wrap($select).select('32', { force: true })
@@ -245,6 +294,41 @@ describe('template spec', () => {
     cy.get('.sa-confirm-button-container button.confirm').click();
 
     cy.wait(15000)
+
+    // Add this section to extract values from popup
+    cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
+      const text = $el.text();
+
+      // Extract SO Number using regex
+      const soNumber = text.match(/\bSO Number = (\d+)\b/)[1];
+      // Extract Site ID using regex
+      const siteId = text.match(/\bSite ID = (\d+)\b/)[1];
+
+      // Save to aliases for later use
+      cy.wrap(soNumber).as('soNumber');
+      cy.wrap(siteId).as('siteId');
+
+      // Optional: log the values to Cypress console
+      cy.log(`Captured SO Number: ${soNumber}`);
+      cy.log(`Captured Site ID: ${siteId}`);
+    });
+
+    // To use these values later in the test or other tests:
+    cy.get('@soNumber').then((soNumber) => {
+      cy.log(`Using SO Number: ${soNumber}`);
+      // Add your logic here using the SO Number
+    });
+
+    cy.get('@siteId').then((siteId) => {
+      cy.log(`Using Site ID: ${siteId}`);
+
+      cy.get('@soNumber').then((soNumber) => {
+        cy.get('@siteId').then((siteId) => {
+          cy.writeFile('cypress/fixtures/soDataIntersite.json', { soNumber, siteId });
+        });
+      });
+      // Add your logic here using the Site ID
+    });
 
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout')
 

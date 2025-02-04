@@ -5,7 +5,10 @@ describe('template spec', () => {
 
   for (let i = 0; i < loopCount; i++) {
     it(`passes iteration ${i + 1}`, () => {
-      const randomValue = Math.floor(Math.random() * 1000) + 1;
+      const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+      const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
+
+
       const unique = `APP_PKP_${randomValue}`;
 
       function generateRandomString(minLength, maxLength) {
