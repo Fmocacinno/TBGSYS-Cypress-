@@ -6,6 +6,7 @@ describe('template spec', () => {
   for (let i = 0; i < loopCount; i++) {
     it(`passes iteration ${i + 1}`, () => {
       const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+
       const unique = `APP_PKP_${randomValue}`;
 
       const date = "2-Jan-2025";
@@ -201,8 +202,6 @@ describe('template spec', () => {
 
 
       cy.visit('http://tbgappdev111:8042/Login/Logout')
-
-
     })
   }
 })

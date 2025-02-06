@@ -1,13 +1,46 @@
 import 'cypress-file-upload';
+const XLSX = require('xlsx');
+const fs = require('fs');
 
+// Function to export test results to Excel
+function exportToExcel(testResults) {
+  const filePath = 'test-results.xlsx'; // Path to the Excel file
+
+  // Create a worksheet from the test results
+  const worksheet = XLSX.utils.json_to_sheet(testResults);
+
+  // Create a workbook and add the worksheet
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Test Results');
+
+  // Write the workbook to a file
+  XLSX.writeFile(workbook, filePath);
+}
 describe('template spec', () => {
   const loopCount = 1; // Jumlah iterasi loop
 
   for (let i = 0; i < loopCount; i++) {
     it(`passes iteration ${i + 1}`, () => {
+      const testResults = []; // Array to store test results
       const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+      const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
       const unique = `APP_PKP_${randomValue}`;
 
+      function generateRandomString(minLength, maxLength) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+        let result = '';
+
+        for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          result += characters.charAt(randomIndex);
+        }
+        return result;
+      }
+
+      const minLength = 5;
+      const maxLength = 15;
+      const randomString = generateRandomString(minLength, maxLength);
       const date = "2-Jan-2025";
       const user = "555504220025"
       const pass = "123456"
@@ -201,6 +234,9 @@ describe('template spec', () => {
 
 
       cy.visit('http://tbgappdev111:8042/Login/Logout')
+      cy.then(() => {
+        exportToExcel(testResults);
+      });
 
 
     })

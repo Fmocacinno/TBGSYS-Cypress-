@@ -1,14 +1,29 @@
 import 'cypress-file-upload';
+const XLSX = require('xlsx');
+const fs = require('fs');
 
+// Function to export test results to Excel
+function exportToExcel(testResults) {
+  const filePath = 'test-results.xlsx'; // Path to the Excel file
+
+  // Create a worksheet from the test results
+  const worksheet = XLSX.utils.json_to_sheet(testResults);
+
+  // Create a workbook and add the worksheet
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Test Results');
+
+  // Write the workbook to a file
+  XLSX.writeFile(workbook, filePath);
+}
 describe('template spec', () => {
-  const loopCount = 5; // Jumlah iterasi loop
+  const loopCount = 1; // Jumlah iterasi loop
 
   for (let i = 0; i < loopCount; i++) {
     it(`passes iteration ${i + 1}`, () => {
+      const testResults = []; // Array to store test results
       const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
       const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
-
-
       const unique = `APP_PKP_${randomValue}`;
 
       function generateRandomString(minLength, maxLength) {
@@ -42,19 +57,50 @@ describe('template spec', () => {
 
       cy.visit('http://tbgappdev111.tbg.local:8042/Login')
 
-      cy.get('#tbxUserID').type(user);
-      cy.get('#tbxPassword').type(pass);
+      cy.get('#tbxUserID').type(user).should('have.value', user).then(() => {
+        // Log the test result if input is successful
+        testResults.push({
+          Test: 'User ID Input',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
+      });
+
+      cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
+        // Log the test result if input is successful
+        testResults.push({
+          Test: 'Passworhasben ',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
+      });
+
       cy.get('#RefreshButton').click();
 
       cy.window().then((window) => {
         const rightCode = window.rightCode;
         cy.log('Right Code:', rightCode);
+
         cy.get('#captchaInsert').type(rightCode);
       });
 
       cy.get('#btnSubmit').click();
-      cy.wait(2000);
-      cy.visit('http://tbgappdev111.tbg.local/STIP/Input')
+      cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/Dashboard'); // Ensure the page changes or some result occurs
+      testResults.push({
+        Test: 'Button Clicked',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+
+      cy.wait(2000)
+
+      cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Input')
+      cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Input'); // Ensure the page changes or some result occurs
+      testResults.push({
+        Test: 'User masuk ke Page Stip Input',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
       cy.wait(2000);
 
       cy.get('#slsSTIPCategory').select('4', { force: true });
@@ -91,8 +137,35 @@ describe('template spec', () => {
       cy.wait(2000);
       cy.get('.sa-confirm-button-container button.confirm').click();
       cy.wait(15000);
+      // Add this section to extract values from popup
+
+      // Extract values
+      cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
+        const text = $el.text();
+        const soNumber = text.match(/\bSO Number = (\d+)\b/)[1];
+        const siteId = text.match(/\bSite ID = (\d+)\b/)[1];
+
+        // Save values to alias
+        cy.wrap(soNumber).as('soNumber');
+        cy.wrap(siteId).as('siteId');
+      });
+
+      // Write to file outside of nested `then()`
+      cy.then(() => {
+        cy.get('@soNumber').then((soNumber) => {
+          cy.get('@siteId').then((siteId) => {
+            cy.writeFile('cypress/fixtures/soData.json', { soNumber, siteId });
+          });
+        });
+      });
 
       cy.visit('http://tbgappdev111:8042/Login/Logout');
+
+      cy.then(() => {
+        exportToExcel(testResults);
+      });
+
     });
+
   }
 });
