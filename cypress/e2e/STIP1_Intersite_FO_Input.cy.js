@@ -243,10 +243,28 @@ describe('template spec', () => {
     cy.get('#tbxFOLengthSPK').type(RangerandomValue);
     cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique);
 
+    // Debug: Log all labels inside the container
+    cy.get('div.icheck-inline label').each(($label) => {
+      cy.log($label.text().trim()); // Log the text of each label
+    });
 
+cy.get('div.form-group.divNewIntersiteFO')
+  .should('be.visible');
+  
+    cy.get('div.icheck-inline label').each(($label) => {
+      cy.log($label.text().trim()); // Log the text of each label
+    });
 
+    // Select the "No" radio button
+    cy.get('div.icheck-inline')
+      .contains('label',  /No/i)
+      .click();
 
-    cy.get('.icheck-inline').should('be.visible');
+    // Assert that the "No" radio button is checked
+    cy.get('div.icheck-inline')
+      .contains('label', 'No')
+      .find('input[type="radio"]')
+      .should('be.checked');
 
     cy.get('#slsNewTowerHeight').then(($select) => {
       cy.wrap($select).select('32', { force: true })
