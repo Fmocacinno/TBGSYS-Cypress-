@@ -193,7 +193,8 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            cy.writeFile('cypress/fixtures/soData.json', { soNumber, siteId });
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/NewBuildMacro/soDataNewBuild.json';
+            cy.writeFile(filePath, { soNumber, siteId });
           });
         });
         // Add your logic here using the Site ID

@@ -226,7 +226,8 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            cy.writeFile('Z:/Automation/TBGSYS-Cypress-/cypress/e2e/NewBuild/soData.json', { soNumber, siteId });
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/NewBuildMacro/soDataNewBuild.json';
+            cy.writeFile(filePath, { soNumber, siteId });
 
           });
         });
