@@ -94,9 +94,6 @@ describe('template spec', () => {
       exportToExcel(testResults);
     });
 
-
-
-
     cy.wait(2000)
 
     cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Input')

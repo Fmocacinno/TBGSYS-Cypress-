@@ -201,7 +201,7 @@ describe('template spec', () => {
       });
 
 
-      cy.visit('http://tbgappdev111:8042/Login/Logout')
+      cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout')
 
 
     })
