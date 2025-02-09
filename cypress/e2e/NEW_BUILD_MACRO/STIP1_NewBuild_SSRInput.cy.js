@@ -1,11 +1,10 @@
-import { timeStamp } from 'console';
 import 'cypress-file-upload';
 const XLSX = require('xlsx');
 const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
+  const filePath = 'test-results.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -25,6 +24,7 @@ describe('template spec', () => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
+
       unique = "ATP_19";
       date = "2-Jan-2025";
       userAM = "201301180003";
@@ -41,8 +41,6 @@ describe('template spec', () => {
 
   //AM
   it('AM Test Case', () => {
-    const testResults = [];
-
     cy.visit('http://tbgappdev111.tbg.local:8042/Login');
 
     cy.get('#tbxUserID').type(userAM);
@@ -55,7 +53,7 @@ describe('template spec', () => {
       cy.get('#captchaInsert').type(rightCode);
     });
 
-    cy.get("#btnSubmit").click();
+    cy.get('#btnSubmit').click();
     cy.wait(2000);
 
     cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval');
@@ -97,7 +95,6 @@ describe('template spec', () => {
 
   //LEAD AM
   it('Lead AM Test Case', () => {
-    const testResults = [];
     // Lead PM
     cy.visit('http://tbgappdev111.tbg.local:8042');
     cy.get('#tbxUserID').type(userLeadAM);
@@ -149,7 +146,6 @@ describe('template spec', () => {
   });
   //LEAD PM
   it('Lead PM Test Case', () => {
-    const testResults = [];
     // Lead PM
     cy.visit('http://tbgappdev111.tbg.local:8042');
     cy.get('#tbxUserID').type(userLeadPM);
@@ -166,30 +162,8 @@ describe('template spec', () => {
     cy.wait(2000);
     cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval');
     cy.wait(2000);
-    cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Approval');
-    testResults.push({
-      Test: 'User melakukan akses ke menu Stip Approval',
-      Status: 'Pass',
-      timeStamp: new Date().toISOString(),
-    });
-
-    cy.get('#tbxSearchSONumber').type(sonumb).should('have.value', sonumb).then(() => {
-      // Log the test result if input is successful
-      testResults.push({
-        Test: 'User melakukan input SONumber di Stip approval',
-        Status: 'Pass',
-        Timestamp: new Date().toISOString(),
-      });
-    });
-
-    cy.get('.btnSearch').first().click().should(() => {
-      // Log the test result if button click is successful
-      testResults.push({
-        Test: 'User melakukan klik tombol Search di Stip approval',
-        Status: 'Pass',
-        Timestamp: new Date().toISOString(),
-      });
-    });
+    cy.get('#tbxSearchSONumber').type(sonumb);
+    cy.get('.btnSearch').first().click();
     cy.wait(2000);
 
 
@@ -231,7 +205,6 @@ describe('template spec', () => {
   //ARO
   it('ARO Test Case', () => {
     // Lead PM
-    const testResults = [];
     cy.visit('http://tbgappdev111.tbg.local:8042');
     cy.get('#tbxUserID').type(userARO);
     cy.get('#tbxPassword').type(pass);

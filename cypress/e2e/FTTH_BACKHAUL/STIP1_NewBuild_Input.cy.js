@@ -72,7 +72,7 @@ describe('template spec', () => {
       cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
         // Log the test result if input is successful
         testResults.push({
-          Test: 'Passworhasbeeninputed',
+          Test: 'Passworhasben ',
           Status: 'Pass',
           Timestamp: new Date().toISOString(),
         });
@@ -96,6 +96,9 @@ describe('template spec', () => {
       });
 
       // Export results to Excel after the test
+      cy.then(() => {
+        exportToExcel(testResults);
+      });
 
 
 
@@ -131,39 +134,6 @@ describe('template spec', () => {
       cy.get('#slsNewRegion').then(($select) => {
         cy.wrap($select).select('1', { force: true })
       })
-      cy.get('#btnNewPriceAmountPopUp').click();
-
-      cy.get('tbody > tr:nth-child(3) .btnSelect').click();
-
-      cy.wait(2000)
-
-      cy.get('.slsBatchSLD').eq(0)
-        .select('967', { force: true });
-
-      cy.get('.slsBatchSLD').eq(1)
-        .select('967', { force: true });
-
-
-      cy.get('.slsBatchSLD').eq(2)
-        .select('967', { force: true });
-
-      cy.get('.slsBatchSLD').eq(3)
-        .select('967', { force: true });
-
-      cy.get('.slsBatchSLD').eq(4)
-        .select('967', { force: true });
-
-      cy.get('.slsBatchSLD').eq(5)
-        .select('967', { force: true });
-
-      cy.get('.slsBatchSLD').eq(6)
-        .select('967', { force: true });
-
-      cy.get('.slsBatchSLD').eq(7)
-        .select('967', { force: true });
-
-      cy.get('.slsBatchSLD').eq(8)
-        .select('967', { force: true });
 
       cy.get('#tbxNewSiteName').type('Site_' + unique);
       cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique);
@@ -219,7 +189,40 @@ describe('template spec', () => {
         cy.wrap($select).select('205', { force: true })
       })
 
+      cy.get('#btnNewPriceAmountPopUp').click();
 
+      cy.get('tbody tr:first-child .btnSelect').click();
+
+      cy.wait(2000)
+
+      cy.get('.slsBatchSLD').eq(0)
+        .select('967', { force: true });
+
+      cy.get('.slsBatchSLD').eq(1)
+        .select('967', { force: true });
+
+
+      cy.get('.slsBatchSLD').eq(2)
+        .select('967', { force: true });
+
+      cy.get('.slsBatchSLD').eq(3)
+        .select('967', { force: true });
+
+      cy.get('.slsBatchSLD').eq(4)
+        .select('967', { force: true });
+
+
+      cy.get('.slsBatchSLD').eq(5)
+        .select('967', { force: true });
+
+      cy.get('.slsBatchSLD').eq(6)
+        .select('967', { force: true });
+
+      cy.get('.slsBatchSLD').eq(7)
+        .select('967', { force: true });
+
+      cy.get('.slsBatchSLD').eq(8)
+        .select('967', { force: true });
 
       cy.get("#btnSubmitNew").click();
 
