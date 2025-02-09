@@ -307,7 +307,7 @@ describe('template spec', () => {
         cy.get('#tarApprovalRemark').type('Remark_' + unique, { force: true });
         // SKIPPING 'tarApprovalRemark' input field
         cy.log("⚠️ Skipping remark input...");
-
+        cy.wait(3000);
         // Attempt to click the approval button only if it's visible and enabled
         cy.get("#btnConfirm").then(($btn) => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
@@ -325,7 +325,7 @@ describe('template spec', () => {
       cy.wait(2000);
     });
     cy.wait(2000);
-
+    cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
 
   });
 
