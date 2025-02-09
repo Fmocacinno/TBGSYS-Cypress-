@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'test-results.xlsx'; // Path to the Excel file
+  const filePath = 'test-StipinputMCPNonForesults.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -94,15 +94,6 @@ describe('template spec', () => {
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
-
-      // Export results to Excel after the test
-      cy.then(() => {
-        exportToExcel(testResults);
-      });
-
-
-
-
       cy.wait(2000)
 
       cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Input')
@@ -274,7 +265,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/MCP_NON_FO/soDataNewBuild.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/MCP_NON_FO/soDataMCPNONFO.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

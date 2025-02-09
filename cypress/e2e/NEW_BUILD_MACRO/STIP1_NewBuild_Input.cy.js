@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'test-results.xlsx'; // Path to the Excel file
+  const filePath = 'test-StipinputNewBuildMacroresults.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);

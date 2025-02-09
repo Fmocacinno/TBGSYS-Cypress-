@@ -1,11 +1,11 @@
-import { timeStamp } from 'console';
+import { TimeStamp } from 'console';
 import 'cypress-file-upload';
 const XLSX = require('xlsx');
 const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
+  const filePath = 'resultsApproval_FTTHBackhaul.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -29,7 +29,7 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
+    cy.readFile('cypress/e2e/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
@@ -70,7 +70,7 @@ describe('template spec', () => {
     testResults.push({
       Test: 'User AM melakukan akses ke menu Stip Approval',
       Status: 'Pass',
-      timeStamp: new Date().toISOString(),
+      TimeStamp: new Date().toISOString(),
     });
     cy.wait(2000);
     cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
@@ -78,7 +78,7 @@ describe('template spec', () => {
       testResults.push({
         Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        Timestamp: new Date().toISOString(),
+        TimeStamp: new Date().toISOString(),
       });
     });
     cy.get('.btnSearch').first().click().should(() => {
@@ -86,7 +86,7 @@ describe('template spec', () => {
       testResults.push({
         Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        Timestamp: new Date().toISOString(),
+        TimeStamp: new Date().toISOString(),
       });
     });
     cy.wait(2000);
@@ -146,7 +146,7 @@ describe('template spec', () => {
     testResults.push({
       Test: 'User Lead AM melakukan akses ke menu Stip Approval',
       Status: 'Pass',
-      timeStamp: new Date().toISOString(),
+      TimeStamp: new Date().toISOString(),
     });
     cy.wait(2000);
 
@@ -155,7 +155,7 @@ describe('template spec', () => {
       testResults.push({
         Test: 'User Lead AM melakukan input SONumber di Stip approval',
         Status: 'Pass',
-        Timestamp: new Date().toISOString(),
+        TimeStamp: new Date().toISOString(),
       });
     });
 
@@ -164,7 +164,7 @@ describe('template spec', () => {
       testResults.push({
         Test: 'User Lead AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        Timestamp: new Date().toISOString(),
+        TimeStamp: new Date().toISOString(),
       });
     });
     cy.wait(2000);
@@ -258,8 +258,6 @@ describe('template spec', () => {
 
         cy.get("#btnConfirm").then(($btn) => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
-            cy.get('#slsPMSitac').select('201103180014', { force: true });
-            cy.get('#slsPMCME').select('201601600086', { force: true });
             cy.wrap($btn).click();
             cy.log("✅ Button clicked successfully");
             cy.wait(2000);

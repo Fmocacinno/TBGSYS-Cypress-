@@ -24,7 +24,7 @@ describe('template spec', () => {
       const testResults = []; // Array to store test results
       const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
       const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
-      const unique = `APP_PKP_${randomValue}`;
+      const unique = `APP_${randomValue}`;
 
       function generateRandomString(minLength, maxLength) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -280,28 +280,24 @@ describe('template spec', () => {
       checkRowsSequentially();
 
 
-      cy.get('#tbxNewSiteName').type('Site_' + unique);
-      cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique);
+      cy.get('#tbxColocationCustomerSiteID').type('Site_' + unique);
+      cy.get('#tbxColocationCustomerSiteName').type('Cust_' + unique);
 
-      cy.get('#slsNewDocumentOrder').then(($select) => {
+      cy.get('#slsColocationDocumentOrder').then(($select) => {
         cy.wrap($select).select('7', { force: true })
       })
 
-      cy.get('#tbxNewDocumentName').type('DoctName_' + unique);
+      cy.get('#tbxColocationDocumentName').type('DoctName_' + unique);
 
-      cy.get('#fleNewDocument').attachFile(filePath);
+      cy.get('#fleColocationDocument').attachFile(filePath);
 
-      cy.get('#slsNewProvince').then(($select) => {
-        cy.wrap($select).select('12', { force: true })
+
+      cy.get('#fleColocationColocationForm').attachFile(filePath);
+
+      cy.get('#slsColocationLeadProjectManager').then(($select) => {
+        cy.wrap($select).select('201102180019', { force: true })
       })
-
-      cy.get('#tbxNewNomLatitude').type(lat);
-      cy.get('#tbxNewNomLongitude').type(long);
-
-      cy.get('#slsNewLeadProjectManager').then(($select) => {
-        cy.wrap($select).select('201103180014', { force: true })
-      })
-      cy.get('#slsNewAccountManager').then(($select) => {
+      cy.get('#slsColocationAccountManager').then(($select) => {
         cy.wrap($select).select('201301180003', { force: true })
       })
 
@@ -309,35 +305,28 @@ describe('template spec', () => {
         cy.wrap($select).select('0', { force: true })
       })
 
-      cy.get('#slsNewShelterType').then(($select) => {
-        cy.wrap($select).select('7', { force: true })
+      cy.get('#slsColocationShelterType').then(($select) => {
+        cy.wrap($select).select('4', { force: true })
       })
-      cy.get('#tbxNewPLNPowerKVA').type(5);
+      cy.get('#tbxColocationPLNPowerKVA').type(RangerandomValue);
 
-      cy.get('#dpkNewRFITarget')
+      cy.get('#dpkColocationRFITarget')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#slsNewMLANumber').then(($select) => {
-        cy.wrap($select).select('Risalah Rapat 9 Jul 2015', { force: true })
+      cy.get('#slsColocationMLANumber').then(($select) => {
+        cy.wrap($select).select('0010-14-F07-39033', { force: true })
       })
+      cy.get('#tbxColocationLeasePeriod').type(RangerandomValue);
 
-      cy.get('#tbxNewLeasePeriod').type(5);
-
-      cy.get('#dpkNewMLADate')
+      cy.get('#dpkColocationMLADate')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tarNewRemark').type('Remark' + unique);
-
-      cy.get('#slsNewResidence').then(($select) => {
-        cy.wrap($select).select('205', { force: true })
-      })
+      cy.get('#tarColocationRemark').type('Remark' + unique);
 
 
-
-
-      cy.get("#btnSubmitNew").click();
+      cy.get("#btnSubmitColocation").click();
 
       cy.wait(2000)
 
@@ -374,7 +363,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/NEW_BUILD_MACRO/soDataNewBuild.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
