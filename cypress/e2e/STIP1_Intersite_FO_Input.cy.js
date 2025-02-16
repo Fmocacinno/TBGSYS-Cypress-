@@ -244,27 +244,18 @@ describe('template spec', () => {
     cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique);
 
     // Debug: Log all labels inside the container
-    cy.get('div.icheck-inline label').each(($label) => {
-      cy.log($label.text().trim()); // Log the text of each label
-    });
 
-cy.get('div.form-group.divNewIntersiteFO')
-  .should('be.visible');
-  
-    cy.get('div.icheck-inline label').each(($label) => {
-      cy.log($label.text().trim()); // Log the text of each label
-    });
 
-    // Select the "No" radio button
-    cy.get('div.icheck-inline')
-      .contains('label',  /No/i)
-      .click();
+    // // cy.get('input[name=""][value="0"]').check({ force: true });
+    // cy.get('input[type="Radio"][value="0"]').check().should('be.checked')
 
-    // Assert that the "No" radio button is checked
-    cy.get('div.icheck-inline')
-      .contains('label', 'No')
-      .find('input[type="radio"]')
-      .should('be.checked');
+    cy.wait(1000); // Ensure dropdown selection is applied
+    /// radio button with regex
+    // cy.get('input[type="radio"]').filter((index, el) => /No\s*/i.test(el.value)).check()
+
+    // input value No
+    cy.get('input[name="rdoOverlapping"][value="0"]').parent().click()
+
 
     cy.get('#slsNewTowerHeight').then(($select) => {
       cy.wrap($select).select('32', { force: true })
