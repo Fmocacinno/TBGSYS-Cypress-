@@ -29,7 +29,7 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/NEW_IBSDAS/soDataNEW_IBSDAS.json').then((values) => {
+    cy.readFile('/cypress/e2e/STIP_1/NEW_IBSDAS/soDataNEW_IBSDAS.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;

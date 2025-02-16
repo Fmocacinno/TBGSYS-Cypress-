@@ -20,7 +20,7 @@ describe('template spec', () => {
   const loopCount = 1; // Jumlah iterasi loop
 
   for (let i = 0; i < loopCount; i++) {
-    it.only(`passes iteration ${i + 1}`, () => {
+    it(`passes iteration ${i + 1}`, () => {
       const testResults = []; // Array to store test results
       const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
       const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
@@ -42,7 +42,7 @@ describe('template spec', () => {
       const maxLength = 15;
       const randomString = generateRandomString(minLength, maxLength);
       const date = "2-Jan-2025";
-      const user = "555504220025"
+      const user = "201301180003"
       const pass = "123456"
       const filePath = 'documents/pdf/receipt.pdf';
       const latMin = -11.0; // Southernmost point
@@ -117,7 +117,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
+        cy.wrap($select).select('4', { force: true })
       })
 
       cy.get('#slsNewCompany').then(($select) => {
@@ -125,7 +125,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsNewCustomer').then(($select) => {
-        cy.wrap($select).select('PKP', { force: true })
+        cy.wrap($select).select('XL', { force: true })
       })
 
       cy.get('#slsNewRegion').then(($select) => {
@@ -133,37 +133,37 @@ describe('template spec', () => {
       })
       cy.get('#btnNewPriceAmountPopUp').click();
 
-      cy.get('tbody > tr:nth-child(3) .btnSelect').click();
+      cy.get('tbody > tr:nth-child(2) .btnSelect').click();
 
       cy.wait(2000)
 
       cy.get('.slsBatchSLD').eq(0)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('967', { force: true });
+        .select('69', { force: true });
 
       cy.get('#tbxNewSiteName').type('Site_' + unique);
       cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique);
@@ -189,29 +189,26 @@ describe('template spec', () => {
       cy.get('#slsNewAccountManager').then(($select) => {
         cy.wrap($select).select('201301180003', { force: true })
       })
+      cy.get('#tbxNewNumberOfAntenna').type(RangerandomValue);
+      cy.get('#tbxNewNumberOfSectoral').type(RangerandomValue);
 
-      cy.get('#slsNewTowerHeight').then(($select) => {
-        cy.wrap($select).select('0', { force: true })
-      })
 
-      cy.get('#slsNewShelterType').then(($select) => {
-        cy.wrap($select).select('7', { force: true })
-      })
-      cy.get('#tbxNewPLNPowerKVA').type(5);
+
 
       cy.get('#dpkNewRFITarget')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#slsNewMLANumber').then(($select) => {
-        cy.wrap($select).select('Risalah Rapat 9 Jul 2015', { force: true })
-      })
 
       cy.get('#tbxNewLeasePeriod').type(5);
 
       cy.get('#dpkNewMLADate')
         .invoke('val', date)
         .trigger('change');
+
+      cy.get('#slsNewMLANumber').then(($select) => {
+        cy.wrap($select).select('0031-14-F07-121782', { force: true })
+      })
 
       cy.get('#tarNewRemark').type('Remark' + unique);
 
@@ -258,7 +255,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/NEW_BUILD_MACRO/soDataNewBuild.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/NEW_IBSDAS/soDataNewIBSDAS.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

@@ -283,7 +283,7 @@ describe('template spec', () => {
 
       cy.get('@soNumber').then((soNumber) => {
         cy.get('@siteId').then((siteId) => {
-          cy.writeFile('e2e/MCP FO/SODataMCPFO.json', { soNumber, siteId });
+          cy.writeFile('/cypress/e2e/STIP_1/SODataMCPFO.json', { soNumber, siteId });
         });
       });
       // Add your logic here using the Site ID

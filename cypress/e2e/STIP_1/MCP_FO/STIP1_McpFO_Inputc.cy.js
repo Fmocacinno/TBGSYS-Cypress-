@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'test-StipinputNewBuildMacroresults.xlsx'; // Path to the Excel file
+  const filePath = 'test-StipinputMcpFOresults.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -42,7 +42,7 @@ describe('template spec', () => {
       const maxLength = 15;
       const randomString = generateRandomString(minLength, maxLength);
       const date = "2-Jan-2025";
-      const user = "201301180003"
+      const user = "555504220025"
       const pass = "123456"
       const filePath = 'documents/pdf/receipt.pdf';
       const latMin = -11.0; // Southernmost point
@@ -72,7 +72,7 @@ describe('template spec', () => {
       cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
         // Log the test result if input is successful
         testResults.push({
-          Test: 'Passworhasbeeninputed',
+          Test: 'Passworhasben ',
           Status: 'Pass',
           Timestamp: new Date().toISOString(),
         });
@@ -95,7 +95,7 @@ describe('template spec', () => {
         Timestamp: new Date().toISOString(),
       });
 
-      // Export results to Excel after the test
+
 
 
 
@@ -111,13 +111,12 @@ describe('template spec', () => {
       });
       cy.wait(2000)
 
-
       cy.get('#slsSTIPCategory').then(($select) => {
         cy.wrap($select).select('1', { force: true })
       })
 
       cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('4', { force: true })
+        cy.wrap($select).select('11', { force: true })
       })
 
       cy.get('#slsNewCompany').then(($select) => {
@@ -131,39 +130,44 @@ describe('template spec', () => {
       cy.get('#slsNewRegion').then(($select) => {
         cy.wrap($select).select('1', { force: true })
       })
+
       cy.get('#btnNewPriceAmountPopUp').click();
 
-      cy.get('tbody > tr:nth-child(2) .btnSelect').click();
+      cy.get('tbody tr:first-child .btnSelect').click();
 
       cy.wait(2000)
 
+      // handle HTML
+
       cy.get('.slsBatchSLD').eq(0)
-        .select('69', { force: true });
+        .select('143', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('69', { force: true });
+        .select('143', { force: true });
 
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('69', { force: true });
+        .select('143', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('69', { force: true });
+        .select('143', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('69', { force: true });
+        .select('143', { force: true });
+
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('69', { force: true });
+        .select('143', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('69', { force: true });
+        .select('143', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('69', { force: true });
+        .select('143', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('69', { force: true });
+        .select('143', { force: true });
+      // handle HTML
 
       cy.get('#tbxNewSiteName').type('Site_' + unique);
       cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique);
@@ -177,8 +181,13 @@ describe('template spec', () => {
       cy.get('#fleNewDocument').attachFile(filePath);
 
       cy.get('#slsNewProvince').then(($select) => {
-        cy.wrap($select).select('12', { force: true })
+        cy.wrap($select).select('11', { force: true })
       })
+      cy.wait(2000)
+      cy.get('#slsNewResidence').then(($select) => {
+        cy.wrap($select).select('178', { force: true })
+      })
+
 
       cy.get('#tbxNewNomLatitude').type(lat);
       cy.get('#tbxNewNomLongitude').type(long);
@@ -189,8 +198,20 @@ describe('template spec', () => {
       cy.get('#slsNewAccountManager').then(($select) => {
         cy.wrap($select).select('201301180003', { force: true })
       })
+
+      cy.get('#slsNewTowerHeight').then(($select) => {
+        cy.wrap($select).select('32', { force: true })
+      })
+
+      cy.get('#slsNewShelterType').then(($select) => {
+        cy.wrap($select).select('3', { force: true })
+      })
+      cy.get('#tbxNewPLNPowerKVA').type(5);
+
       cy.get('#tbxNewNumberOfAntenna').type(RangerandomValue);
       cy.get('#tbxNewNumberOfSectoral').type(RangerandomValue);
+      cy.get('#tbxNewCore').type(RangerandomValue);
+      cy.get('#tbxNewCapacity').type(RangerandomValue);
 
 
 
@@ -199,6 +220,13 @@ describe('template spec', () => {
         .invoke('val', date)
         .trigger('change');
 
+      cy.get('#tbxNewLeasePeriod').type(RangerandomValue);
+
+
+
+      cy.get('#slsNewMLANumber').then(($select) => {
+        cy.wrap($select).select('0031-14-F07-121782', { force: true })
+      })
 
       cy.get('#tbxNewLeasePeriod').type(5);
 
@@ -206,15 +234,10 @@ describe('template spec', () => {
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#slsNewMLANumber').then(($select) => {
-        cy.wrap($select).select('0031-14-F07-121782', { force: true })
-      })
-
       cy.get('#tarNewRemark').type('Remark' + unique);
 
-      cy.get('#slsNewResidence').then(($select) => {
-        cy.wrap($select).select('205', { force: true })
-      })
+
+
 
 
 
@@ -225,6 +248,7 @@ describe('template spec', () => {
       cy.get('.sa-confirm-button-container button.confirm').click();
 
       cy.wait(15000)
+
 
       // Add this section to extract values from popup
       cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
@@ -255,18 +279,20 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/NEW_IBSDAS/soDataNewIBSDAS.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/MCP_FO/soDataMCPFO.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
         });
         // Add your logic here using the Site ID
       });
-
       cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout')
+
+      // Export results to Excel after the test
       cy.then(() => {
         exportToExcel(testResults);
       });
+
 
 
     })

@@ -363,7 +363,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

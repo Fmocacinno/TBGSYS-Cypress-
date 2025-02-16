@@ -1,5 +1,6 @@
 import { timeStamp } from 'console';
 import 'cypress-file-upload';
+
 const XLSX = require('xlsx');
 const fs = require('fs');
 
@@ -18,22 +19,28 @@ function exportToExcel(testResults) {
   XLSX.writeFile(workbook, filePath);
 }
 describe('template spec', () => {
+  let testResults = []; // Shared results array
   let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass;
 
+  before(() => {
+    testResults = []; // Reset results before all tests
+  });
+
+  after(() => {
+    exportToExcel(testResults); // Export after all tests complete
+  });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
-      unique = "ATP_19";
-      date = "2-Jan-2025";
-      userAM = "201301180003";
-      userLeadAM = "201301180003";
-      userLeadPM = "201102180019";
-      userARO = "201103180016";
-      pass = "123456";
     });
 
+    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
+      cy.log(values);
+      sonumb = values.soNumber;
+      siteId = values.siteId;
+    });
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false;
     });
@@ -41,7 +48,6 @@ describe('template spec', () => {
 
   //AM
   it('AM Test Case', () => {
-    const testResults = [];
 
     cy.visit('http://tbgappdev111.tbg.local:8042/Login');
 
@@ -58,11 +64,30 @@ describe('template spec', () => {
     cy.get("#btnSubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval');
-
+    cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval')
+      .url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Approval');
+    testResults.push({
+      Test: 'User AM melakukan akses ke menu Stip Approval',
+      Status: 'Pass',
+      timeStamp: new Date().toISOString(),
+    });
     cy.wait(2000);
-    cy.get('#tbxSearchSONumber').type(sonumb);
-    cy.get('.btnSearch').first().click();
+    cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
+      // Log the test result if button click is successful
+      testResults.push({
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+    });
+    cy.get('.btnSearch').first().click().should(() => {
+      // Log the test result if button click is successful
+      testResults.push({
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+    });
     cy.wait(2000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
@@ -115,11 +140,34 @@ describe('template spec', () => {
 
     cy.get('#btnSubmit').click();
     cy.wait(2000);
-    cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval');
+    cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval')
+      .url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Approval');
+    testResults.push({
+      Test: 'User Lead AM melakukan akses ke menu Stip Approval',
+      Status: 'Pass',
+      timeStamp: new Date().toISOString(),
+    });
     cy.wait(2000);
-    cy.get('#tbxSearchSONumber').type(sonumb);
-    cy.get('.btnSearch').first().click();
+
+    cy.get('#tbxSearchSONumber').type(sonumb).should('have.value', sonumb).then(() => {
+      // Log the test result if input is successful
+      testResults.push({
+        Test: 'User Lead AM melakukan input SONumber di Stip approval',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+    });
+
+    cy.get('.btnSearch').first().click().should(() => {
+      // Log the test result if button click is successful
+      testResults.push({
+        Test: 'User Lead AM melakukan klik tombol Search di Stip approval',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+    });
     cy.wait(2000);
+
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -146,13 +194,12 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(5000);
+    cy.wait(2000);
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
 
   });
   //LEAD PM
   it('Lead PM Test Case', () => {
-    const testResults = [];
     // Lead PM
     cy.visit('http://tbgappdev111.tbg.local:8042');
     cy.get('#tbxUserID').type(userLeadPM);
@@ -166,35 +213,35 @@ describe('template spec', () => {
     });
 
     cy.get('#btnSubmit').click();
+
     cy.wait(2000);
-    cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval');
-    cy.wait(2000);
-    cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Approval');
+    cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval')
+      .url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Approval');
     testResults.push({
-      Test: 'User melakukan akses ke menu Stip Approval',
+      Test: 'User LEAD PM melakukan akses ke menu Stip Approval',
       Status: 'Pass',
-      timeStamp: new Date().toISOString(),
+      TimeStamp: new Date().toISOString(),
     });
+    cy.wait(2000);
 
     cy.get('#tbxSearchSONumber').type(sonumb).should('have.value', sonumb).then(() => {
       // Log the test result if input is successful
       testResults.push({
-        Test: 'User melakukan input SONumber di Stip approval',
+        Test: 'User LEAD PM melakukan input SONumber di Stip approval',
         Status: 'Pass',
-        Timestamp: new Date().toISOString(),
+        TimeStamp: new Date().toISOString(),
       });
     });
 
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User melakukan klik tombol Search di Stip approval',
+        Test: 'User LEAD PM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        Timestamp: new Date().toISOString(),
+        TimeStamp: new Date().toISOString(),
       });
     });
     cy.wait(2000);
-
 
 
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
@@ -210,11 +257,11 @@ describe('template spec', () => {
 
         cy.get("#btnConfirm").then(($btn) => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
-            cy.get('#slsPMCME').select('202307020084', { force: true });
-            cy.get('#slsFieldController').select('201103180014', { force: true });
+            cy.get('#slsPMSitac').select('201103180014', { force: true });
+            cy.get('#slsPMCME').select('201601600086', { force: true });
             cy.wrap($btn).click();
             cy.log("✅ Button clicked successfully");
-            cy.wait(2000);
+            cy.wait(6000);
           } else {
             cy.log("⚠️ Button not clickable, skipping...");
           }
@@ -225,14 +272,13 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(2000);
+    cy.wait(4000);
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
 
   });
   //ARO
   it('ARO Test Case', () => {
     // Lead PM
-    const testResults = [];
     cy.visit('http://tbgappdev111.tbg.local:8042');
     cy.get('#tbxUserID').type(userARO);
     cy.get('#tbxPassword').type(pass);
@@ -281,6 +327,7 @@ describe('template spec', () => {
     });
     cy.wait(2000);
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+
     cy.then(() => {
       exportToExcel(testResults);
     });

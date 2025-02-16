@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'test-StipinputMCPNonForesults.xlsx'; // Path to the Excel file
+  const filePath = 'test-StipinputFTTHBackhaulresults.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -72,7 +72,7 @@ describe('template spec', () => {
       cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
         // Log the test result if input is successful
         testResults.push({
-          Test: 'Passworhasben ',
+          Test: 'Passworhasbeeninputed',
           Status: 'Pass',
           Timestamp: new Date().toISOString(),
         });
@@ -94,7 +94,14 @@ describe('template spec', () => {
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
+
+      // Export results to Excel after the test
+
+
+
+
       cy.wait(2000)
+
 
       cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Input')
       cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Input'); // Ensure the page changes or some result occurs
@@ -103,138 +110,42 @@ describe('template spec', () => {
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
-      cy.wait(2000)
+      cy.wait(2000);
 
-      cy.get('#slsSTIPCategory').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
-      })
+      cy.get('#slsSTIPCategory').select('4', { force: true });
+      cy.get('#slsProduct').select('93', { force: true });
+      cy.get('#slsAssetSupportCompany').select('PT. PERMATA KARYA PERDANA', { force: true });
+      cy.get('#slsAssetSupportCustomer').select('PKP', { force: true });
+      cy.get('#slsAssetSupportRegion').select('1', { force: true });
+      cy.get('#slsAssetSupportBatch').select('UMU - Q3 AOP 2024 Batch 2', { force: true });
 
-      cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('18', { force: true })
-      })
+      cy.get('#tbxAssetSupportSiteName').type('Site_' + unique);
+      cy.get('#tbxAssetSupportCustomerSiteID').type('Cust_' + unique);
 
-      cy.get('#slsNewCompany').then(($select) => {
-        cy.wrap($select).select('PKP', { force: true })
-      })
+      cy.get('#slsNewDocumentOrder').select('7', { force: true });
+      cy.get('#slsAssetSupportDocumentOrder').select('BAK', { force: true });
 
-      cy.get('#slsNewCustomer').then(($select) => {
-        cy.wrap($select).select('XL', { force: true })
-      })
+      cy.get('#tbxAssetSupportDocumentName').type('DoctName_' + unique);
+      cy.get('#fleAssetSupportDocument').attachFile(filePath);
 
-      cy.get('#slsNewRegion').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
-      })
+      cy.get('#slsAssetSupportProvince').select('11', { force: true });
+      cy.wait(2000);
+      cy.get('#slsAssetSupportResidence').select('178', { force: true });
 
-      cy.get('#btnNewPriceAmountPopUp').click();
+      cy.get('#tbxAssetSupportNomLatitude').type(lat);
+      cy.get('#tbxAssetSupportNomLongitude').type(long);
+      cy.get('#tbxAssetSupportNomLatitudeEnd').type(lat);
+      cy.get('#tbxAssetSupportNomLongitudeEnd').type(long);
 
-      cy.get('tbody tr:first-child .btnSelect').click();
+      cy.get('#slsAssetSupportLeadProjectManager').select('201103180014', { force: true });
+      cy.get('#slsAssetSupportAccountManager').select('201301180003', { force: true });
 
-      cy.wait(2000)
+      cy.get('#tarAssetSupportRemark').type('REMARK NIH DARY ' + randomString);
+      cy.get('#btnSubmitAssetSupport').click();
 
-      // handle HTML
-
-      cy.get('.slsBatchSLD').eq(0)
-        .select('180', { force: true });
-
-      cy.get('.slsBatchSLD').eq(1)
-        .select('180', { force: true });
-
-
-      cy.get('.slsBatchSLD').eq(2)
-        .select('180', { force: true });
-
-      cy.get('.slsBatchSLD').eq(3)
-        .select('180', { force: true });
-
-      cy.get('.slsBatchSLD').eq(4)
-        .select('180', { force: true });
-
-
-      cy.get('.slsBatchSLD').eq(5)
-        .select('180', { force: true });
-
-      cy.get('.slsBatchSLD').eq(6)
-        .select('180', { force: true });
-
-      cy.get('.slsBatchSLD').eq(7)
-        .select('180', { force: true });
-
-      cy.get('.slsBatchSLD').eq(8)
-        .select('180', { force: true });
-      // handle HTML
-
-      cy.get('#tbxNewSiteName').type('Site_' + unique);
-      cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique);
-
-      cy.get('#slsNewDocumentOrder').then(($select) => {
-        cy.wrap($select).select('7', { force: true })
-      })
-
-      cy.get('#tbxNewDocumentName').type('DoctName_' + unique);
-
-      cy.get('#fleNewDocument').attachFile(filePath);
-
-      cy.get('#slsNewProvince').then(($select) => {
-        cy.wrap($select).select('11', { force: true })
-      })
-      cy.wait(2000)
-      cy.get('#slsNewResidence').then(($select) => {
-        cy.wrap($select).select('178', { force: true })
-      })
-
-
-      cy.get('#tbxNewNomLatitude').type(lat);
-      cy.get('#tbxNewNomLongitude').type(long);
-
-      cy.get('#slsNewLeadProjectManager').then(($select) => {
-        cy.wrap($select).select('201103180014', { force: true })
-      })
-      cy.get('#slsNewAccountManager').then(($select) => {
-        cy.wrap($select).select('201301180003', { force: true })
-      })
-
-      cy.get('#slsNewTowerHeight').then(($select) => {
-        cy.wrap($select).select('32', { force: true })
-      })
-
-      cy.get('#slsNewShelterType').then(($select) => {
-        cy.wrap($select).select('3', { force: true })
-      })
-      cy.get('#tbxNewPLNPowerKVA').type(5);
-
-      cy.get('#tbxNewNumberOfAntenna').type(RangerandomValue);
-      cy.get('#tbxNewNumberOfSectoral').type(RangerandomValue);
-
-
-
-      cy.get('#dpkNewRFITarget')
-        .invoke('val', date)
-        .trigger('change');
-
-      cy.get('#tbxNewLeasePeriod').type(RangerandomValue);
-
-
-
-      cy.get('#slsNewMLANumber').then(($select) => {
-        cy.wrap($select).select('0031-14-F07-121782', { force: true })
-      })
-
-      cy.get('#tbxNewLeasePeriod').type(5);
-
-      cy.get('#dpkNewMLADate')
-        .invoke('val', date)
-        .trigger('change');
-
-      cy.get('#tarNewRemark').type('Remark' + randomString);
-
-
-      cy.get("#btnSubmitNew").click();
-
-      cy.wait(2000)
-
+      cy.wait(2000);
       cy.get('.sa-confirm-button-container button.confirm').click();
-
-      cy.wait(15000)
+      cy.wait(15000);
 
       // Add this section to extract values from popup
       cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
@@ -265,14 +176,13 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/MCP_NON_FO/soDataMCPNONFO.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/FTTH_BACKHAUL/soDataBackhaul.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
         });
         // Add your logic here using the Site ID
       });
-
 
       cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout')
       cy.then(() => {
