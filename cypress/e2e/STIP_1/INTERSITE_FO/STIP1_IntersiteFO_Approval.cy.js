@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -29,20 +29,24 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
+      userInputStip = values.userInputStip;
       userLeadAM = values.userLeadAM;
       userLeadPM = values.userLeadPM;
+      userPMFO = values.userPMFO;
       userARO = values.userARO;
       pass = values.pass;
+
     });
+
 
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false;
@@ -75,6 +79,7 @@ describe('template spec', () => {
       timeStamp: new Date().toISOString(),
     });
     cy.wait(2000);
+
     // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
     //   // Log the test result if button click is successful
     //   testResults.push({
@@ -86,7 +91,7 @@ describe('template spec', () => {
 
     cy.contains('label', /^\s *By SO Number\s*$/)
       .click(); // search By Radio Button SONumber
-    cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
+    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
         Test: 'User AM melakukan klik tombol Search di Stip approval',
@@ -94,6 +99,8 @@ describe('template spec', () => {
         Timestamp: new Date().toISOString(),
       });
     }); // << Search Filter
+
+
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -102,13 +109,14 @@ describe('template spec', () => {
         Timestamp: new Date().toISOString(),
       });
     });
+
     cy.wait(2000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
       cy.wait(2000);
 
-      if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "AM" is in the status
+      if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "Lead PM" is in the status
         cy.log("✅ Status contains 'AM', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnApprovalDetail').click();
@@ -163,19 +171,32 @@ describe('template spec', () => {
     });
     cy.wait(2000);
 
-    cy.get('#tbxSearchSONumber').type(sonumb).should('have.value', sonumb).then(() => {
-      // Log the test result if input is successful
+
+    // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
+    //   // Log the test result if button click is successful
+    //   testResults.push({
+    //     Test: 'User AM melakukan klik tombol Search di Stip approval',
+    //     Status: 'Pass',
+    //     Timestamp: new Date().toISOString(),
+    //   });
+    // }); // << Search Filter SONumber  disable it if u dont need
+
+    cy.contains('label', /^\s *By SO Number\s*$/)
+      .click(); // search By Radio Button SONumber
+    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+      // Log the test result if button click is successful
       testResults.push({
-        Test: 'User Lead AM melakukan input SONumber di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
-    });
+    }); // << Search Filter
+
 
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User Lead AM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
@@ -186,7 +207,7 @@ describe('template spec', () => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
 
-      if (text.includes("Waiting for Approval Lead AM")) {  // ✅ Checks if "Lead AM" is in the status
+      if (text.includes("Waiting for Approval Lead AM")) {  // ✅ Checks if "Lead PM" is in the status
         cy.log("✅ Status contains 'Lead AM', proceeding with approval...");
         cy.get('tbody tr:first-child .btnApprovalDetail').click();
         cy.get('#tarApprovalRemark').type('Remark_' + unique, { force: true });
@@ -247,12 +268,34 @@ describe('template spec', () => {
       });
     });
 
+
+    // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
+    //   // Log the test result if button click is successful
+    //   testResults.push({
+    //     Test: 'User AM melakukan klik tombol Search di Stip approval',
+    //     Status: 'Pass',
+    //     Timestamp: new Date().toISOString(),
+    //   });
+    // }); // << Search Filter SONumber  disable it if u dont need
+
+    cy.contains('label', /^\s *By SO Number\s*$/)
+      .click(); // search By Radio Button SONumber
+    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+      // Log the test result if button click is successful
+      testResults.push({
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+    }); // << Search Filter
+
+
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User LEAD PM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        TimeStamp: new Date().toISOString(),
+        Timestamp: new Date().toISOString(),
       });
     });
     cy.wait(2000);
@@ -271,8 +314,7 @@ describe('template spec', () => {
 
         cy.get("#btnConfirm").then(($btn) => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
-            cy.get('#slsPMSitac').select('201103180014', { force: true });
-            cy.get('#slsPMCME').select('201601600086', { force: true });
+            cy.get('#slsAssignedPM').select(userPMFO, { force: true });
             cy.wrap($btn).click();
             cy.log("✅ Button clicked successfully");
             cy.wait(6000);
@@ -290,6 +332,7 @@ describe('template spec', () => {
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
 
   });
+
   //ARO
   it('ARO Test Case', () => {
     // Lead PM
@@ -308,9 +351,37 @@ describe('template spec', () => {
     cy.wait(2000);
     cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval');
     cy.wait(2000);
-    cy.get('#tbxSearchSONumber').type(sonumb);
-    cy.get('.btnSearch').first().click();
+    // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
+    //   // Log the test result if button click is successful
+    //   testResults.push({
+    //     Test: 'User AM melakukan klik tombol Search di Stip approval',
+    //     Status: 'Pass',
+    //     Timestamp: new Date().toISOString(),
+    //   });
+    // }); // << Search Filter SONumber  disable it if u dont need
+
+    cy.contains('label', /^\s *By SO Number\s*$/)
+      .click(); // search By Radio Button SONumber
+    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+      // Log the test result if button click is successful
+      testResults.push({
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+    }); // << Search Filter
+
+
+    cy.get('.btnSearch').first().click().should(() => {
+      // Log the test result if button click is successful
+      testResults.push({
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+    });
     cy.wait(2000);
+
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -347,5 +418,4 @@ describe('template spec', () => {
     });
 
   });
-
 });

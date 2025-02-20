@@ -16,7 +16,7 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
-describe('template spec', () => {
+describe('SSR INPUT', () => {
   let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass;
 
   beforeEach(() => {

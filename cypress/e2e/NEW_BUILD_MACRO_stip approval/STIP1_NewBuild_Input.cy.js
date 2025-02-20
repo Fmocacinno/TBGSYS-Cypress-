@@ -20,10 +20,11 @@ describe('template spec', () => {
   const loopCount = 1; // Jumlah iterasi loop
 
   for (let i = 0; i < loopCount; i++) {
-    it.only(`passes iteration ${i + 1}`, () => {
+    it(`passes iteration ${i + 1}`, () => {
       const testResults = []; // Array to store test results
       const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
       const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
+      const unique = `APP_PKP_${randomValue}`;
 
       function generateRandomString(minLength, maxLength) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -36,12 +37,13 @@ describe('template spec', () => {
         }
         return result;
       }
-      let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
 
       const minLength = 5;
       const maxLength = 15;
       const randomString = generateRandomString(minLength, maxLength);
+      const date = "2-Jan-2025";
       const user = "555504220025"
+      const pass = "123456"
       const filePath = 'documents/pdf/receipt.pdf';
       const latMin = -11.0; // Southernmost point
       const latMax = 6.5;   // Northernmost point
@@ -51,17 +53,6 @@ describe('template spec', () => {
       // Generate random latitude and longitude within bounds
       const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
       const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
-
-      cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
-        cy.log(values);
-        unique = values.unique;
-        userAM = values.userAM;
-        userLeadAM = values.userLeadAM;
-        userLeadPM = values.userLeadPM;
-        userARO = values.userARO;
-        pass = values.pass;
-      });
-
 
       Cypress.on('uncaught:exception', (err, runnable) => {
         return false
@@ -267,7 +258,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/NEW_BUILD_MACRO/soDataNewBuild.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/NEW_BUILD_MACRO/soDataNewBuild.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
@@ -282,6 +273,5 @@ describe('template spec', () => {
 
 
     })
-
   }
 })
