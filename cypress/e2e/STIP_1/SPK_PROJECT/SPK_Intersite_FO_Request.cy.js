@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, PICVENDOR;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -44,6 +44,7 @@ describe('template spec', () => {
       userPMFO = values.userPMFO;
       userARO = values.userARO;
       UserSPKProject = values.UserSPKProject;
+      Uservendor = values.Uservendor;
       pass = values.pass;
 
     });
@@ -131,11 +132,11 @@ describe('template spec', () => {
       });
     }); // << Search Filter SONumber  disable it if u dont need
     cy.get('td[rowspan="1"][colspan="1"]')
-      .first()
+      .eq(1)
       .find('.btnSearch')
       .click();
 
-    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
+    cy.wait(6000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
@@ -153,20 +154,41 @@ describe('template spec', () => {
 
     cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
 
-    cy.wait(10000);
+    cy.wait(6000);
 
 
-    cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
-    cy.wait(10000);
+
+
     cy.get('#slCore').then(($select) => {
-      cy.wrap($select).select('9', { force: true })
+      cy.wrap($select).select('23', { force: true })
     })
 
     cy.wait(6000);
+
+
+    cy.get('#btnSearchVendor').click();
+
+
+    cy.wait(2000)
+    cy.get('#tbxSearchVendorName').type(Uservendor);
+    cy.wait(2000)
+    cy.get('td[rowspan="1"][colspan="1"]')
+      .eq(1)
+      .find('.btnSearch')
+      .click();
+    cy.wait(2000)
+    cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
+    cy.wait(2000);
+    cy.get('#txtRemark').type('Remark' + unique);
+    cy.get('#btnAssign').click();
+    cy.wait(2000);
+    cy.contains('.sa-confirm-button-container button', 'Ok').click();
+
+    cy.wait(2000)
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
   });
 
-  //LEAD AM
+  //LEAD AM 
   // it('Lead AM Test Case', () => {
   //   const testResults = [];
   //   // Lead PM

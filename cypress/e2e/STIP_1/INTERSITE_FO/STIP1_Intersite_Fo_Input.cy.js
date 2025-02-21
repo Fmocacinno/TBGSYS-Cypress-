@@ -310,7 +310,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersite_Fo.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFo.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

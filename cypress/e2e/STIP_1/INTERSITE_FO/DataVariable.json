@@ -6,14 +6,11 @@
   "PICVendor": "0096011",
   "userAM": "201109180080",
   "userLeadAM": "201109180080",
-  "userPMSitac": "201102180019",
+  "userPMSitac": "202307020084",
   "userPMCME": "202307020084",
-  "userPMFO": "202307020084",
+  "userPMFO": "201611020078",
   "userLeadPM": "201102180019",
   "userARO": "201103180016",
-  "userAM": "201301180003",
-  "userLeadAM": "201301180003",
-  "userLeadPM": "201103180014",
-  "userARO": "201910600198",
+
   "pass": "123456"
 }
