@@ -88,7 +88,14 @@ describe('template spec', () => {
     cy.get('#slType').then(($select) => {
       cy.wrap($select).select('9', { force: true })
     })
-
+    cy.get('#btnSearch').type(sonumb).should(() => {
+      // Log the test result if button click is successful
+      testResults.push({
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+    }); //
 
 
     // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
@@ -112,47 +119,50 @@ describe('template spec', () => {
     // }); // << Search Filter
 
 
-    cy.get('.btnSearch').first().click().should(() => {
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
+
+
+    cy.get('#txtSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
         Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
-    });
+    }); // << Search Filter SONumber  disable it if u dont need
+    cy.get('td[rowspan="1"][colspan="1"]')
+      .first()
+      .find('.btnSearch')
+      .click();
 
-    cy.wait(2000);
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
-      cy.log("📌 Status Found:", text);
-      cy.wait(2000);
-
-      if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "Lead PM" is in the status
-        cy.log("✅ Status contains 'AM', proceeding with approval...");
-
-        cy.get('tbody tr:first-child td:nth-child(1) .btnApprovalDetail').click();
-        cy.get('#tarApprovalRemark').type('Remark_' + unique, { force: true });
-        // SKIPPING 'tarApprovalRemark' input field
-        cy.log("⚠️ Skipping remark input...");
-
-        // Attempt to click the approval button only if it's visible and enabled
-        cy.get("#btnApprove").then(($btn) => {
-          if ($btn.is(':visible') && !$btn.is(':disabled')) {
-            cy.wrap($btn).click();
-            cy.log("✅ Button clicked successfully");
-            cy.wait(2000);
-          } else {
-            cy.wait(2000);
-            cy.log("⚠️ Button not clickable, skipping...");
-          }
-        });
-
-      } else {
-        cy.log("⚠️ Status does not match, skipping approval step.");
-      }
+      cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
+      cy.log("📌 Status Found:", sonumb);
+      cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
     });
 
-    cy.wait(2000);
+
+    cy.window().then((win) => {
+      cy.stub(win, 'open').callsFake((url) => {
+        const fullUrl = `http://tbgappdev111.tbg.local:8127${url}`; // Ensure full URL
+        cy.visit(fullUrl);
+      });
+    });
+
+    cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
+
+    cy.wait(10000);
+
+
+    cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
+    cy.wait(10000);
+    cy.get('#slCore').then(($select) => {
+      cy.wrap($select).select('9', { force: true })
+    })
+
+    cy.wait(6000);
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
   });
 
