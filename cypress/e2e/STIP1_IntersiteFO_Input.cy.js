@@ -1,11 +1,10 @@
-import { timeStamp } from 'console';
 import 'cypress-file-upload';
 const XLSX = require('xlsx');
 const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
+  const filePath = 'test-StipinputNewBuildMacroresults.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -17,102 +16,96 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
-const testResults = []; // Array to store test results
-const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
-const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
-// const unique = `APP_PKP_`;
-
-function generateRandomString(minLength, maxLength) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-  let result = '';
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    result += characters.charAt(randomIndex);
-  }
-  return result;
-}
-
-let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
-
-const minLength = 5;
-const maxLength = 15;
-const randomString = generateRandomString(minLength, maxLength);
-// const date = "2-Jan-2025";
-// const user = "555504220025"
-// const pass = "123456"
-const filePath = 'documents/pdf/receipt.pdf';
-const latMin = -11.0; // Southernmost point
-const latMax = 6.5;   // Northernmost point
-const longMin = 94.0; // Westernmost point
-const longMax = 141.0; // Easternmost point
-
-// Generate random latitude and longitude within bounds
-const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
-const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
-//Batas
-
 describe('template spec', () => {
-  let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
 
-  before(() => {
-    testResults = []; // Reset results before all tests
-  });
-
-  after(() => {
-    exportToExcel(testResults); // Export after all tests complete
-  });
-  beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
-      cy.log(values);
-      sonumb = values.soNumber;
-      siteId = values.siteId;
-    });
-
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
-      cy.log(values);
-      unique = values.unique;
-      userAM = values.userAM;
-      userInputStip = values.userInputStip;
-      userLeadAM = values.userLeadAM;
-      userLeadPM = values.userLeadPM;
-      userPMFO = values.userPMFO;
-      userARO = values.userARO;
-      pass = values.pass;
-      date = values.date;
-
-    });
-
-
-    Cypress.on('uncaught:exception', (err, runnable) => {
-      return false;
-    });
-  });
   const loopCount = 1; // Jumlah iterasi loop
 
   for (let i = 0; i < loopCount; i++) {
     it.only(`passes iteration ${i + 1}`, () => {
+      const testResults = []; // Array to store test results
+      const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+      const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
+      // const unique = `APP_PKP_`;
+
+      function generateRandomString(minLength, maxLength) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+        let result = '';
+
+        for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          result += characters.charAt(randomIndex);
+        }
+        return result;
+      }
+
+      let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
+
+      const minLength = 5;
+      const maxLength = 15;
+      const randomString = generateRandomString(minLength, maxLength);
+      // const date = "2-Jan-2025";
+      // const user = "555504220025"
+      // const pass = "123456"
+      const filePath = 'documents/pdf/receipt.pdf';
+      const latMin = -11.0; // Southernmost point
+      const latMax = 6.5;   // Northernmost point
+      const longMin = 94.0; // Westernmost point
+      const longMax = 141.0; // Easternmost point
+
+      // Generate random latitude and longitude within bounds
+      const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
+      const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
+
+
+      cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+        cy.log(values);
+        sonumb = values.soNumber;
+        siteId = values.siteId;
+      });
+
+      cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+        cy.log(values);
+        unique = values.unique;
+        userAM = values.userAM;
+        userInputStip = values.userInputStip;
+        userLeadAM = values.userLeadAM;
+        userLeadPM = values.userLeadPM;
+        userPMFO = values.userPMFO;
+        userARO = values.userARO;
+        PICVendor = values.PICVendor;
+        date = values.date;
+        pass = values.pass;
+      });
+
+      Cypress.on('uncaught:exception', (err, runnable) => {
+        return false;
+      });
+
+
       cy.visit('http://tbgappdev111.tbg.local:8127/Login')
 
-      cy.get('#tbxUserID').type(userInputStip).should('have.value', userInputStip).then(() => {
-        // Log the test result if input is successful
-        testResults.push({
-          Test: 'User ID Input',
-          Status: 'Pass',
-          Timestamp: new Date().toISOString(),
-        });
-      });
+      cy.get('#tbxUserID').type(userInputStip);
+      cy.get('#tbxPassword').type(pass);
 
-      cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
-        // Log the test result if input is successful
-        testResults.push({
-          Test: 'Passworhasbeeninputed',
-          Status: 'Pass',
-          Timestamp: new Date().toISOString(),
-        });
-      });
+
+      // cy.get('#tbxUserID').type(userLeadAM).should('have.value', userLeadAM).then(() => {
+      //   // Log the test result if input is successful
+      //   testResults.push({
+      //     Test: 'User ID Input',
+      //     Status: 'Pass',
+      //     Timestamp: new Date().toISOString(),
+      //   });
+      // });
+
+      // cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
+      //   // Log the test result if input is successful
+      //   testResults.push({
+      //     Test: 'Password has been inputed',
+      //     Status: 'Pass',
+      //     Timestamp: new Date().toISOString(),
+      //   });
+      // });
 
       cy.get('#RefreshButton').click();
 
@@ -157,11 +150,11 @@ describe('template spec', () => {
       })
 
       cy.get('#slsNewCompany').then(($select) => {
-        cy.wrap($select).select('TB', { force: true })
+        cy.wrap($select).select('PKP', { force: true })
       })
 
       cy.get('#slsNewCustomer').then(($select) => {
-        cy.wrap($select).select('XL', { force: true })
+        cy.wrap($select).select('PKP', { force: true })
       })
 
       cy.get('#slsNewRegion').then(($select) => {
@@ -174,52 +167,48 @@ describe('template spec', () => {
       cy.wait(2000)
 
       cy.get('.slsBatchSLD').eq(0)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('13', { force: true });
+        .select('967', { force: true });
 
-      cy.get('#tbxNewSiteName').type('Site_' + unique + RangerandomValue);
-      cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique + RangerandomValue);
+      cy.get('#tbxNewSiteName').type('Site_' + unique + randomValue);
+      cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique);
 
       cy.get('#slsNewDocumentOrder').then(($select) => {
         cy.wrap($select).select('7', { force: true })
       })
 
-      cy.get('#tbxNewDocumentName').type('DocName_' + unique + RangerandomValue);
+      cy.get('#tbxNewDocumentName').type('DoctName_' + unique);
 
       cy.get('#fleNewDocument').attachFile(filePath);
 
       cy.get('#slsNewProvince').then(($select) => {
-        cy.wrap($select).select('11', { force: true })
+        cy.wrap($select).select('12', { force: true })
       })
-      cy.wait(2000)
 
-      cy.get('#slsNewResidence').then(($select) => {
-        cy.wrap($select).select('178', { force: true })
-      })
       cy.get('#tbxNewNomLatitude').type(lat);
       cy.get('#tbxNewNomLongitude').type(long);
 
@@ -231,7 +220,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsNewTowerHeight').then(($select) => {
-        cy.wrap($select).select('32', { force: true })
+        cy.wrap($select).select('0', { force: true })
       })
 
       cy.get('#slsNewShelterType').then(($select) => {
@@ -244,7 +233,7 @@ describe('template spec', () => {
         .trigger('change');
 
       cy.get('#slsNewMLANumber').then(($select) => {
-        cy.wrap($select).select('0010-14-F07-39033', { force: true })
+        cy.wrap($select).select('Risalah Rapat 9 Jul 2015', { force: true })
       })
 
       cy.get('#tbxNewLeasePeriod').type(5);
@@ -253,9 +242,11 @@ describe('template spec', () => {
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tarNewRemark').type('Remark' + unique + RangerandomValue);
+      cy.get('#tarNewRemark').type('Remark' + unique);
 
-
+      cy.get('#slsNewResidence').then(($select) => {
+        cy.wrap($select).select('205', { force: true })
+      })
 
 
 
@@ -296,7 +287,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/NEW_BUILD_MACRO/soDataNewBuild.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/NEW_BUILD_MACRO/soDataNewBuild.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
@@ -305,9 +296,11 @@ describe('template spec', () => {
       });
 
       cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout')
+
       cy.then(() => {
         exportToExcel(testResults);
       });
+
 
     })
   }

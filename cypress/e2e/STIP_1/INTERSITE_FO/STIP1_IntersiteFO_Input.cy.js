@@ -1,10 +1,11 @@
+import { timeStamp } from 'console';
 import 'cypress-file-upload';
 const XLSX = require('xlsx');
 const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'test-StipinputNewBuildMacroresults.xlsx'; // Path to the Excel file
+  const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -16,65 +17,84 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
-describe('template spec', () => {
+const testResults = []; // Array to store test results
+const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
+// const unique = `APP_PKP_`;
 
+function generateRandomString(minLength, maxLength) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+}
+
+let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
+
+const minLength = 5;
+const maxLength = 15;
+const randomString = generateRandomString(minLength, maxLength);
+// const date = "2-Jan-2025";
+// const user = "555504220025"
+// const pass = "123456"
+const filePath = 'documents/pdf/receipt.pdf';
+const latMin = -11.0; // Southernmost point
+const latMax = 6.5;   // Northernmost point
+const longMin = 94.0; // Westernmost point
+const longMax = 141.0; // Easternmost point
+
+// Generate random latitude and longitude within bounds
+const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
+const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
+//Batas
+
+describe('template spec', () => {
+  let testResults = []; // Shared results array
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
+
+  before(() => {
+    testResults = []; // Reset results before all tests
+  });
+
+  after(() => {
+    exportToExcel(testResults); // Export after all tests complete
+  });
+  beforeEach(() => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+      cy.log(values);
+      sonumb = values.soNumber;
+      siteId = values.siteId;
+    });
+
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+      cy.log(values);
+      unique = values.unique;
+      userAM = values.userAM;
+      userInputStip = values.userInputStip;
+      userLeadAM = values.userLeadAM;
+      userLeadPM = values.userLeadPM;
+      userPMFO = values.userPMFO;
+      userARO = values.userARO;
+      pass = values.pass;
+      date = values.date;
+
+    });
+
+
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      return false;
+    });
+  });
   const loopCount = 1; // Jumlah iterasi loop
 
   for (let i = 0; i < loopCount; i++) {
     it.only(`passes iteration ${i + 1}`, () => {
-      const testResults = []; // Array to store test results
-      const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
-      const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
-      // const unique = `APP_PKP_`;
-
-      function generateRandomString(minLength, maxLength) {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-        let result = '';
-
-        for (let i = 0; i < length; i++) {
-          const randomIndex = Math.floor(Math.random() * characters.length);
-          result += characters.charAt(randomIndex);
-        }
-        return result;
-      }
-
-      let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
-
-      const minLength = 5;
-      const maxLength = 15;
-      const randomString = generateRandomString(minLength, maxLength);
-      // const date = "2-Jan-2025";
-      // const user = "555504220025"
-      // const pass = "123456"
-      const filePath = 'documents/pdf/receipt.pdf';
-      const latMin = -11.0; // Southernmost point
-      const latMax = 6.5;   // Northernmost point
-      const longMin = 94.0; // Westernmost point
-      const longMax = 141.0; // Easternmost point
-
-      // Generate random latitude and longitude within bounds
-      const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
-      const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
-
-      cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
-        cy.log(values);
-        unique = values.unique;
-        userInputStip = values.userInputStip;
-        userAM = values.userAM;
-        userLeadAM = values.userLeadAM;
-        userLeadPM = values.userLeadPM;
-        userPMFO = values.userPMFO;
-        userARO = values.userARO;
-        pass = values.pass;
-
-      });
-
-      Cypress.on('uncaught:exception', (err, runnable) => {
-        return false
-      })
-
-      cy.visit('http://tbgappdev111.tbg.local:8042/Login')
+      cy.visit('http://tbgappdev111.tbg.local:8127/Login')
 
       cy.get('#tbxUserID').type(userInputStip);
       cy.get('#tbxPassword').type(pass);
@@ -108,7 +128,7 @@ describe('template spec', () => {
       });
 
       cy.get('#btnSubmit').click();
-      cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/Dashboard'); // Ensure the page changes or some result occurs
+      cy.url().should('include', 'http://tbgappdev111.tbg.local:8127/Dashboard'); // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'Button Clicked',
         Status: 'Pass',
@@ -122,8 +142,8 @@ describe('template spec', () => {
 
       cy.wait(2000)
 
-      cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Input')
-      cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Input'); // Ensure the page changes or some result occurs
+      cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Input')
+      cy.url().should('include', 'http://tbgappdev111.tbg.local:8127/STIP/Input'); // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'User masuk ke Page Stip Input',
         Status: 'Pass',
@@ -137,111 +157,161 @@ describe('template spec', () => {
       })
 
       cy.get('#slsProduct').then(($select) => {
+        cy.wrap($select).select('83', { force: true })
+      })
+
+      cy.get('#slsIntersiteFOCompany').then(($select) => {
+        cy.wrap($select).select('TB', { force: true })
+      })
+
+      cy.get('#slsIntersiteFOCustomer').then(($select) => {
+        cy.wrap($select).select('XL', { force: true })
+      })
+
+      cy.get('#slsIntersiteFORegion').then(($select) => {
         cy.wrap($select).select('1', { force: true })
       })
+      cy.wait(1000); // Ensure dropdown selection is applied
+      /// radio button with regex
+      cy.contains('label', /^\s *Segment\s*$/)
+        .click(); // Click the label
 
-      cy.get('#slsNewCompany').then(($select) => {
-        cy.wrap($select).select('PKP', { force: true })
-      })
+      // Assert that the "Segment" radio button is selected
+      cy.get('input[type="radio"][value="Segment"]').should('be.checked');
 
-      cy.get('#slsNewCustomer').then(($select) => {
-        cy.wrap($select).select('PKP', { force: true })
-      })
+      cy.get('#btnIntersiteFOPriceAmountPopUp').click();
 
-      cy.get('#slsNewRegion').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
-      })
-      cy.get('#btnNewPriceAmountPopUp').click();
-
-      cy.get('tbody > tr:nth-child(3) .btnSelect').click();
+      cy.get('tbody tr:first-child .btnSelect').click();
 
       cy.wait(2000)
 
-      cy.get('.slsBatchSLD').eq(0)
-        .select('967', { force: true });
+      // handle HTML
 
-      cy.get('.slsBatchSLD').eq(1)
-        .select('967', { force: true });
+      // cy.get('.slsBatchSLD').eq(0)
+      //   .select('180', { force: true });
+
+      // cy.get('.slsBatchSLD').eq(1)
+      //   .select('180', { force: true });
 
 
-      cy.get('.slsBatchSLD').eq(2)
-        .select('967', { force: true });
+      // cy.get('.slsBatchSLD').eq(2)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(3)
-        .select('967', { force: true });
+      // cy.get('.slsBatchSLD').eq(3)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(4)
-        .select('967', { force: true });
+      // cy.get('.slsBatchSLD').eq(4)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(5)
-        .select('967', { force: true });
 
-      cy.get('.slsBatchSLD').eq(6)
-        .select('967', { force: true });
+      // cy.get('.slsBatchSLD').eq(5)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(7)
-        .select('967', { force: true });
+      // cy.get('.slsBatchSLD').eq(6)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(8)
-        .select('967', { force: true });
+      // cy.get('.slsBatchSLD').eq(7)
+      //   .select('180', { force: true });
 
-      cy.get('#tbxNewSiteName').type('Site_' + unique + randomValue);
-      cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique);
+      // cy.get('.slsBatchSLD').eq(8)
+      //   .select('180', { force: true });
+      // handle HTML
 
-      cy.get('#slsNewDocumentOrder').then(($select) => {
+      cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique);
+      cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique);
+      cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique);
+
+      cy.get('#slsIntersiteFODocumentOrder').then(($select) => {
         cy.wrap($select).select('7', { force: true })
       })
 
-      cy.get('#tbxNewDocumentName').type('DoctName_' + unique);
+      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique);
 
-      cy.get('#fleNewDocument').attachFile(filePath);
+      cy.get('#fleIntersiteFODocument').attachFile(filePath);
 
-      cy.get('#slsNewProvince').then(($select) => {
-        cy.wrap($select).select('12', { force: true })
+      cy.get('#slsIntersiteFOProvince').then(($select) => {
+        cy.wrap($select).select('11', { force: true })
       })
+      cy.wait(2000)
+      // Near ENd
+      cy.get('#slsIntersiteFOResidence').then(($select) => {
+        cy.wrap($select).select('178', { force: true })
+      })
+      cy.get('#slsIntersiteFOTowerProviderNearEnd').then(($select) => {
+        cy.wrap($select).select('10', { force: true })
+      })
+      cy.get('#tbxIntersiteFOTowerIDNearEnd').type('Site_' + unique);
+      cy.get('#tbxIntersiteFOTowerNameNearEnd').type('SiteName_' + unique);
+      cy.get('#tbxLatitudeA').type(lat);
+      cy.get('#tbxLongitudeA').type(long);
 
-      cy.get('#tbxNewNomLatitude').type(lat);
-      cy.get('#tbxNewNomLongitude').type(long);
+      // Far end
+      cy.get('#slsIntersiteFOResidence').then(($select) => {
+        cy.wrap($select).select('178', { force: true })
+      })
+      cy.get('#slsIntersiteFOTowerProviderFarEnd').then(($select) => {
+        cy.wrap($select).select('11', { force: true })
+      })
+      cy.get('#tbxIntersiteFOTowerIDFarEnd').type('Site_' + unique);
+      cy.get('#tbxIntersiteFOTowerNameFarEnd').type('SiteName_' + unique);
+      cy.get('#tbxLatitudeB').type(lat);
+      cy.get('#tbxLongitudeB').type(long);
 
-      cy.get('#slsNewLeadProjectManager').then(($select) => {
+      cy.get('#slsIntersiteFOLeadProjectManager').then(($select) => {
         cy.wrap($select).select(userLeadPM, { force: true })
       })
-      cy.get('#slsNewAccountManager').then(($select) => {
+      cy.wait(2000)
+
+      cy.get('#slsIntersiteFOAccountManager').then(($select) => {
         cy.wrap($select).select(userLeadAM, { force: true })
       })
 
-      cy.get('#slsNewTowerHeight').then(($select) => {
-        cy.wrap($select).select('0', { force: true })
-      })
+      cy.get('#tbxFOCore').type(RangerandomValue);
+      cy.get('#tbxFOLengthSPK').type(RangerandomValue);
+      cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique);
 
-      cy.get('#slsNewShelterType').then(($select) => {
-        cy.wrap($select).select('7', { force: true })
-      })
-      cy.get('#tbxNewPLNPowerKVA').type(5);
+      // Debug: Log all labels inside the container
 
-      cy.get('#dpkNewRFITarget')
+
+      // // cy.get('input[name=""][value="0"]').check({ force: true });
+      // cy.get('input[type="Radio"][value="0"]').check().should('be.checked')
+
+      cy.wait(1000); // Ensure dropdown selection is applied
+      /// radio button with regex
+      // cy.get('input[type="radio"]').filter((index, el) => /No\s*/i.test(el.value)).check()
+
+      // input value No
+
+
+      cy.get('input[name="rdoOverlapping"][value="0"]').parent().click()
+
+      cy.get('#dpkIntersiteFORFSTarget')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#slsNewMLANumber').then(($select) => {
-        cy.wrap($select).select('Risalah Rapat 9 Jul 2015', { force: true })
-      })
+      cy.get('#tbxIntersiteFOLeasePeriod').type(RangerandomValue);
 
-      cy.get('#tbxNewLeasePeriod').type(5);
-
-      cy.get('#dpkNewMLADate')
+      cy.get('#dpkIntersiteFOMLADate')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tarNewRemark').type('Remark' + unique);
-
-      cy.get('#slsNewResidence').then(($select) => {
-        cy.wrap($select).select('205', { force: true })
+      cy.get('#slsIntersiteFOMLANumber').then(($select) => {
+        cy.wrap($select).select('0010-14-F07-39033', { force: true })
       })
 
 
+      cy.get('#dpkIntersiteFOMLADate')
+        .invoke('val', date)
+        .trigger('change');
 
-      cy.get("#btnSubmitNew").click();
+      cy.get('#tarIntersiteFORemark').type('Remark' + unique);
+
+
+
+
+
+
+      cy.get("#btnSubmitIntersiteFO").click();
 
       cy.wait(2000)
 
@@ -278,7 +348,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/NEW_BUILD_MACRO/soDataNewBuild.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFo.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
@@ -287,12 +357,9 @@ describe('template spec', () => {
       });
 
       cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout')
-
       cy.then(() => {
         exportToExcel(testResults);
       });
-
-
     })
   }
 })

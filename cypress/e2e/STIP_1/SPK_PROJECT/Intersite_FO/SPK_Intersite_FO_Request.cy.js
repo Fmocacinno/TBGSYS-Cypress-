@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -29,12 +29,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/SPK_PROJECT/soDataSPK.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/SPK_PROJECT/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -43,7 +43,7 @@ describe('template spec', () => {
       userLeadPM = values.userLeadPM;
       userPMFO = values.userPMFO;
       userARO = values.userARO;
-      UserSPKProject = values.UserSPKProject;
+      UserRequestSPKProject = values.UserRequestSPKProject;
       Uservendor = values.Uservendor;
       pass = values.pass;
 
@@ -60,7 +60,7 @@ describe('template spec', () => {
 
     cy.visit('http://tbgappdev111.tbg.local:8127/Login');
 
-    cy.get('#tbxUserID').type(UserSPKProject);
+    cy.get('#tbxUserID').type(UserRequestSPKProject);
     cy.get('#tbxPassword').type(pass);
     cy.get('#RefreshButton').click();
 
@@ -92,7 +92,7 @@ describe('template spec', () => {
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di SPK Project',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
@@ -126,7 +126,7 @@ describe('template spec', () => {
     cy.get('#txtSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di SPK Project',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
@@ -185,14 +185,14 @@ describe('template spec', () => {
     cy.contains('.sa-confirm-button-container button', 'Ok').click();
 
     cy.wait(2000)
-    cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+    cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout');
   });
 
   //LEAD AM 
   // it('Lead AM Test Case', () => {
   //   const testResults = [];
   //   // Lead PM
-  //   cy.visit('http://tbgappdev111.tbg.local:8042');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127');
   //   cy.get('#tbxUserID').type(userLeadAM);
   //   cy.get('#tbxPassword').type(pass);
   //   cy.get('#RefreshButton').click();
@@ -205,8 +205,8 @@ describe('template spec', () => {
 
   //   cy.get('#btnSubmit').click();
   //   cy.wait(2000);
-  //   cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval')
-  //     .url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Approval');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Approval')
+  //     .url().should('include', 'http://tbgappdev111.tbg.local:8127/STIP/Approval');
   //   testResults.push({
   //     Test: 'User Lead AM melakukan akses ke menu Stip Approval',
   //     Status: 'Pass',
@@ -273,13 +273,13 @@ describe('template spec', () => {
   //   });
 
   //   cy.wait(2000);
-  //   cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout');
 
   // });
   // //LEAD PM
   // it('Lead PM Test Case', () => {
   //   // Lead PM
-  //   cy.visit('http://tbgappdev111.tbg.local:8042');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127');
   //   cy.get('#tbxUserID').type(userLeadPM);
   //   cy.get('#tbxPassword').type(pass);
   //   cy.get('#RefreshButton').click();
@@ -293,8 +293,8 @@ describe('template spec', () => {
   //   cy.get('#btnSubmit').click();
 
   //   cy.wait(2000);
-  //   cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval')
-  //     .url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Approval');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Approval')
+  //     .url().should('include', 'http://tbgappdev111.tbg.local:8127/STIP/Approval');
   //   testResults.push({
   //     Test: 'User LEAD PM melakukan akses ke menu Stip Approval',
   //     Status: 'Pass',
@@ -372,14 +372,14 @@ describe('template spec', () => {
   //   });
 
   //   cy.wait(4000);
-  //   cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout');
 
   // });
 
   // //ARO
   // it('ARO Test Case', () => {
   //   // Lead PM
-  //   cy.visit('http://tbgappdev111.tbg.local:8042');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127');
   //   cy.get('#tbxUserID').type(userARO);
   //   cy.get('#tbxPassword').type(pass);
   //   cy.get('#RefreshButton').click();
@@ -392,7 +392,7 @@ describe('template spec', () => {
 
   //   cy.get('#btnSubmit').click();
   //   cy.wait(2000);
-  //   cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Approval');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Approval');
   //   cy.wait(2000);
   //   // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
   //   //   // Log the test result if button click is successful
@@ -454,7 +454,7 @@ describe('template spec', () => {
   //     cy.wait(2000);
   //   });
   //   cy.wait(2000);
-  //   cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+  //   cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout');
 
   //   cy.then(() => {
   //     exportToExcel(testResults);
