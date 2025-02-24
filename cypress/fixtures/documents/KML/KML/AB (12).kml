@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+        <Style id="lineColor">
+            <LineStyle>
+                <color>ffff0000</color>
+                <width>5</width>
+            </LineStyle>
+        </Style>
+        <Style id="polyColor">
+            <PolyStyle>
+                <color>7f0000ff</color>
+                <outline>5</outline>
+            </PolyStyle>
+        </Style>
+        <Style id="baloonStyle">
+            <BalloonStyle>
+                <text>
+                    <![CDATA[<table border="0">
+                    <tr><td><b>Tag Name:</b></td><td>$[name]</td></tr>
+                    <tr><td><b>Latitude:</b></td><td>$[latitudeData]</td></tr>
+                    <tr><td><b>Longitude:</b></td><td>$[longitudeData]</td></tr>
+                    </table>]]>
+                </text>
+            </BalloonStyle>
+        </Style>
+
+        <!--Start Area-->
+                    <!--Start Point -->
+                            <Placemark>
+                    <name>Pole 1</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3769369999999999</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.73242999999999</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.73242999999999,-6.3769369999999999,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>Tc7+slco+dp</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3768960000000003</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.73219</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.73219,-6.3768960000000003,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>O-PLN+odp</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3767480000000001</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.731961</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.731961,-6.3767480000000001,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>NP_CL</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3765280000000004</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732004</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732004,-6.3765280000000004,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>O-PLN</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3763240000000003</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732038</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732038,-6.3763240000000003,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>7</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3761659999999996</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732108</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732108,-6.3761659999999996,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>Tc7</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3760659999999998</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.73209300000001</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.73209300000001,-6.3760659999999998,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>O-FLP</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3759240000000004</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732049</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732049,-6.3759240000000004,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>NO Need</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3757849999999996</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732023</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732023,-6.3757849999999996,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>Noneed</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3757029999999997</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.73202999999999</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.73202999999999,-6.3757029999999997,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>NONED</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3756469999999998</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.73206500000001</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.73206500000001,-6.3756469999999998,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>Nonneed</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.37561</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732091</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732091,-6.37561,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>NP</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3755759999999997</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732111</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732111,-6.3755759999999997,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>Tc7</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.375553</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732133</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732133,-6.375553,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>O-FLP</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3755249999999997</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732161</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732161,-6.3755249999999997,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>O-PLN-ODP</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3754989999999996</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732185</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732185,-6.3754989999999996,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>O-FLP+CL</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3754809999999997</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.73220600000001</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.73220600000001,-6.3754809999999997,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>O-PLNODP</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3754530000000003</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732236</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732236,-6.3754530000000003,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>9</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3754169999999997</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732281</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732281,-6.3754169999999997,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>Tc9</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3753869999999999</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732303</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732303,-6.3753869999999999,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>Tc9 Slc Odp</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3753659999999996</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732315</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732315,-6.3753659999999996,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>Tc9+SLC</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3753339999999996</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732332</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732332,-6.3753339999999996,0</coordinates>
+                    </Point>
+                </Placemark>
+                            <Placemark>
+                    <name>O-FLP+CL</name>
+                    <styleUrl>#baloonStyle</styleUrl>
+                    <ExtendedData>
+                        <Data name="latitudeData">
+                            <value>-6.3753039999999999</value>
+                        </Data>
+                        <Data name="longitudeData">
+                            <value>106.732344</value>
+                        </Data>
+                    </ExtendedData>
+                    <Point>
+                        <coordinates>106.732344,-6.3753039999999999,0</coordinates>
+                    </Point>
+                </Placemark>
+                        <!--End Point-->
+
+                            <!--Start Line-->
+                <Placemark id="Poleawal">
+                    <name>Poleawal</name>
+                    <ExtendedData>
+                        <SchemaData schemaUrl="#temp"/>
+                    </ExtendedData>
+                    <styleUrl>#lineColor</styleUrl>
+                    <LineString>
+                        <tessellate>true</tessellate>
+                        <coordinates>106.73242999999999,-6.3769369999999999,0,106.73219,-6.3768960000000003,0,106.731961,-6.3767480000000001,0,106.732004,-6.3765280000000004,0,106.732038,-6.3763240000000003,0,106.732108,-6.3761659999999996,0,106.73209300000001,-6.3760659999999998,0,106.732049,-6.3759240000000004,0,106.732023,-6.3757849999999996,0,106.73202999999999,-6.3757029999999997,0,106.73206500000001,-6.3756469999999998,0,106.732091,-6.37561,0,106.732111,-6.3755759999999997,0,106.732133,-6.375553,0,106.732161,-6.3755249999999997,0,106.732185,-6.3754989999999996,0,106.73220600000001,-6.3754809999999997,0,106.732236,-6.3754530000000003,0,106.732281,-6.3754169999999997,0,106.732303,-6.3753869999999999,0,106.732315,-6.3753659999999996,0,106.732332,-6.3753339999999996,0,106.732344,-6.3753039999999999,0</coordinates>
+                    </LineString>
+                </Placemark>
+                <!--End Line-->
+            
+                            <!--End Area-->
+    </Document>
+</kml>

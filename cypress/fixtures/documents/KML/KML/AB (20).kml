@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>JATIMULYARANGKASBITUNG.kml</name>
+	<Schema name="KANDIDAT TMABAH 3" id="S_KANDIDAT_TMABAH_3_SSSDDSI">
+		<SimpleField type="string" name="SITE_NAME"><displayName>&lt;b&gt;SITE_NAME&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="REGION"><displayName>&lt;b&gt;REGION&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SITE_ID"><displayName>&lt;b&gt;SITE_ID&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="LONG"><displayName>&lt;b&gt;LONG&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="LAT"><displayName>&lt;b&gt;LAT&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="INFRA_TYPE"><displayName>&lt;b&gt;INFRA_TYPE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="int" name="Tinggi_Tower"><displayName>&lt;b&gt;Tinggi Tower&lt;/b&gt;</displayName>
+</SimpleField>
+	</Schema>
+	<Schema name="NOM TAMBAH 3" id="S_NOM_TAMBAH_3_SSSDDSI">
+		<SimpleField type="string" name="SITE_NAME"><displayName>&lt;b&gt;SITE_NAME&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="REGION"><displayName>&lt;b&gt;REGION&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="SITE_ID"><displayName>&lt;b&gt;SITE_ID&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="LONG"><displayName>&lt;b&gt;LONG&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="LAT"><displayName>&lt;b&gt;LAT&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="INFRA_TYPE"><displayName>&lt;b&gt;INFRA_TYPE&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="int" name="Tinggi_Tower"><displayName>&lt;b&gt;Tinggi Tower&lt;/b&gt;</displayName>
+</SimpleField>
+	</Schema>
+	<Style id="hlightPointStyle0">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<table border="0">
+  <tr><td><b>SITE_NAME</b></td><td>$[NOM TAMBAH 3/SITE_NAME]</td></tr>
+  <tr><td><b>REGION</b></td><td>$[NOM TAMBAH 3/REGION]</td></tr>
+  <tr><td><b>SITE_ID</b></td><td>$[NOM TAMBAH 3/SITE_ID]</td></tr>
+  <tr><td><b>LONG</b></td><td>$[NOM TAMBAH 3/LONG]</td></tr>
+  <tr><td><b>LAT</b></td><td>$[NOM TAMBAH 3/LAT]</td></tr>
+  <tr><td><b>INFRA_TYPE</b></td><td>$[NOM TAMBAH 3/INFRA_TYPE]</td></tr>
+  <tr><td><b>Tinggi Tower</b></td><td>$[NOM TAMBAH 3/Tinggi_Tower]</td></tr>
+</table>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="hlightPointStyle2">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<table border="0">
+  <tr><td><b>SITE_NAME</b></td><td>$[KANDIDAT TMABAH 3/SITE_NAME]</td></tr>
+  <tr><td><b>REGION</b></td><td>$[KANDIDAT TMABAH 3/REGION]</td></tr>
+  <tr><td><b>SITE_ID</b></td><td>$[KANDIDAT TMABAH 3/SITE_ID]</td></tr>
+  <tr><td><b>LONG</b></td><td>$[KANDIDAT TMABAH 3/LONG]</td></tr>
+  <tr><td><b>LAT</b></td><td>$[KANDIDAT TMABAH 3/LAT]</td></tr>
+  <tr><td><b>INFRA_TYPE</b></td><td>$[KANDIDAT TMABAH 3/INFRA_TYPE]</td></tr>
+  <tr><td><b>Tinggi Tower</b></td><td>$[KANDIDAT TMABAH 3/Tinggi_Tower]</td></tr>
+</table>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="m_ylw-pushpin50">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#s_ylw-pushpin600</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#s_ylw-pushpin_hl6</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_red-circle">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_red-circle</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_red-circle</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="normPointStyle">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<table border="0">
+  <tr><td><b>SITE_NAME</b></td><td>$[KANDIDAT TMABAH 3/SITE_NAME]</td></tr>
+  <tr><td><b>REGION</b></td><td>$[KANDIDAT TMABAH 3/REGION]</td></tr>
+  <tr><td><b>SITE_ID</b></td><td>$[KANDIDAT TMABAH 3/SITE_ID]</td></tr>
+  <tr><td><b>LONG</b></td><td>$[KANDIDAT TMABAH 3/LONG]</td></tr>
+  <tr><td><b>LAT</b></td><td>$[KANDIDAT TMABAH 3/LAT]</td></tr>
+  <tr><td><b>INFRA_TYPE</b></td><td>$[KANDIDAT TMABAH 3/INFRA_TYPE]</td></tr>
+  <tr><td><b>Tinggi Tower</b></td><td>$[KANDIDAT TMABAH 3/Tinggi_Tower]</td></tr>
+</table>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="normPointStyle0">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<table border="0">
+  <tr><td><b>SITE_NAME</b></td><td>$[NOM TAMBAH 3/SITE_NAME]</td></tr>
+  <tr><td><b>REGION</b></td><td>$[NOM TAMBAH 3/REGION]</td></tr>
+  <tr><td><b>SITE_ID</b></td><td>$[NOM TAMBAH 3/SITE_ID]</td></tr>
+  <tr><td><b>LONG</b></td><td>$[NOM TAMBAH 3/LONG]</td></tr>
+  <tr><td><b>LAT</b></td><td>$[NOM TAMBAH 3/LAT]</td></tr>
+  <tr><td><b>INFRA_TYPE</b></td><td>$[NOM TAMBAH 3/INFRA_TYPE]</td></tr>
+  <tr><td><b>Tinggi Tower</b></td><td>$[NOM TAMBAH 3/Tinggi_Tower]</td></tr>
+</table>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="pointStyleMap2">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#normPointStyle0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#hlightPointStyle0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="pointStyleMap3">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#normPointStyle</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#hlightPointStyle2</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="s_ylw-pushpin600">
+		<IconStyle>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/arrow.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Style id="s_ylw-pushpin_hl6">
+		<IconStyle>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/arrow.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Style id="sh_red-circle">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/red-circle.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="sn_red-circle">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/red-circle.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Folder>
+		<name>JATIMULYARANGKASBITUNG</name>
+		<Placemark>
+			<name>Arahan 2</name>
+			<open>1</open>
+			<LookAt>
+				<longitude>106.2672247017995</longitude>
+				<latitude>-6.355790642853762</latitude>
+				<altitude>0</altitude>
+				<heading>0.0001525097974121017</heading>
+				<tilt>0</tilt>
+				<range>892.8056504737887</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#m_ylw-pushpin50</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>106.2672,-6.355231,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>JATIMULYARANGKASBITUNG</name>
+			<open>1</open>
+			<styleUrl>#pointStyleMap2</styleUrl>
+			<Style id="inline">
+				<IconStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+					<Icon>
+						<href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>
+					</Icon>
+				</IconStyle>
+				<LineStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</LineStyle>
+				<PolyStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</PolyStyle>
+			</Style>
+			<ExtendedData>
+				<SchemaData schemaUrl="#S_NOM_TAMBAH_3_SSSDDSI">
+					<SimpleData name="SITE_NAME">JATIMULYARANGKASBITUNG</SimpleData>
+					<SimpleData name="REGION">R03 Jabotabek</SimpleData>
+					<SimpleData name="SITE_ID">RKB086</SimpleData>
+					<SimpleData name="LONG">106.269</SimpleData>
+					<SimpleData name="LAT">-6.35412</SimpleData>
+					<SimpleData name="INFRA_TYPE">B2S</SimpleData>
+					<SimpleData name="Tinggi_Tower">42</SimpleData>
+				</SchemaData>
+			</ExtendedData>
+			<Point>
+				<coordinates>106.268866,-6.354122999999985,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>ARAHAN 1</name>
+			<open>1</open>
+			<LookAt>
+				<longitude>106.2680365715107</longitude>
+				<latitude>-6.35441711047251</latitude>
+				<altitude>0</altitude>
+				<heading>6.739010931749422e-05</heading>
+				<tilt>0</tilt>
+				<range>235.0321178421118</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#m_ylw-pushpin50</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>106.2677947862446,-6.354212855023769,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>JATIMULYARANGKASBITUNG KAND P</name>
+			<open>1</open>
+			<styleUrl>#pointStyleMap3</styleUrl>
+			<Style id="inline">
+				<IconStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+					<Icon>
+						<href>http://maps.google.com/mapfiles/kml/paddle/red-diamond.png</href>
+					</Icon>
+				</IconStyle>
+				<LineStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</LineStyle>
+				<PolyStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</PolyStyle>
+			</Style>
+			<ExtendedData>
+				<SchemaData schemaUrl="#S_KANDIDAT_TMABAH_3_SSSDDSI">
+					<SimpleData name="SITE_NAME">JATIMULYARANGKASBITUNG</SimpleData>
+					<SimpleData name="REGION">R03 Jabotabek</SimpleData>
+					<SimpleData name="SITE_ID">RKB086</SimpleData>
+					<SimpleData name="LONG">106.27</SimpleData>
+					<SimpleData name="LAT">-6.35177</SimpleData>
+					<SimpleData name="INFRA_TYPE">B2S</SimpleData>
+					<SimpleData name="Tinggi_Tower">42</SimpleData>
+				</SchemaData>
+			</ExtendedData>
+			<Point>
+				<coordinates>106.27002,-6.351769999999981,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>JATIMULYARANGKASBITUNG KAND Q</name>
+			<LookAt>
+				<longitude>106.2690906637571</longitude>
+				<latitude>-6.354871637948805</latitude>
+				<altitude>0</altitude>
+				<heading>-1.172829538789672e-14</heading>
+				<tilt>0</tilt>
+				<range>795.6289390216712</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#msn_red-circle</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>106.26912,-6.3557,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Arahan 3</name>
+			<LookAt>
+				<longitude>106.2680772388059</longitude>
+				<latitude>-6.355250655327814</latitude>
+				<altitude>0</altitude>
+				<heading>9.642240769721761e-05</heading>
+				<tilt>3.951874706244763</tilt>
+				<range>778.6022439700089</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#m_ylw-pushpin50</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>106.2679147082227,-6.355970276381164,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>

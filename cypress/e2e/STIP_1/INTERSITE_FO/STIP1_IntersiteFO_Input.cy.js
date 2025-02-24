@@ -217,15 +217,15 @@ describe('template spec', () => {
       //   .select('180', { force: true });
       // handle HTML
 
-      cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique);
-      cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique);
-      cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique);
+      cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique + RangerandomValue);
 
       cy.get('#slsIntersiteFODocumentOrder').then(($select) => {
         cy.wrap($select).select('7', { force: true })
       })
 
-      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique);
+      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + RangerandomValue);
 
       cy.get('#fleIntersiteFODocument').attachFile(filePath);
 
@@ -240,8 +240,9 @@ describe('template spec', () => {
       cy.get('#slsIntersiteFOTowerProviderNearEnd').then(($select) => {
         cy.wrap($select).select('10', { force: true })
       })
-      cy.get('#tbxIntersiteFOTowerIDNearEnd').type('Site_' + unique);
-      cy.get('#tbxIntersiteFOTowerNameNearEnd').type('SiteName_' + unique);
+      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFOTowerIDNearEnd').type('Site_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFOTowerNameNearEnd').type('SiteName_' + unique + RangerandomValue);
       cy.get('#tbxLatitudeA').type(lat);
       cy.get('#tbxLongitudeA').type(long);
 
@@ -252,8 +253,8 @@ describe('template spec', () => {
       cy.get('#slsIntersiteFOTowerProviderFarEnd').then(($select) => {
         cy.wrap($select).select('11', { force: true })
       })
-      cy.get('#tbxIntersiteFOTowerIDFarEnd').type('Site_' + unique);
-      cy.get('#tbxIntersiteFOTowerNameFarEnd').type('SiteName_' + unique);
+      cy.get('#tbxIntersiteFOTowerIDFarEnd').type('Site_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFOTowerNameFarEnd').type('SiteName_' + unique + RangerandomValue);
       cy.get('#tbxLatitudeB').type(lat);
       cy.get('#tbxLongitudeB').type(long);
 
@@ -268,7 +269,7 @@ describe('template spec', () => {
 
       cy.get('#tbxFOCore').type(RangerandomValue);
       cy.get('#tbxFOLengthSPK').type(RangerandomValue);
-      cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique);
+      cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique + RangerandomValue);
 
       // Debug: Log all labels inside the container
 
