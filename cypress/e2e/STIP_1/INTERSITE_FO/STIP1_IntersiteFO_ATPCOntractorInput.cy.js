@@ -1,5 +1,6 @@
 // Fungsi untuk menghasilkan nilai acak dalam rentang tertentu
 const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 
 // Daftar indeks baris yang ingin diubah
 const worktypeRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
@@ -34,7 +35,6 @@ describe('template spec', () => {
 
   beforeEach(() => {
     const testResults = []; // Array to store test results
-    const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 
     function generateRandomString(minLength, maxLength) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -52,7 +52,7 @@ describe('template spec', () => {
     const maxLength = 15;
     const randomString = generateRandomString(minLength, maxLength);
     const user = "555504220025";
-    const filePath = 'documents/pdf/receipt.pdf';
+    const filePath = 'documents/pdf/C (1).pdf';
 
     cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
@@ -176,9 +176,13 @@ describe('template spec', () => {
     cy.get('#dpkATPPlanDate')
       .invoke('val', date)
       .trigger('change');
-    cy.wait(10000);
+    cy.wait(5000);
 
     cy.get('#tbxVendorProjectManager').type('PICVENDOR' + randomRangeValue);
+    cy.wait(1000);
+    cy.get('#tbxCableLength').type(randomValue);
+    cy.wait(1000);
+    cy.get('#btnSubmitScheduling').click();
     cy.wait(10000);
 
 
