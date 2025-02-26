@@ -219,7 +219,7 @@ describe('template spec', () => {
       .invoke('val', date)
       .trigger('change');
 
-    cy.get('#fleOPMCalibrationPhotoNearEnd').attachFile(photoFilePath);
+    cy.get('#fleOPMCalibrationPhotoFarEnd').attachFile(photoFilePath);
 
     for (let i = 1; i <= 1; i++) {
       // Click "No" radio button
@@ -236,6 +236,8 @@ describe('template spec', () => {
     }
     cy.get('.nav-tabs a[href="#tabOPMNearEnd"]').click();
     cy.wait(3000);
+    cy.get('#fleOPMCalibrationPhotoNearEnd').attachFile(photoFilePath);
+
     for (let i = 1; i <= 1; i++) {
       // Click "No" radio button
       cy.get(`input[name="rdoIsCoreActiveNearEndOPM${i}"][value="0"]`).parent().click({ force: true });
@@ -252,7 +254,7 @@ describe('template spec', () => {
     cy.get('#tarOTDRInstallationRemark').type('Remark FROM AUTOMATION' + unique + randomRangeValue);
     cy.wait(2000);
     cy.get("#btnSubmit").click();
-    cy.wait(9000);
+    cy.wait(25000);
 
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
     cy.then(() => {
