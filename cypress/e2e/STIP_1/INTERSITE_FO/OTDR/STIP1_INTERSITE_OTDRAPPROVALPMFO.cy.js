@@ -1,4 +1,7 @@
 // Fungsi untuk menghasilkan nilai acak dalam rentang tertentu
+
+
+const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 // Daftar indeks baris yang ingin diubah
@@ -31,10 +34,13 @@ describe('template spec', () => {
   after(() => {
     exportToExcel(testResults); // Export after all tests complete
   });
+  const sorFilePath = "documents/SOR/1a0863_TO_0492_1550_14_20.sor"; // .sor file path
+  const photoFilePath = "documents/IMAGE/adopt.png"; // Photo file path\
+  const excelfilepath = "documents/EXCEL/.xlsx/EXCEL_(1).xlsx"; // Photo file path
+
 
   beforeEach(() => {
     const testResults = []; // Array to store test results
-    const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 
     function generateRandomString(minLength, maxLength) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -160,11 +166,34 @@ describe('template spec', () => {
       .click(); // Click the button
     cy.wait(5000);
 
+    // cy.get('#divGenerateInputsOTDRFarEnd')
+    //   .find('[id^="divApprovalAllFarEndOTDR"]') // Select all approval divs dynamically
+    //   .each(($div, index) => {
+    //     const approvalDivId = $div.attr('id'); // Get the ID
+    //     const radioName = `rdoApprovalFarEndOTDR${index + 1}`; // Increment radio button name
+
+    //     cy.wrap($div).then(($el) => {
+    //       if ($el.is(':visible') && $el.css('display') !== 'none' && !$el.prop('disabled')) {
+    //         cy.log(`✅ Approval section ${approvalDivId} is active`);
+
+    //         cy.get(`input[name="${radioName}"][value="2"]`)
+    //           .parent()
+    //           .click({ force: true });
+
+
+    //         cy.log(`🎯 Clicked "OK (All)" radio button for: ${radioName}`);
+    //       } else {
+    //         cy.log(`⚠️ Skipping ${approvalDivId}, it is disabled or hidden`);
+    //       }
+    //     });
+    //   });
+    //-- generate approval 
     cy.get('#divGenerateInputsOTDRFarEnd')
       .find('[id^="divApprovalAllFarEndOTDR"]') // Select all approval divs dynamically
       .each(($div, index) => {
         const approvalDivId = $div.attr('id'); // Get the ID
         const radioName = `rdoApprovalFarEndOTDR${index + 1}`; // Increment radio button name
+        const remarkInputId = `tarRemarkRejectFarEndOTDR${index + 1}`; // Dynamic remark input ID
 
         cy.wrap($div).then(($el) => {
           if ($el.is(':visible') && $el.css('display') !== 'none' && !$el.prop('disabled')) {
@@ -173,9 +202,46 @@ describe('template spec', () => {
             cy.get(`input[name="${radioName}"][value="2"]`)
               .parent()
               .click({ force: true });
-
-
             cy.log(`🎯 Clicked "OK (All)" radio button for: ${radioName}`);
+
+            // Enter remark for rejection
+            cy.get(`#${remarkInputId}`).clear().type(`Remark ${randomValue}`);
+            cy.log(`📝 Entered remark in ${remarkInputId}: Remark ${randomValue}`);
+          } else {
+            cy.log(`⚠️ Skipping ${approvalDivId}, it is disabled or hidden`);
+          }
+        });
+      });
+    cy.get('.nav-tabs a[href="#tabOTDRNearEnd"]').click();
+    cy.wait(3000);
+
+    cy.get('#divGenerateInputsOTDRNearEnd')
+      .find('[id^="divApprovalAllNearEndOTDR"]') // Select all approval divs dynamically
+      .each(($div, index) => {
+        const approvalDivId = $div.attr('id'); // Get the ID dynamically
+        const radioName = `rdoApprovalNearEndOTDR${index + 1}`; // Increment radio button name
+        const remarkInputId = `tarRemarkRejectNearEndOTDR${index + 1}`; // Dynamic remark input ID
+        const randomValue = Math.floor(Math.random() * 1000); // Generate a random remark value
+
+        cy.wrap($div).then(($el) => {
+          if ($el.is(':visible') && $el.css('display') !== 'none' && !$el.prop('disabled')) {
+            cy.log(`✅ Approval section ${approvalDivId} is active`);
+
+            cy.get(`input[name="${radioName}"][value="2"]`)
+              .should('exist')
+              .and('not.be.disabled')
+              .parent() // Click the styled container div if needed
+              .click({ force: true });
+            cy.log(`🎯 Clicked "OK (All)" radio button for: ${radioName}`);
+
+            // Ensure remark input is visible before typing
+            cy.get(`#${remarkInputId}`)
+              .should('exist')
+              .and('be.visible')
+              .and('not.be.disabled')
+              .clear()
+              .type(`Remark ${randomValue}`);
+            cy.log(`📝 Entered remark in ${remarkInputId}: Remark ${randomValue}`);
           } else {
             cy.log(`⚠️ Skipping ${approvalDivId}, it is disabled or hidden`);
           }
@@ -183,7 +249,21 @@ describe('template spec', () => {
       });
 
 
-    cy.get('#tarOTDRInstallationApprovalRemark').type('Remark' + unique);
+
+
+
+    // cy.contains('.portlet-title', 'OPM') // Find the "OPM" accordion
+    //   .parent() // Move to the parent container
+    //   .find('.tools .expand') // Locate the expand button
+    //   .click({ force: true }); // Click to expand
+
+
+
+    cy.get('.nav-tabs a[href="#tabOPMNearEnd"]').click();
+    cy.wait(3000);
+
+
+    cy.get('#tarOTDRInstallationApprovalRemark').type('Remark' + randomValue);
     cy.wait(2000);
 
     cy.get('#btnApprove').click();
