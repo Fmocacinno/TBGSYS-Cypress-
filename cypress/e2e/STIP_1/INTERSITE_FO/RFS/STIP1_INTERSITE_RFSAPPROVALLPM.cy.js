@@ -84,7 +84,7 @@ describe('template spec', () => {
 
     cy.visit('http://tbgappdev111.tbg.local:8127/Login');
 
-    cy.get('#tbxUserID').type(userPMFO);
+    cy.get('#tbxUserID').type(userLeadPM);
     cy.get('#tbxPassword').type(pass);
 
 
@@ -106,17 +106,6 @@ describe('template spec', () => {
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
     // Check if the error pop-up is visible
-    cy.get('h2').then(($h2) => {
-      if ($h2.text().includes('Error on System')) {
-        cy.log('🚨 Error pop-up detected! Clicking OK.');
-
-        // Click the "OK" button
-        cy.get('.confirm.btn-error').click();
-      } else {
-        cy.log('✅ No error pop-up detected.');
-      }
-    });
-
     cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -151,16 +140,16 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.wait(5000);
+    cy.wait(2000);
 
     cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'    cy.wait(2000);
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '9') // Find the row where the first column contains '6'    cy.wait(2000);
 
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
 
     cy.wait(4000);
-    cy.get('#tarMaterialOnSiteApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.get('#tarRemark').type('Remark FROM AUTOMATION' + unique + randomString);
     cy.wait(2000);
 
     cy.get('#btnApprove').click();

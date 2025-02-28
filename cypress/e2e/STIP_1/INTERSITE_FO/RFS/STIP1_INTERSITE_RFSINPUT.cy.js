@@ -185,13 +185,14 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.wait(5000);
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
+
 
     cy.get('tr')
       .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '9') // Find the row where the first column contains '6'
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
-    cy.wait(1000);
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
     cy.get('#tbxDistance').type(randomValue);
     cy.wait(1000);
@@ -204,53 +205,43 @@ describe('template spec', () => {
     //   .eq(2) // Index mulai dari 0, jadi .eq(2) berarti radio button ke-3
     //   .check({ force: true });
     // cy.log('✅ Radio button ke-3 dipilih.');
-    // cy.get('#tbxPhysicalLength').type(randomValue);
-    // cy.wait(1000);
 
 
 
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
-    function selectTabAndRadio(tabButtonId, tabPaneId, radioIndex = 0) {
-      cy.get(tabButtonId)
-        .should("be.visible")
-        .click();
-      cy.log(`🔄 Klik tab: ${tabButtonId}`);
+    // Click the corresponding .iCheck-helper span
+    cy.get('#rdoCoreFarEnd1')
+      .parent() // Move to the parent div (which has visible UI)
+      .find('.iCheck-helper') // Target the interactive helper
+      .click();
 
-      // Tunggu hingga tab benar-benar aktif sebelum lanjut
-      cy.get(tabPaneId)
-        .should("have.class", "active")
-        .and("be.visible");
-      cy.log(`✅ Tab aktif: ${tabPaneId}`);
-
-      // Pilih radio button berdasarkan index yang diberikan
-      cy.get('[id^="rdoCoreFarEnd"]')
-        .filter(":visible")
-        .eq(radioIndex) // Pilih berdasarkan indeks
-        .check({ force: true });
-      cy.log(`✅ Radio button ke-${radioIndex + 1} telah dipilih.`);
-    }
-
-    // Contoh: Pilih tab dan radio button tertentu
-    selectTabAndRadio("#btnTabOTDRNearEnd", "#tabOTDRNearEnd", 1); // Pilih radio button kedua
-    selectTabAndRadio("#btnTabOTDRFarEnd", "#tabOTDRFarEnd", 2); // Pilih radio button ketiga
-
-
-
-    cy.get('#dpkMaterialOnSiteDate')
-      .invoke('val', date)
-      .trigger('change');
-    cy.get('#fleMaterialOnSiteDocument').attachFile(PDFFilepath);
+    cy.log('✅ Successfully clicked rdoCoreFarEnd1');
+    cy.wait(1000);
+    cy.get("#btnSubmitCorePhoto").click();
     cy.wait(1000);
 
-    cy.get('.form-group')
-      .contains('Penyimpanan Material yang Memadai')
-      .parent()
-      .find('.iradio_flat-blue')
-      .eq(0) // Click the second radio button (Not OK)
-      .click({ force: true }); //<<radio button
+    cy.get('#tbxPhysicalLength').type(randomValue);
+    cy.wait(1000);
 
-    cy.get('#tarMaterialOnSiteRemark').type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);
+    cy.get('#btnChoosePicturePhysical').click(); // Klik tombol pilih gambar
+    cy.wait(1000);
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
+
+    // Click the corresponding .iCheck-helper span
+    cy.get('#rdoCoreFarEnd1')
+      .parent() // Move to the parent div (which has visible UI)
+      .find('.iCheck-helper') // Target the interactive helper
+      .click();
+
+    cy.log('✅ Successfully clicked rdoCoreFarEnd1');
+
+    cy.get("#btnSubmitCorePhoto").click();
+    cy.wait(1000);
+
+    cy.get('#fleRFIDocument').attachFile(PDFFilepath);
+    cy.wait(1000);
+
 
 
     cy.get("#btnSubmit").click();
@@ -258,16 +249,6 @@ describe('template spec', () => {
     cy.get('.confirm.btn-success').click({ force: true });
     cy.wait(5000)
 
-    // cy.get("#btnSubmit").click();
-    // cy.wait(7000);
-
-    // cy.get('.confirm.btn-success').click({ force: true });
-    // cy.wait(5000)
-    // cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
-    //   .should('be.visible');
-
-    // cy.get('.sweet-alert button.confirm')
-    //   .click({ force: true });
 
     cy.wait(5000);
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');

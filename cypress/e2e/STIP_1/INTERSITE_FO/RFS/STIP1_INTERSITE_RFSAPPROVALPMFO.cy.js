@@ -20,6 +20,7 @@ function generateRandomString(minLength, maxLength) {
 const worktypeRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 const XLSX = require('xlsx');
 const fs = require('fs');
+const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
@@ -49,7 +50,6 @@ describe('template spec', () => {
 
   beforeEach(() => {
     const testResults = []; // Array to store test results
-    const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
@@ -78,13 +78,12 @@ describe('template spec', () => {
       return false;
     });
   });
-
   //AM
   it('OTDR Input by vendor', () => {
 
     cy.visit('http://tbgappdev111.tbg.local:8127/Login');
 
-    cy.get('#tbxUserID').type(userARO);
+    cy.get('#tbxUserID').type(userPMFO);
     cy.get('#tbxPassword').type(pass);
 
 
@@ -106,6 +105,17 @@ describe('template spec', () => {
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
     // Check if the error pop-up is visible
+    cy.get('h2').then(($h2) => {
+      if ($h2.text().includes('Error on System')) {
+        cy.log('🚨 Error pop-up detected! Clicking OK.');
+
+        // Click the "OK" button
+        cy.get('.confirm.btn-error').click();
+      } else {
+        cy.log('✅ No error pop-up detected.');
+      }
+    });
+
     cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -140,23 +150,105 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.wait(2000);
+    cy.wait(5000);
 
     cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'    cy.wait(2000);
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '9') // Find the row where the first column contains '6'    cy.wait(2000);
 
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
+    cy.wait(5000);
 
-    cy.wait(4000);
-    cy.get('#tarMaterialOnSiteApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);
+    // cy.get('input[type="radio"][value="1"]')
+    //   .filter('[name^="RFI"]')
+    //   .first()
+    //   .parent()
+    //   .find('.iCheck-helper')
+    //   .click();
 
+    // cy.log('✅ Clicked the first radio button with value=1');
+
+    // Loop through dynamically incremented names (adjust range as needed)
+    cy.get(`input[name="RFI263"][value="1"]`).should('exist');
+
+    cy.wait(2000); // Ensure page loads
+
+    for (let i = 263; i <= 271; i++) {
+      cy.get(`input[name="RFI${i}"][value="1"]`)
+        .should('exist')
+        .invoke('attr', 'style', 'opacity: 1; position: static;') // Make sure it's visible
+        .siblings('.iCheck-helper')
+        .click({ force: true });
+
+      // Type a note in the corresponding text box
+      cy.get(`#Notes${i}`).type(`Remark for RFI${i}`, { force: true });
+    }
+    cy.wait(3000);
+
+    cy.get('input[name="rdoPICVendorType"][value="0"]')
+      .parent('div.iradio_flat-blue')
+      .click();
+    // Generate a random number and type in tbxContactNo
+    // cy.get('input[name="rdoIsPICNew"][value="1"]').check({ force: true });
+    cy.wait(1000);
+
+    cy.get('input[name="rdoIsPICNew"][value="1"]')
+      .parent('div.iradio_flat-blue')
+      .click();
+    // Click radio button rdoPICVendorType with value 0
+    // Type in tbxPICNonRegistered
+    cy.wait(1000);
+
+    cy.get('#tbxPICNonRegistered').type('PIC' + randomString + randomValue);
+    cy.wait(1000);
+    cy.get('#tbxContactNo').type('089' + randomValue + '928282923');
+    cy.wait(1000);
+    cy.get('#tarAddress')
+      .should('be.visible')
+      .type('This is a sample address', { force: true });
+
+
+
+    // Select value 11 on dropdown slsProvince
+
+    cy.get('#slsProvince').then(($select) => {
+      cy.wrap($select).select('11', { force: true })
+    })
+    cy.wait(1000);
+    // Select value 178 on dropdown slsResidence
+
+    cy.get('#slsResidence').then(($select) => {
+      cy.wrap($select).select('178', { force: true })
+    })
+
+    cy.get('input[name="rdoIsPICNew"][value="1"]')
+      .parent('div.iradio_flat-blue')
+      .click();
+    cy.wait(1000);
+
+    cy.get('input[name="rdoQuality"][value="1"]')
+      .parent('div.iradio_flat-blue')
+      .click();
+    cy.wait(1000);
+    cy.get('#tarRemarkQuality')
+      .should('be.visible')
+      .type('This is a sample address', { force: true });
+
+    cy.get('input[name="rdoAccuracy"][value="1"]')
+      .parent('div.iradio_flat-blue')
+      .click();
+    cy.wait(1000);
+    cy.get('#tarRemarkAccuracy')
+      .should('be.visible')
+      .type('This is a sample address', { force: true });
     cy.get('#btnApprove').click();
     cy.wait(7000);
     cy.get('.sa-confirm-button-container button.confirm').click();
-
     cy.wait(2000);
+
+
+
+
 
     cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
     cy.then(() => {

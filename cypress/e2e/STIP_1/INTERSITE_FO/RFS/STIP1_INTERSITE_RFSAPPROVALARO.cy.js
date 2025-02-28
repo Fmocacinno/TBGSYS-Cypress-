@@ -84,7 +84,7 @@ describe('template spec', () => {
 
     cy.visit('http://tbgappdev111.tbg.local:8127/Login');
 
-    cy.get('#tbxUserID').type(userLeadPM);
+    cy.get('#tbxUserID').type(userARO);
     cy.get('#tbxPassword').type(pass);
 
 
@@ -143,14 +143,12 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'    cy.wait(2000);
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '9') // Find the row where the first column contains '6'    cy.wait(2000);
 
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
 
-    cy.wait(4000);
-    cy.get('#tarMaterialOnSiteApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);
+
 
     cy.get('#btnApprove').click();
     cy.wait(7000);
