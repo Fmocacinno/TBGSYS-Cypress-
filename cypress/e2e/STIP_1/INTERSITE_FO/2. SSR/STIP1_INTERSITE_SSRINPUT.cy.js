@@ -51,7 +51,7 @@ const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 describe('template spec', () => {
 
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
   const baseId = 24; // Base ID
   const index = 1; // Increment index for unique IDs
   before(() => {
@@ -101,6 +101,15 @@ describe('template spec', () => {
       PICVendor = values.PICVendor;
       date = values.date;
       pass = values.pass;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -111,7 +120,7 @@ describe('template spec', () => {
   //AM
   it('OTDR Input by vendor', () => {
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/Login');
+    cy.visit(`${baseUrlVP}${login}`);
 
     cy.get('#tbUserID').type(PICVendor);
     cy.get('#tbPassword').type(pass);
@@ -125,8 +134,8 @@ describe('template spec', () => {
     cy.get("#btnsubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/ProjectActivity/ProjectActivityHeader')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8128/ProjectActivity/ProjectActivityHeader');
+    cy.visit(`${baseUrlVP}/ProjectActivity/ProjectActivityHeader`)
+      .url().should('include', `${baseUrlVP}/ProjectActivity/ProjectActivityHeader`);
     testResults.push({
       Test: 'User AM melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -191,6 +200,7 @@ describe('template spec', () => {
       .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '4') // Find the row where the first column contains '6'
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
     cy.wait(1000);
 
     cy.get('#tbxFOLengthKabupaten').type(randomValue);
@@ -324,7 +334,7 @@ describe('template spec', () => {
     cy.get('.confirm.btn-success').click({ force: true });
     cy.wait(5000)
 
-    cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+    cy.visit(`${baseUrlVP}${logout}`);
     cy.then(() => {
       exportToExcel(testResults);
     });

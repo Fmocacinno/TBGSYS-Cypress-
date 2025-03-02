@@ -55,7 +55,7 @@ const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -82,7 +82,17 @@ describe('template spec', () => {
       userARO = values.userARO;
       pass = values.pass;
       date = values.date;
-
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
+      PICVendorMobile1 = values.PICVendorMobile1;
+      PICVendorMobile2 = values.PICVendorMobile2;
     });
 
 
@@ -94,29 +104,29 @@ describe('template spec', () => {
 
   for (let i = 0; i < loopCount; i++) {
     it.only(`passes iteration ${i + 1}`, () => {
-      cy.visit('http://tbgappdev111.tbg.local:8127/Login')
+      // cy.visit('http://tbgappdev111.tbg.local:8127/Login')
+      cy.visit(`${baseUrlTBGSYS}${login}`);
+      // cy.get('#tbxUserID').type(userInputStip);
+      // cy.get('#tbxPassword').type(pass);
 
-      cy.get('#tbxUserID').type(userInputStip);
-      cy.get('#tbxPassword').type(pass);
 
+      cy.get('#tbxUserID').type(userInputStip).should('have.value', userInputStip).then(() => {
+        // Log the test result if input is successful
+        testResults.push({
+          Test: 'User ID Input',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
+      });
 
-      // cy.get('#tbxUserID').type(userLeadAM).should('have.value', userLeadAM).then(() => {
-      //   // Log the test result if input is successful
-      //   testResults.push({
-      //     Test: 'User ID Input',
-      //     Status: 'Pass',
-      //     Timestamp: new Date().toISOString(),
-      //   });
-      // });
-
-      // cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
-      //   // Log the test result if input is successful
-      //   testResults.push({
-      //     Test: 'Password has been inputed',
-      //     Status: 'Pass',
-      //     Timestamp: new Date().toISOString(),
-      //   });
-      // });
+      cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
+        // Log the test result if input is successful
+        testResults.push({
+          Test: 'Password has been inputed',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
+      });
 
       cy.get('#RefreshButton').click();
 
@@ -128,7 +138,7 @@ describe('template spec', () => {
       });
 
       cy.get('#btnSubmit').click();
-      cy.url().should('include', 'http://tbgappdev111.tbg.local:8127/Dashboard'); // Ensure the page changes or some result occurs
+      cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'Button Clicked',
         Status: 'Pass',
@@ -142,8 +152,9 @@ describe('template spec', () => {
 
       cy.wait(2000)
 
-      cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Input')
-      cy.url().should('include', 'http://tbgappdev111.tbg.local:8127/STIP/Input'); // Ensure the page changes or some result occurs
+      cy.visit(`${baseUrlTBGSYS}/STIP/Input`);
+      cy.url().should('include', `${baseUrlTBGSYS}/STIP/Input`);
+      // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'User masuk ke Page Stip Input',
         Status: 'Pass',
@@ -161,7 +172,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsIntersiteFOCompany').then(($select) => {
-        cy.wrap($select).select('TB', { force: true })
+        cy.wrap($select).select('PKP', { force: true })
       })
 
       cy.get('#slsIntersiteFOCustomer').then(($select) => {
@@ -169,7 +180,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsIntersiteFORegion').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
+        cy.wrap($select).select('3', { force: true })
       })
       cy.wait(1000); // Ensure dropdown selection is applied
       /// radio button with regex
@@ -230,12 +241,12 @@ describe('template spec', () => {
       cy.get('#fleIntersiteFODocument').attachFile(filePath);
 
       cy.get('#slsIntersiteFOProvince').then(($select) => {
-        cy.wrap($select).select('11', { force: true })
+        cy.wrap($select).select('14', { force: true })
       })
       cy.wait(2000)
       // Near ENd
       cy.get('#slsIntersiteFOResidence').then(($select) => {
-        cy.wrap($select).select('178', { force: true })
+        cy.wrap($select).select('233', { force: true })
       })
       cy.get('#slsIntersiteFOTowerProviderNearEnd').then(($select) => {
         cy.wrap($select).select('10', { force: true })
@@ -247,9 +258,9 @@ describe('template spec', () => {
       cy.get('#tbxLongitudeA').type(long);
 
       // Far end
-      cy.get('#slsIntersiteFOResidence').then(($select) => {
-        cy.wrap($select).select('178', { force: true })
-      })
+      // cy.get('#slsIntersiteFOResidence').then(($select) => {
+      //   cy.wrap($select).select('178', { force: true })
+      // })
       cy.get('#slsIntersiteFOTowerProviderFarEnd').then(($select) => {
         cy.wrap($select).select('11', { force: true })
       })
@@ -297,10 +308,10 @@ describe('template spec', () => {
         .trigger('change');
 
       cy.get('#slsIntersiteFOMLANumber').then(($select) => {
-        cy.wrap($select).select('0010-14-F07-39033', { force: true })
+        cy.wrap($select).select('0031-14-F07-121782', { force: true })
       })
-
-
+      // 2l36-0031 - 14 - F07 - 121782
+      // 0010 - 14 - F07 - 39033
       cy.get('#dpkIntersiteFOMLADate')
         .invoke('val', date)
         .trigger('change');
@@ -356,8 +367,7 @@ describe('template spec', () => {
         });
         // Add your logic here using the Site ID
       });
-
-      cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout')
+      cy.contains('a', 'Log Out').click({ force: true });
       cy.then(() => {
         exportToExcel(testResults);
       });

@@ -19,7 +19,8 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, PICVendor, PICVendorManageService, UservendorManageService;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, PICVendor, PICVendorManageService, UservendorManageService, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -50,6 +51,15 @@ describe('template spec', () => {
       PICVendor = values.PICVendor;
       PICVendorManageService = values.PICVendorManageService;
       UservendorManageService = values.UservendorManageService;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
 
     });
 
@@ -62,7 +72,7 @@ describe('template spec', () => {
   //AM
   it('Material ON Site Approval PM FO', () => {
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/Login');
+    cy.visit(`${baseUrlVP}${login}`);
     cy.get('#tbUserID').type(PICVendorManageService);
     cy.get('#tbPassword').type(pass);
 
@@ -76,8 +86,8 @@ describe('template spec', () => {
     cy.get("#btnsubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/BusinessSupport/SPKProject/List')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8128/BusinessSupport/SPKProject/List');
+    cy.visit(`${baseUrlVP}/BusinessSupport/SPKProject/List`)
+      .url().should('include', `${baseUrlVP}/BusinessSupport/SPKProject/List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -151,7 +161,8 @@ describe('template spec', () => {
 
     cy.get('.btnSelect').first().trigger('click', { force: true });
     cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
-      cy.visit(`http://tbgappdev111.tbg.local:8128${href}`);
+
+      cy.visit(`${baseUrlVP}${href}`);
     });
 
     cy.wait(6000);
@@ -169,7 +180,7 @@ describe('template spec', () => {
     cy.get('.sa-confirm-button-container .confirm').click();
     cy.wait(5000)
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/Login/Logout');
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });

@@ -48,6 +48,15 @@ describe('template spec', () => {
       Uservendor = values.Uservendor;
       pass = values.pass;
       PICVendor = values.PICVendor;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
     });
 
 
@@ -58,8 +67,7 @@ describe('template spec', () => {
 
   //AM
   it('Material ON Site Approval PM FO', () => {
-
-    cy.visit('http://tbgappdev111.tbg.local:8128/Login');
+    cy.visit(`${baseUrlTBGSYS}${login}`);
     cy.get('#tbUserID').type(PICVendor);
     cy.get('#tbPassword').type(pass);
 
@@ -73,8 +81,8 @@ describe('template spec', () => {
     cy.get("#btnsubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/BusinessSupport/SPKProject/List')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8128/BusinessSupport/SPKProject/List');
+    cy.visit(`${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`)
+      .url().should('include', `${baseUrlTBGSYS} / BusinessSupport / SPKProject / List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -134,7 +142,7 @@ describe('template spec', () => {
     // //   .should('have.attr', 'href')
     // //   .then((href) => {
     // //     const baseUrl = "http://tbgappdev111.tbg.local:8128";
-    // //     cy.visit(`${baseUrl}${href}`);
+    // //     cy.visit(`${ baseUrl }${ href }`);
     // //   });
     // cy.get('.btnSelect').first().click();
     // cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
@@ -162,7 +170,7 @@ describe('template spec', () => {
     cy.get('.sa-confirm-button-container .confirm').click();
     cy.wait(5000)
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/Login/Logout');
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });

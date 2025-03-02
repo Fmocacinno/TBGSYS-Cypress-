@@ -39,7 +39,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -79,6 +79,15 @@ describe('template spec', () => {
       PICVendor = values.PICVendor;
       date = values.date;
       pass = values.pass;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -89,7 +98,7 @@ describe('template spec', () => {
   //AM
   it('OTDR Input by vendor', () => {
 
-    cy.visit('http://tbgappdev111.tbg.local:8127/Login');
+    cy.visit(`${baseUrlTBGSYS}${login}`);
 
     cy.get('#tbxUserID').type(userLeadPM);
     cy.get('#tbxPassword').type(pass);
@@ -103,8 +112,8 @@ describe('template spec', () => {
     cy.get("#btnSubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8127/ProjectActivity/ProjectActivityHeader')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8127/ProjectActivity/ProjectActivityHeader');
+    cy.visit(`${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`)
+      .url().should('include', `${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`);
     testResults.push({
       Test: 'User AM melakukan akses ke menu Project activity Header',
       Status: 'Pass',

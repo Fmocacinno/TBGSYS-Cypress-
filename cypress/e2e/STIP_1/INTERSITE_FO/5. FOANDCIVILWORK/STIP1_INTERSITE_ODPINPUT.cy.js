@@ -1,5 +1,7 @@
-// Fungsi untuk menghasilkan nilai acak dalam rentang tertentu
 import 'cypress-file-upload';
+const minLength = 5;
+const maxLength = 15;
+const randomString = generateRandomString(minLength, maxLength);
 const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 // Daftar indeks baris yang ingin diubah
@@ -22,26 +24,40 @@ function exportToExcel(testResults) {
   XLSX.writeFile(workbook, filePath);
 }
 
+function generateRandomString(minLength, maxLength) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+}
+// const date = "2-Jan-2025";
+// const user = "555504220025"
+// const pass = "123456"
+const filePath = 'documents/pdf/C (1).pdf';
+const latMin = -11.0; // Southernmost point
+const latMax = 6.5;   // Northernmost point
+const longMin = 94.0; // Westernmost point
+const longMax = 141.0; // Easternmost point
+
+// Generate random latitude and longitude within bounds
+const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
+const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
+//Batas
 describe('template spec', () => {
 
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
   const baseId = 24; // Base ID
   const index = 1; // Increment index for unique IDs
   before(() => {
     testResults = []; // Reset results before all tests
   });
-  function generateRandomString(minLength, maxLength) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-    let result = '';
 
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters.charAt(randomIndex);
-    }
-    return result;
-  }
   const minLength = 5;
   const maxLength = 15;
   const randomString = generateRandomString(minLength, maxLength);
@@ -53,6 +69,8 @@ describe('template spec', () => {
   const sorFilePath = "documents/SOR/1a0863_TO_0492_1550_14_20.sor"; // .sor file path
   const photoFilePath = "documents/IMAGE/adopt.png"; // Photo file path\
   const excelfilepath = "documents/EXCEL/.xlsx/EXCEL_(1).xlsx"; // Photo file path
+  const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
+  const PDFFilepath = "documents/PDF/C (1).pdf"; // Photo file path
 
 
 
@@ -83,6 +101,17 @@ describe('template spec', () => {
       PICVendor = values.PICVendor;
       date = values.date;
       pass = values.pass;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
+      PICVendorMobile1 = values.PICVendorMobile1;
+      PICVendorMobile2 = values.PICVendorMobile2;
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -93,7 +122,7 @@ describe('template spec', () => {
   //AM
   it('OTDR Input by vendor', () => {
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/Login');
+    cy.visit(`${baseUrlVP}${login}`);
 
     cy.get('#tbUserID').type(PICVendor);
     cy.get('#tbPassword').type(pass);
@@ -107,8 +136,8 @@ describe('template spec', () => {
     cy.get("#btnsubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/ProjectActivity/ProjectActivityHeader')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8128/ProjectActivity/ProjectActivityHeader');
+    cy.visit(`${baseUrlVP}/ProjectActivity/ProjectActivityHeader`)
+      .url().should('include', `${baseUrlVP}/ProjectActivity/ProjectActivityHeader`);
     testResults.push({
       Test: 'User AM melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -153,14 +182,14 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(2000);
+    cy.wait(5000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
       cy.wait(2000);
 
       if (text.includes(sonumb)) {  // ✅ Checks if "Lead PM" is in the status
-        cy.log("✅ SONumber find, proceeding with approval...");
+        cy.log("✅ Status contains 'AM', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').invoke('removeAttr', 'target').click();
       } else {
@@ -170,93 +199,45 @@ describe('template spec', () => {
     cy.wait(5000);
 
     cy.get('tr')
-
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '8') // Find the row where the first column contains '6'    cy.wait(2000);
-
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '7') // Find the row where the first column contains '6'
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
-    cy.wait(3000);
-    cy.get('#fleOTDRCoreManagementDocument').attachFile(excelfilepath);
+    cy.wait(1000);
+    cy.get('body').then(($body) => {
+      if ($body.find("#slsMobilePIC").length > 0) {
+        cy.get('#slsMobilePIC').then(($select) => {
+          cy.wrap($select).select(PICVendorMobile1, { force: true });
+        });
 
-    cy.get('#dpkOTDRInstallationDate')
-      .invoke('val', date)
-      .trigger('change');
+        cy.get('#slsMobileCoPIC').then(($select) => {
+          cy.wrap($select).select(PICVendorMobile2, { force: true });
+        });
 
+        cy.get("#btnMobilePICSubmit").click();
+        cy.wait(5000);
+      }
+    });
+    cy.wait(1000);
 
-    for (let i = 1; i <= 1; i++) {
-      // Click "No" radio button
-      cy.get(`input[name="rdoIsCoreActiveFarEndOTDR${i}"][value="0"]`).parent().click({ force: true });
+    cy.get("#btnSubmitSite").click();
+    cy.wait(5000);
+    cy.get('.confirm.btn-success').click({ force: true });
+    cy.wait(5000)
 
-      // Upload .sor file and wait for the upload to be confirmed
-      cy.get(`#fleSORFarEndOTDR${i}`).selectFile(`cypress/fixtures/${sorFilePath}`, { force: true });
-      cy.wait(2000);
+    // cy.get("#btnSubmit").click();
+    // cy.wait(7000);
 
-      // Upload photo file and wait for the upload to be confirmed
-      cy.get(`#flePhotoFarEndOTDR${i}`).selectFile(`cypress/fixtures/${photoFilePath}`, { force: true });
-      cy.wait(2000);
-    }
-    cy.get('.nav-tabs a[href="#tabOTDRNearEnd"]').click();
-    cy.wait(3000);
+    // cy.get('.confirm.btn-success').click({ force: true });
+    // cy.wait(5000)
+    // cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
+    //   .should('be.visible');
 
-    for (let i = 1; i <= 1; i++) {
-      // Click "No" radio button
-      cy.get(`input[name="rdoIsCoreActiveNearEndOTDR${i}"][value="0"]`).parent().click({ force: true });
+    // cy.get('.sweet-alert button.confirm')
+    //   .click({ force: true });
 
-      // Upload .sor file and wait for the upload to be confirmed
-      cy.get(`#fleSORNearEndOTDR${i}`).selectFile(`cypress/fixtures/${sorFilePath}`, { force: true });
-      cy.wait(2000);
+    cy.wait(5000);
 
-      // Upload photo file and wait for the upload to be confirmed
-      cy.get(`#flePhotoNearEndOTDR${i}`).selectFile(`cypress/fixtures/${photoFilePath}`, { force: true });
-      cy.wait(2000);
-    }
-    //open accrodion
-    cy.contains('.portlet-title', 'OPM') // Find the "OPM" accordion
-      .parent() // Move to the parent container
-      .find('.tools .expand') // Locate the expand button
-      .click({ force: true }); // Click to expand
-    cy.get('#dpkOPMInstallationDate')
-      .invoke('val', date)
-      .trigger('change');
-
-    cy.get('#fleOPMCalibrationPhotoFarEnd').attachFile(photoFilePath);
-
-    for (let i = 1; i <= 1; i++) {
-      // Click "No" radio button
-      cy.get(`input[name="rdoIsCoreActiveFarEndOPM${i}"][value="0"]`).parent().click({ force: true });
-      // Upload photo file and wait for the upload to be confirmed
-      cy.get(`#flePhotoFarEndOPM${i}`).selectFile(`cypress/fixtures/${photoFilePath}`, { force: true });
-      cy.wait(2000);
-      cy.get(`#flePhotoFarEndOPM${i}`).selectFile(`cypress/fixtures/${photoFilePath}`, { force: true });
-      cy.wait(2000);
-      cy.get(`#tbxCalibrationInputFarEndOPM${i}`).type(randomValue, { force: true });
-      cy.wait(2000);
-      cy.get(`#tbxTotalLossInputFarEndOPM${i}`).type(randomValue, { force: true });
-      cy.wait(2000);
-    }
-    cy.get('.nav-tabs a[href="#tabOPMNearEnd"]').click();
-    cy.wait(3000);
-    cy.get('#fleOPMCalibrationPhotoNearEnd').attachFile(photoFilePath);
-
-    for (let i = 1; i <= 1; i++) {
-      // Click "No" radio button
-      cy.get(`input[name="rdoIsCoreActiveNearEndOPM${i}"][value="0"]`).parent().click({ force: true });
-      // Upload photo file and wait for the upload to be confirmed
-      cy.get(`#flePhotoNearEndOPM${i}`).selectFile(`cypress/fixtures/${photoFilePath}`, { force: true });
-      cy.wait(2000);
-      cy.get(`#flePhotoNearEndOPM${i}`).selectFile(`cypress/fixtures/${photoFilePath}`, { force: true });
-      cy.wait(2000);
-      cy.get(`#tbxCalibrationInputNearEndOPM${i}`).type(randomValue, { force: true });
-      cy.wait(2000);
-      cy.get(`#tbxTotalLossInputNearEndOPM${i}`).type(randomValue, { force: true });
-      cy.wait(2000);
-    }
-    cy.get('#tarOTDRInstallationRemark').type('Remark FROM AUTOMATION' + unique + randomRangeValue);
-    cy.wait(2000);
-    cy.get("#btnSubmit").click();
-    cy.wait(25000);
-
-    cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });

@@ -37,7 +37,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -58,6 +58,15 @@ describe('template spec', () => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
     });
 
     cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
@@ -72,6 +81,15 @@ describe('template spec', () => {
       PICVendor = values.PICVendor;
       date = values.date;
       pass = values.pass;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -82,7 +100,7 @@ describe('template spec', () => {
   //AM
   it('OTDR Input by vendor', () => {
 
-    cy.visit('http://tbgappdev111.tbg.local:8127/Login');
+    cy.visit(`${baseUrlTBGSYS}${login}`);
 
     cy.get('#tbxUserID').type(userPMFO);
     cy.get('#tbxPassword').type(pass);
@@ -96,8 +114,8 @@ describe('template spec', () => {
     cy.get("#btnSubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8127/ProjectActivity/ProjectActivityHeader')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8127/ProjectActivity/ProjectActivityHeader');
+    cy.visit(`${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`)
+      .url().should('include', `${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`);
     testResults.push({
       Test: 'User AM melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -106,14 +124,16 @@ describe('template spec', () => {
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
     // Check if the error pop-up is visible
-    cy.get('h2').then(($h2) => {
-      if ($h2.text().includes('Error on System')) {
+    cy.document().then((doc) => {
+      const errorPopup = doc.querySelector('h2');
+
+      if (errorPopup && errorPopup.innerText.includes('Error on System')) {
         cy.log('🚨 Error pop-up detected! Clicking OK.');
 
-        // Click the "OK" button
-        cy.get('.confirm.btn-error').click();
+        // Click the "OK" button if the pop-up is present
+        cy.get('.confirm.btn-error').should('be.visible').click();
       } else {
-        cy.log('✅ No error pop-up detected.');
+        cy.log('✅ No error pop-up detected, continuing...');
       }
     });
 
@@ -169,7 +189,8 @@ describe('template spec', () => {
 
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+    // cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });

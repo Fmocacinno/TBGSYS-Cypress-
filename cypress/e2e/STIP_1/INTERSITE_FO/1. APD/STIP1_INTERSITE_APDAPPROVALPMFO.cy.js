@@ -1,21 +1,6 @@
-import 'cypress-file-upload';
-
-const minLength = 5;
-const maxLength = 15;
-const randomString = generateRandomString(minLength, maxLength);
 // Fungsi untuk menghasilkan nilai acak dalam rentang tertentu
 const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-function generateRandomString(minLength, maxLength) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-  let result = '';
 
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    result += characters.charAt(randomIndex);
-  }
-  return result;
-}
 // Daftar indeks baris yang ingin diubah
 const worktypeRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 const XLSX = require('xlsx');
@@ -37,7 +22,8 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -51,6 +37,21 @@ describe('template spec', () => {
     const testResults = []; // Array to store test results
     const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 
+    function generateRandomString(minLength, maxLength) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+      let result = '';
+
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+      }
+      return result;
+    }
+
+    const minLength = 5;
+    const maxLength = 15;
+    const randomString = generateRandomString(minLength, maxLength);
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
 
@@ -72,6 +73,15 @@ describe('template spec', () => {
       PICVendor = values.PICVendor;
       date = values.date;
       pass = values.pass;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -82,9 +92,9 @@ describe('template spec', () => {
   //AM
   it('OTDR Input by vendor', () => {
 
-    cy.visit('http://tbgappdev111.tbg.local:8127/Login');
+    cy.visit(`${baseUrlTBGSYS}${login}`);
 
-    cy.get('#tbxUserID').type(userLeadPM);
+    cy.get('#tbxUserID').type(userPMFO);
     cy.get('#tbxPassword').type(pass);
 
 
@@ -96,8 +106,8 @@ describe('template spec', () => {
     cy.get("#btnSubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8127/ProjectActivity/ProjectActivityHeader')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8127/ProjectActivity/ProjectActivityHeader');
+    cy.visit(`${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`)
+      .url().should('include', `${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`);
     testResults.push({
       Test: 'User AM melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -106,6 +116,19 @@ describe('template spec', () => {
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
     // Check if the error pop-up is visible
+    cy.document().then((doc) => {
+      const errorPopup = doc.querySelector('h2');
+
+      if (errorPopup && errorPopup.innerText.includes('Error on System')) {
+        cy.log('🚨 Error pop-up detected! Clicking OK.');
+
+        // Click the "OK" button if the pop-up is present
+        cy.get('.confirm.btn-error').should('be.visible').click();
+      } else {
+        cy.log('✅ No error pop-up detected, continuing...');
+      }
+    });
+
     cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -126,7 +149,7 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(2000);
+    cy.wait(5000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -143,26 +166,22 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'    cy.wait(2000);
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '3') // Find the row where the first column contains '6'    cy.wait(2000);
 
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
 
-    cy.wait(4000);
-    cy.get('#tarMaterialOnSiteApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);
+    cy.wait(6000);
 
     cy.get('#btnApprove').click();
-    cy.wait(7000);
+    cy.wait(5000);
     cy.get('.sa-confirm-button-container button.confirm').click();
 
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });
   });
-
-
 });

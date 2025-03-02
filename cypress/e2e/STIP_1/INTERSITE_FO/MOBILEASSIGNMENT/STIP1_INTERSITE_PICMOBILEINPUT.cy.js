@@ -8,7 +8,7 @@ const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1
 const worktypeRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 const XLSX = require('xlsx');
 const fs = require('fs');
-const tabSelector = "#tabOTDRFarEnd"; // Bisa diganti ke "#tabOTDRNearEnd"
+
 // Function to export test results to Excel
 function exportToExcel(testResults) {
   const filePath = 'test-StipinputNewBuildMacroresults.xlsx'; // Path to the Excel file
@@ -51,7 +51,7 @@ const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 describe('template spec', () => {
 
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
   const baseId = 24; // Base ID
   const index = 1; // Increment index for unique IDs
   before(() => {
@@ -101,6 +101,17 @@ describe('template spec', () => {
       PICVendor = values.PICVendor;
       date = values.date;
       pass = values.pass;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
+      PICVendorMobile1 = values.PICVendorMobile1;
+      PICVendorMobile2 = values.PICVendorMobile2;
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -111,7 +122,8 @@ describe('template spec', () => {
   //AM
   it('OTDR Input by vendor', () => {
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/Login');
+    cy.visit(`${baseUrlVP}${login}`);
+
 
     cy.get('#tbUserID').type(PICVendor);
     cy.get('#tbPassword').type(pass);
@@ -125,8 +137,8 @@ describe('template spec', () => {
     cy.get("#btnsubmit").click();
     cy.wait(2000);
 
-    cy.visit('http://tbgappdev111.tbg.local:8128/ProjectActivity/ProjectActivityHeader')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8128/ProjectActivity/ProjectActivityHeader');
+    cy.visit(`${baseUrlVP}/ProjectActivity/ProjectActivityHeader`)
+      .url().should('include', `${baseUrlVP}/ProjectActivity/ProjectActivityHeader`);
     testResults.push({
       Test: 'User AM melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -185,73 +197,34 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
-
-
-    cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '9') // Find the row where the first column contains '6'
-      .find('td:nth-child(2) .btnSelect') // Find the button in the second column
-      .click(); // Click the button
-    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
-
-    cy.get('#tbxDistance').type(randomValue);
-    cy.wait(1000);
-
-    cy.get('#btnChoosePictureBillable').click(); // Klik tombol pilih gambar
-    cy.wait(1000);
-
-    // cy.get('[id^="rdoCoreFarEnd"]')
-    //   .filter(':visible')
-    //   .eq(2) // Index mulai dari 0, jadi .eq(2) berarti radio button ke-3
-    //   .check({ force: true });
-    // cy.log('✅ Radio button ke-3 dipilih.');
-
-
-
-    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
-
-    // Click the corresponding .iCheck-helper span
-    cy.get('#rdoCoreFarEnd1')
-      .parent() // Move to the parent div (which has visible UI)
-      .find('.iCheck-helper') // Target the interactive helper
-      .click();
-
-    cy.log('✅ Successfully clicked rdoCoreFarEnd1');
-    cy.wait(1000);
-    cy.get("#btnSubmitCorePhoto").click();
-    cy.wait(1000);
-
-    cy.get('#tbxPhysicalLength').type(randomValue);
-    cy.wait(1000);
-
-    cy.get('#btnChoosePicturePhysical').click(); // Klik tombol pilih gambar
-    cy.wait(1000);
-    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
-
-    // Click the corresponding .iCheck-helper span
-    cy.get('#rdoCoreFarEnd1')
-      .parent() // Move to the parent div (which has visible UI)
-      .find('.iCheck-helper') // Target the interactive helper
-      .click();
-
-    cy.log('✅ Successfully clicked rdoCoreFarEnd1');
-
-    cy.get("#btnSubmitCorePhoto").click();
-    cy.wait(1000);
-
-    cy.get('#fleRFIDocument').attachFile(PDFFilepath);
-    cy.wait(1000);
-
-
-
-    cy.get("#btnSubmit").click();
     cy.wait(5000);
-    cy.get('.confirm.btn-success').click({ force: true });
-    cy.wait(5000)
 
-
+    cy.get("#divMobilePIC").click();
     cy.wait(5000);
-    cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+    cy.get('#slsMobilePIC').then(($select) => {
+      cy.wrap($select).select(PICVendorMobile1, { force: true })
+    })
+    cy.get('#slsMobileCoPIC').then(($select) => {
+      cy.wrap($select).select(PICVendorMobile2, { force: true })
+    })
+
+
+    cy.get("#btnMobilePICSubmit").click();
+    cy.wait(5000);
+
+
+    // cy.get("#btnSubmit").click();
+    // cy.wait(7000);
+
+    // cy.get('.confirm.btn-success').click({ force: true });
+    // cy.wait(5000)
+    // cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
+    //   .should('be.visible');
+
+    // cy.get('.sweet-alert button.confirm')
+    //   .click({ force: true });
+
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });
