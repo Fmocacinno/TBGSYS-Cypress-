@@ -161,175 +161,42 @@ describe('template spec', () => {
         Timestamp: new Date().toISOString(),
       });
       cy.wait(2000)
+      cy.wait(2000);
 
+      cy.get('#slsSTIPCategory').select('4', { force: true });
+      cy.get('#slsProduct').select('93', { force: true });
+      cy.get('#slsAssetSupportCompany').select('PT. TOWER BERSAMA', { force: true });
+      cy.get('#slsAssetSupportCustomer').select('TBG', { force: true });
+      cy.get('#slsAssetSupportRegion').select('1', { force: true });
+      cy.get('#slsAssetSupportBatch').select('UMU - Q3 AOP 2024 Batch 2', { force: true });
 
-      cy.get('#slsSTIPCategory').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
-      })
+      cy.get('#tbxAssetSupportSiteName').type('Site_' + unique + randomValue);
+      cy.get('#tbxAssetSupportCustomerSiteID').type('Cust_' + unique + randomValue);
 
-      cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('83', { force: true })
-      })
+      cy.get('#slsNewDocumentOrder').select('7', { force: true });
+      cy.get('#slsAssetSupportDocumentOrder').select('BAK', { force: true });
 
-      cy.get('#slsIntersiteFOCompany').then(($select) => {
-        cy.wrap($select).select('TB', { force: true })
-      })
+      cy.get('#tbxAssetSupportDocumentName').type('DoctName_' + unique);
+      cy.get('#fleAssetSupportDocument').attachFile(filePath);
 
-      cy.get('#slsIntersiteFOCustomer').then(($select) => {
-        cy.wrap($select).select('XL', { force: true })
-      })
+      cy.get('#slsAssetSupportProvince').select('11', { force: true });
+      cy.wait(2000);
+      cy.get('#slsAssetSupportResidence').select('178', { force: true });
 
-      cy.get('#slsIntersiteFORegion').then(($select) => {
-        cy.wrap($select).select('3', { force: true })
-      })
-      cy.wait(1000); // Ensure dropdown selection is applied
-      /// radio button with regex
-      cy.contains('label', /^\s *Segment\s*$/)
-        .click(); // Click the label
+      cy.get('#tbxAssetSupportNomLatitude').type(lat);
+      cy.get('#tbxAssetSupportNomLongitude').type(long);
+      cy.get('#tbxAssetSupportNomLatitudeEnd').type(lat);
+      cy.get('#tbxAssetSupportNomLongitudeEnd').type(long);
 
-      // Assert that the "Segment" radio button is selected
-      cy.get('input[type="radio"][value="Segment"]').should('be.checked');
+      cy.get('#slsAssetSupportLeadProjectManager').select(userLeadPM, { force: true });
+      cy.get('#slsAssetSupportAccountManager').select(userLeadAM, { force: true });
 
-      cy.get('#btnIntersiteFOPriceAmountPopUp').click();
+      cy.get('#tarAssetSupportRemark').type('REMARK NIH DARY ' + randomString);
+      cy.get('#btnSubmitAssetSupport').click();
 
-      cy.get('tbody tr:first-child .btnSelect').click();
-
-      cy.wait(2000)
-
-      // handle HTML
-
-      // cy.get('.slsBatchSLD').eq(0)
-      //   .select('180', { force: true });
-
-      // cy.get('.slsBatchSLD').eq(1)
-      //   .select('180', { force: true });
-
-
-      // cy.get('.slsBatchSLD').eq(2)
-      //   .select('180', { force: true });
-
-      // cy.get('.slsBatchSLD').eq(3)
-      //   .select('180', { force: true });
-
-      // cy.get('.slsBatchSLD').eq(4)
-      //   .select('180', { force: true });
-
-
-      // cy.get('.slsBatchSLD').eq(5)
-      //   .select('180', { force: true });
-
-      // cy.get('.slsBatchSLD').eq(6)
-      //   .select('180', { force: true });
-
-      // cy.get('.slsBatchSLD').eq(7)
-      //   .select('180', { force: true });
-
-      // cy.get('.slsBatchSLD').eq(8)
-      //   .select('180', { force: true });
-      // handle HTML
-
-      cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique + RangerandomValue);
-
-      cy.get('#slsIntersiteFODocumentOrder').then(($select) => {
-        cy.wrap($select).select('7', { force: true })
-      })
-
-      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + RangerandomValue);
-
-      cy.get('#fleIntersiteFODocument').attachFile(filePath);
-
-      cy.get('#slsIntersiteFOProvince').then(($select) => {
-        cy.wrap($select).select('14', { force: true })
-      })
-      cy.wait(2000)
-      // Near ENd
-      cy.get('#slsIntersiteFOResidence').then(($select) => {
-        cy.wrap($select).select('233', { force: true })
-      })
-      cy.get('#slsIntersiteFOTowerProviderNearEnd').then(($select) => {
-        cy.wrap($select).select('10', { force: true })
-      })
-      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOTowerIDNearEnd').type('Site_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOTowerNameNearEnd').type('SiteName_' + unique + RangerandomValue);
-      cy.get('#tbxLatitudeA').type(lat);
-      cy.get('#tbxLongitudeA').type(long);
-
-      // Far end
-      // cy.get('#slsIntersiteFOResidence').then(($select) => {
-      //   cy.wrap($select).select('178', { force: true })
-      // })
-      cy.get('#slsIntersiteFOTowerProviderFarEnd').then(($select) => {
-        cy.wrap($select).select('11', { force: true })
-      })
-      cy.get('#tbxIntersiteFOTowerIDFarEnd').type('Site_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOTowerNameFarEnd').type('SiteName_' + unique + RangerandomValue);
-      cy.get('#tbxLatitudeB').type(lat);
-      cy.get('#tbxLongitudeB').type(long);
-
-      cy.get('#slsIntersiteFOLeadProjectManager').then(($select) => {
-        cy.wrap($select).select(userLeadPM, { force: true })
-      })
-      cy.wait(2000)
-
-      cy.get('#slsIntersiteFOAccountManager').then(($select) => {
-        cy.wrap($select).select(userLeadAM, { force: true })
-      })
-
-      cy.get('#tbxFOCore').type(RangerandomValue);
-      cy.get('#tbxFOLengthSPK').type(RangerandomValue);
-      cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique + RangerandomValue);
-
-      // Debug: Log all labels inside the container
-
-
-      // // cy.get('input[name=""][value="0"]').check({ force: true });
-      // cy.get('input[type="Radio"][value="0"]').check().should('be.checked')
-
-      cy.wait(1000); // Ensure dropdown selection is applied
-      /// radio button with regex
-      // cy.get('input[type="radio"]').filter((index, el) => /No\s*/i.test(el.value)).check()
-
-      // input value No
-
-
-      cy.get('input[name="rdoOverlapping"][value="0"]').parent().click()
-
-      cy.get('#dpkIntersiteFORFSTarget')
-        .invoke('val', date)
-        .trigger('change');
-
-      cy.get('#tbxIntersiteFOLeasePeriod').type(RangerandomValue);
-
-      cy.get('#dpkIntersiteFOMLADate')
-        .invoke('val', date)
-        .trigger('change');
-
-      cy.get('#slsIntersiteFOMLANumber').then(($select) => {
-        cy.wrap($select).select('0031-14-F07-121782', { force: true })
-      })
-      // 2l36-0031 - 14 - F07 - 121782
-      // 0010 - 14 - F07 - 39033
-      cy.get('#dpkIntersiteFOMLADate')
-        .invoke('val', date)
-        .trigger('change');
-
-      cy.get('#tarIntersiteFORemark').type('Remark' + unique);
-
-
-
-
-
-
-      cy.get("#btnSubmitIntersiteFO").click();
-
-      cy.wait(2000)
-
+      cy.wait(2000);
       cy.get('.sa-confirm-button-container button.confirm').click();
-
-      cy.wait(15000)
+      cy.wait(15000);
 
       // Add this section to extract values from popup
       cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
@@ -360,7 +227,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFo.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

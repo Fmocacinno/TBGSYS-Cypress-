@@ -89,8 +89,8 @@ describe('template spec', () => {
     cy.get("#btnSubmit").click();
     cy.wait(2000);
 
-    cy.visit(`${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`)
-      .url().should('include', `${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`);
+    cy.visit(`${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`)
+      .url().should('include', `${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -98,10 +98,12 @@ describe('template spec', () => {
     });
     cy.wait(5000);
 
-    cy.wait(5000);
-
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('9', { force: true })
+      cy.wrap($select).select('12', { force: true })
+    })
+    cy.wait(2000);
+    cy.get('#slSubType').then(($select) => {
+      cy.wrap($select).select('48', { force: true })
     })
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
@@ -161,7 +163,7 @@ describe('template spec', () => {
 
     cy.get('.btnSelect').first().trigger('click', { force: true });
     cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
-      cy.visit(`http://tbgappdev111.tbg.local:8127${href}`);
+      cy.visit(`${baseUrlTBGSYS}${href}`);
     });
 
     cy.wait(6000);
