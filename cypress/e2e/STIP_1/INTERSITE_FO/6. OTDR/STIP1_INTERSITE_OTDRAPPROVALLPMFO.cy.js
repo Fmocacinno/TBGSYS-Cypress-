@@ -360,9 +360,9 @@ describe('template spec', () => {
 
         cy.get('#btnApprove').click();
         cy.wait(5000);
-        cy.get('.sa-confirm-button-container button.confirm').click();
+        // cy.get('.sa-confirm-button-container button.confirm').click();
 
-        cy.wait(2000);
+        // cy.wait(2000);
 
         cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
         cy.then(() => {

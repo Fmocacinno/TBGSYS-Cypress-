@@ -135,7 +135,7 @@ describe('template spec', () => {
     });
 
     cy.get("#btnsubmit").click();
-    cy.wait(2000)
+    cy.wait(2000);
 
     cy.visit(`${baseUrlVP}/ProjectActivity/ProjectActivityHeader`)
       .url().should('include', `${baseUrlVP}/ProjectActivity/ProjectActivityHeader`);
@@ -197,69 +197,21 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
+    cy.wait(3000);
+
+    // cy.get("#divMobilePIC").click();
+    // cy.wait(5000);
+    cy.get('#slsMobilePIC').then(($select) => {
+      cy.wrap($select).select(PICVendorMobile1, { force: true })
+    })
+    cy.get('#slsMobileCoPIC').then(($select) => {
+      cy.wrap($select).select(PICVendorMobile2, { force: true })
+    })
+
+
+    cy.get("#btnMobilePICSubmit").click();
     cy.wait(5000);
 
-
-
-
-
-    cy.get('body').then(($body) => {
-      if ($body.find('#slsMobilePIC').length > 0 && $body.find('#slsMobilePIC').is(':visible')) {
-        // Run the first set of actions
-        cy.get('#slsMobilePIC').then(($select) => {
-          cy.wrap($select).select(PICVendorMobile1, { force: true });
-        });
-
-        cy.get('#slsMobileCoPIC').then(($select) => {
-          cy.wrap($select).select(PICVendorMobile2, { force: true });
-        });
-
-        cy.get("#btnMobilePICSubmit").click({ force: true });
-        cy.wait(5000);
-      }
-
-      // Run the second block of code (always executed)
-      cy.get('tr')
-        .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'
-        .find('td:nth-child(2) .btnSelect') // Find the button in the second column
-        .click(); // Click the button
-      cy.wait(1000);
-    });
-
-
-    // Always execute this part
-    // cy.get('tr')
-    //   .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6')
-    //   .find('td:nth-child(2) .btnSelect')
-    //   .click();
-    // cy.wait(1000);
-
-
-
-
-
-
-    cy.get('#dpkMaterialOnSiteDate')
-      .invoke('val', date)
-      .trigger('change');
-    cy.get('#fleMaterialOnSiteDocument').attachFile(PDFFilepath);
-    cy.wait(1000);
-
-    cy.get('.form-group')
-      .contains('Penyimpanan Material yang Memadai')
-      .parent()
-      .find('.iradio_flat-blue')
-      .eq(0) // Click the second radio button (Not OK)
-      .click({ force: true }); //<<radio button
-
-    cy.get('#tarMaterialOnSiteRemark').type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);
-
-
-    cy.get("#btnSubmit").click();
-    cy.wait(5000);
-    cy.get('.confirm.btn-success').click({ force: true });
-    cy.wait(5000)
 
     // cy.get("#btnSubmit").click();
     // cy.wait(7000);
@@ -272,7 +224,6 @@ describe('template spec', () => {
     // cy.get('.sweet-alert button.confirm')
     //   .click({ force: true });
 
-    cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);

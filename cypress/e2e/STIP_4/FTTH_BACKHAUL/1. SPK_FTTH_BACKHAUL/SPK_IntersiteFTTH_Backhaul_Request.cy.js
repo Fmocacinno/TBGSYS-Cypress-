@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, UserRequestSPKFTTH;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -29,21 +29,23 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
       userInputStip = values.userInputStip;
+      UserRequestSPKFTTH = values.UserRequestSPKFTTH;
       userLeadAM = values.userLeadAM;
       userLeadPM = values.userLeadPM;
       userPMFO = values.userPMFO;
       userARO = values.userARO;
       UserRequestSPKProject = values.UserRequestSPKProject;
+      UserRequestSPKFTTH = values.UserRequestSPKFTTH;
       Uservendor = values.Uservendor;
       pass = values.pass;
       baseUrlVP = values.baseUrlVP;
@@ -55,7 +57,6 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
-
     });
 
 
@@ -69,7 +70,7 @@ describe('template spec', () => {
 
     cy.visit(`${baseUrlTBGSYS}${login}`);
 
-    cy.get('#tbxUserID').type(UserRequestSPKProject);
+    cy.get('#tbxUserID').type(UserRequestSPKFTTH);
     cy.get('#tbxPassword').type(pass);
     cy.get('#RefreshButton').click();
 
@@ -83,7 +84,7 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.visit(`${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`)
-      .url().should('include', `${baseUrlTBGSYS}/BusinessSupport/SPKProjectList`);
+      .url().should('include', `${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -96,8 +97,13 @@ describe('template spec', () => {
     cy.wait(5000);
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('9', { force: true })
+      cy.wrap($select).select('12', { force: true })
     })
+    cy.wait(2000);
+    cy.get('#slSubType').then(($select) => {
+      cy.wrap($select).select('48', { force: true })
+    })
+
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -136,24 +142,34 @@ describe('template spec', () => {
 
     cy.window().then((win) => {
       cy.stub(win, 'open').callsFake((url) => {
-        const fullUrl = `http://tbgappdev111.tbg.local:8127${url}`; // Ensure full URL
+        const fullUrl = `${baseUrlTBGSYS}${url}`; // Ensure full URL
         cy.visit(fullUrl);
       });
     });
 
     cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
-
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
     cy.wait(6000);
 
 
 
+
+    // cy.get('#slCore').then(($select) => {
+    //   cy.wrap($select).select('48', { force: true })
+    // })
+
+    // cy.wait(6000);
 
     cy.get('#slCore').then(($select) => {
       cy.wrap($select).select('23', { force: true })
     })
+    cy.get('#slSubCore').then(($select) => {
+      cy.wrap($select).select('50', { force: true })
+    })
 
     cy.wait(6000);
 
+    cy.wait(6000);
 
     cy.get('#btnSearchVendor').click();
 
@@ -168,6 +184,9 @@ describe('template spec', () => {
     cy.wait(2000)
     cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
     cy.wait(2000);
+
+
+
     cy.get('#txtRemark').type('Remark' + unique);
     cy.get('#btnAssign').click();
     cy.wait(2000);

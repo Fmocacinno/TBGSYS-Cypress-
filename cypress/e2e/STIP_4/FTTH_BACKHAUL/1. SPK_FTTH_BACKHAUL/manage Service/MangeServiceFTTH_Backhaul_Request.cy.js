@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor, UservendorManageService, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -46,6 +46,7 @@ describe('template spec', () => {
       UserRequestSPKProject = values.UserRequestSPKProject;
       Uservendor = values.Uservendor;
       pass = values.pass;
+      UservendorManageService = values.UservendorManageService;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
       menu1 = values.menu1;
@@ -55,7 +56,6 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
-
     });
 
 
@@ -83,7 +83,7 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.visit(`${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`)
-      .url().should('include', `${baseUrlTBGSYS}/BusinessSupport/SPKProjectList`);
+      .url().should('include', `${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -98,6 +98,9 @@ describe('template spec', () => {
     cy.get('#slType').then(($select) => {
       cy.wrap($select).select('9', { force: true })
     })
+    cy.get('#slSubType').then(($select) => {
+      cy.wrap($select).select('91', { force: true })
+    })
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -107,6 +110,26 @@ describe('template spec', () => {
       });
     }); //
 
+
+    // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
+    //   // Log the test result if button click is successful
+    //   testResults.push({
+    //     Test: 'User PM FO melakukan klik tombol Search di Stip approval',
+    //     Status: 'Pass',
+    //     Timestamp: new Date().toISOString(),
+    //   });
+    // }); // << Search Filter SONumber  disable it if u dont need
+
+    // cy.contains('label', /^\s *By SO Number\s*$/)
+    //   .click(); // search By Radio Button SONumber
+    // cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+    //   // Log the test result if button click is successful
+    //   testResults.push({
+    //     Test: 'User AM melakukan klik tombol Search di Stip approval',
+    //     Status: 'Pass',
+    //     Timestamp: new Date().toISOString(),
+    //   });
+    // }); // << Search Filter
 
 
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
@@ -136,7 +159,7 @@ describe('template spec', () => {
 
     cy.window().then((win) => {
       cy.stub(win, 'open').callsFake((url) => {
-        const fullUrl = `http://tbgappdev111.tbg.local:8127${url}`; // Ensure full URL
+        const fullUrl = `${baseUrlTBGSYS}${url}`; // Ensure full URL
         cy.visit(fullUrl);
       });
     });
@@ -149,7 +172,7 @@ describe('template spec', () => {
 
 
     cy.get('#slCore').then(($select) => {
-      cy.wrap($select).select('23', { force: true })
+      cy.wrap($select).select('54', { force: true })
     })
 
     cy.wait(6000);
@@ -159,7 +182,7 @@ describe('template spec', () => {
 
 
     cy.wait(2000)
-    cy.get('#tbxSearchVendorName').type(Uservendor);
+    cy.get('#tbxSearchVendorName').type(UservendorManageService);
     cy.wait(2000)
     cy.get('td[rowspan="1"][colspan="1"]')
       .eq(1)
@@ -175,8 +198,6 @@ describe('template spec', () => {
 
     cy.wait(2000)
     cy.contains('a', 'Log Out').click({ force: true });
-
   });
-
 
 });
