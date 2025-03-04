@@ -166,13 +166,16 @@ describe('template spec', () => {
 
     cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
 
-    cy.wait(6000);
-
+    cy.wait(10000);
 
 
 
     cy.get('#slCore').then(($select) => {
       cy.wrap($select).select('54', { force: true })
+    })
+    cy.wait(6000);
+    cy.get('#slSubCore').then(($select) => {
+      cy.wrap($select).select('56', { force: true })
     })
 
     cy.wait(6000);

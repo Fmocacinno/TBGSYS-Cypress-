@@ -83,7 +83,7 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.visit(`${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`)
-      .url().should('include', `${baseUrlTBGSYS}/BusinessSupport/SPKProjectList`);
+      .url().should('include', `${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -136,14 +136,14 @@ describe('template spec', () => {
 
     cy.window().then((win) => {
       cy.stub(win, 'open').callsFake((url) => {
-        const fullUrl = `http://tbgappdev111.tbg.local:8127${url}`; // Ensure full URL
+        const fullUrl = `${baseUrlTBGSYS}${url}`; // Ensure full URL
         cy.visit(fullUrl);
       });
     });
 
     cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
 
-    cy.wait(6000);
+    cy.wait(10000);
 
 
 
@@ -152,6 +152,10 @@ describe('template spec', () => {
       cy.wrap($select).select('23', { force: true })
     })
 
+    cy.wait(10000);
+    cy.get('#slSubCore').then(($select) => {
+      cy.wrap($select).select('45', { force: true })
+    })
     cy.wait(6000);
 
 

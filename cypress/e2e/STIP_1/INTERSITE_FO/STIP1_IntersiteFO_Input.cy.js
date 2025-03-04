@@ -180,7 +180,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsIntersiteFORegion').then(($select) => {
-        cy.wrap($select).select('3', { force: true })
+        cy.wrap($select).select('1', { force: true })
       })
       cy.wait(1000); // Ensure dropdown selection is applied
       /// radio button with regex
@@ -228,32 +228,32 @@ describe('template spec', () => {
       //   .select('180', { force: true });
       // handle HTML
 
-      cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique + randomValue);
 
       cy.get('#slsIntersiteFODocumentOrder').then(($select) => {
         cy.wrap($select).select('7', { force: true })
       })
 
-      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + randomValue);
 
       cy.get('#fleIntersiteFODocument').attachFile(filePath);
 
       cy.get('#slsIntersiteFOProvince').then(($select) => {
-        cy.wrap($select).select('14', { force: true })
+        cy.wrap($select).select('11', { force: true })
       })
       cy.wait(2000)
       // Near ENd
       cy.get('#slsIntersiteFOResidence').then(($select) => {
-        cy.wrap($select).select('233', { force: true })
+        cy.wrap($select).select('178', { force: true })
       })
       cy.get('#slsIntersiteFOTowerProviderNearEnd').then(($select) => {
         cy.wrap($select).select('10', { force: true })
       })
-      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOTowerIDNearEnd').type('Site_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOTowerNameNearEnd').type('SiteName_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOTowerIDNearEnd').type('Site_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOTowerNameNearEnd').type('SiteName_' + unique + randomValue);
       cy.get('#tbxLatitudeA').type(lat);
       cy.get('#tbxLongitudeA').type(long);
 
@@ -264,8 +264,8 @@ describe('template spec', () => {
       cy.get('#slsIntersiteFOTowerProviderFarEnd').then(($select) => {
         cy.wrap($select).select('11', { force: true })
       })
-      cy.get('#tbxIntersiteFOTowerIDFarEnd').type('Site_' + unique + RangerandomValue);
-      cy.get('#tbxIntersiteFOTowerNameFarEnd').type('SiteName_' + unique + RangerandomValue);
+      cy.get('#tbxIntersiteFOTowerIDFarEnd').type('Site_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOTowerNameFarEnd').type('SiteName_' + unique + randomValue);
       cy.get('#tbxLatitudeB').type(lat);
       cy.get('#tbxLongitudeB').type(long);
 
@@ -278,9 +278,9 @@ describe('template spec', () => {
         cy.wrap($select).select(userLeadAM, { force: true })
       })
 
-      cy.get('#tbxFOCore').type(RangerandomValue);
-      cy.get('#tbxFOLengthSPK').type(RangerandomValue);
-      cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique + RangerandomValue);
+      cy.get('#tbxFOCore').type(randomValue);
+      cy.get('#tbxFOLengthSPK').type(randomValue);
+      cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique + randomValue);
 
       // Debug: Log all labels inside the container
 
@@ -301,14 +301,14 @@ describe('template spec', () => {
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tbxIntersiteFOLeasePeriod').type(RangerandomValue);
+      cy.get('#tbxIntersiteFOLeasePeriod').type(randomValue);
 
       cy.get('#dpkIntersiteFOMLADate')
         .invoke('val', date)
         .trigger('change');
 
       cy.get('#slsIntersiteFOMLANumber').then(($select) => {
-        cy.wrap($select).select('0031-14-F07-121782', { force: true })
+        cy.wrap($select).select('0010-14-F07-39033', { force: true })
       })
       // 2l36-0031 - 14 - F07 - 121782
       // 0010 - 14 - F07 - 39033

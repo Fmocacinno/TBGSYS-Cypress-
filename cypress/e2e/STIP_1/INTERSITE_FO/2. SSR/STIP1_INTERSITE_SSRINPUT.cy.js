@@ -334,7 +334,7 @@ describe('template spec', () => {
     cy.get('.confirm.btn-success').click({ force: true });
     cy.wait(5000)
 
-    cy.visit(`${baseUrlVP}${logout}`);
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });

@@ -29,12 +29,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_4/INTERSITE_FO/soDataBackhaul.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -83,7 +83,7 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.visit(`${baseUrlVP}/BusinessSupport/SPKProject/List`)
-      .url().should('include', `${baseUrlTBGSYS} / BusinessSupport / SPKProject / List`);
+      .url().should('include', `${baseUrlVP}/BusinessSupport/SPKProject/List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
       Status: 'Pass',
@@ -93,7 +93,10 @@ describe('template spec', () => {
 
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('9', { force: true })
+      cy.wrap($select).select('12', { force: true })
+    })
+    cy.get('#slType').then(($select) => {
+      cy.wrap($select).select('12', { force: true })
     })
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful

@@ -181,7 +181,7 @@ describe('template spec', () => {
 
     cy.wait(2000);
 
-    cy.visit(`${baseUrlTBGSYS}${logout}`);
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });

@@ -19,8 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, PICVendor;
-
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
   before(() => {
     testResults = []; // Reset results before all tests
   });
@@ -67,7 +66,7 @@ describe('template spec', () => {
 
   //AM
   it('Material ON Site Approval PM FO', () => {
-    cy.visit(`${baseUrlTBGSYS}${login}`);
+    cy.visit(`${baseUrlVP}${login}`);
     cy.get('#tbUserID').type(PICVendor);
     cy.get('#tbPassword').type(pass);
 
@@ -81,8 +80,8 @@ describe('template spec', () => {
     cy.get("#btnsubmit").click();
     cy.wait(2000);
 
-    cy.visit(`${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`)
-      .url().should('include', `${baseUrlTBGSYS} / BusinessSupport / SPKProject / List`);
+    cy.visit(`${baseUrlVP}/BusinessSupport/SPKProject/List`)
+      .url().should('include', `${baseUrlVP}/BusinessSupport/SPKProject/List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
       Status: 'Pass',

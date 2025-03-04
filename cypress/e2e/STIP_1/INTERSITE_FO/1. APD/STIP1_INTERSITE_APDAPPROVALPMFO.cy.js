@@ -171,13 +171,11 @@ describe('template spec', () => {
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
 
-    cy.wait(6000);
+    cy.wait(7000);
 
     cy.get('#btnApprove').click();
-    cy.wait(5000);
-    cy.get('.sa-confirm-button-container button.confirm').click();
+    cy.wait(10000);
 
-    cy.wait(2000);
 
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {

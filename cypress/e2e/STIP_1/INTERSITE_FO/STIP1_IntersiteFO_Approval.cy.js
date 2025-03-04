@@ -151,7 +151,7 @@ describe('template spec', () => {
     });
 
     cy.wait(2000);
-    cy.visit(`${baseUrlTBGSYS}${logout}`);
+    cy.contains('a', 'Log Out').click({ force: true });
   });
 
   //LEAD AM
@@ -239,7 +239,7 @@ describe('template spec', () => {
     });
 
     cy.wait(2000);
-    cy.visit(`${baseUrlTBGSYS}${logout}`);
+    cy.contains('a', 'Log Out').click({ force: true });
   });
   //LEAD PM
   it('Lead PM Test Case', () => {
@@ -329,7 +329,10 @@ describe('template spec', () => {
             cy.wait(3000);
 
             cy.get('#slsAssignedPM').select(userPMFO, { force: true });
+            cy.get('.nav-tabs a[href="#tabApprovalDetail"]').click();
+            cy.wait(3000);
             cy.wrap($btn).click();
+
             cy.log("✅ Button clicked successfully");
             cy.wait(6000);
           } else {
@@ -343,8 +346,7 @@ describe('template spec', () => {
     });
 
     cy.wait(4000);
-    cy.visit(`${baseUrlTBGSYS}${logout}`);
-
+    cy.contains('a', 'Log Out').click({ force: true });
   });
 
   //ARO
@@ -428,8 +430,7 @@ describe('template spec', () => {
       cy.wait(2000);
     });
     cy.wait(2000);
-    cy.visit(`${baseUrlTBGSYS}${logout}`);
-
+    cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);
     });

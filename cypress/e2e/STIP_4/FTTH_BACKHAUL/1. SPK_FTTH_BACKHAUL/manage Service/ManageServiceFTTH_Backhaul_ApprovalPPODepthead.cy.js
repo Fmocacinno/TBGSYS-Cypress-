@@ -29,12 +29,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -92,15 +92,16 @@ describe('template spec', () => {
       Status: 'Pass',
       timeStamp: new Date().toISOString(),
     });
-    cy.wait(5000);
+
 
     cy.wait(5000);
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('9', { force: true })
+      cy.wrap($select).select('12', { force: true })
     })
+    cy.wait(2000);
     cy.get('#slSubType').then(($select) => {
-      cy.wrap($select).select('91', { force: true })
+      cy.wrap($select).select('54', { force: true })
     })
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
@@ -139,32 +140,20 @@ describe('template spec', () => {
     });
 
 
-    // cy.get('a.btnSelect')
-    //   .should('have.attr', 'href') // Ensure the element has an href
-    //   .then((href) => {
-    //     const baseUrl = "http://tbgappdev111.tbg.local:8127/BusinessSupport/SPKProject/"; // Base URL
-    //     const fullUrl = new URL(href, baseUrl).href; // Correctly construct the full URL
-    //     cy.visit(fullUrl); // Visit the page
-    //   });
-    // // cy.get('a.btnSelect', { timeout: 10000 })
-    // //   .should('have.attr', 'href')
-    // //   .then((href) => {
-    // //     const baseUrl = "http://tbgappdev111.tbg.local:8127";
-    // //     cy.visit(`${baseUrl}${href}`);
-    // //   });
-    // cy.get('.btnSelect').first().click();
-    // cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
-    //   cy.visit(`http://tbgappdev111.tbg.local:8127${href}`);
-    // });
-    // Prevent new tabs by stubbing window.open
+
 
     cy.get('.btnSelect').first().trigger('click', { force: true });
     cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
-      cy.visit(`http://tbgappdev111.tbg.local:8127${href}`);
+      cy.visit(`${baseUrlTBGSYS}${href}`);
     });
 
     cy.wait(6000);
-
+    cy.get('#slCore').then(($select) => {
+      cy.wrap($select).select('54', { force: true })
+    })
+    cy.get('#slSubCore').then(($select) => {
+      cy.wrap($select).select('54', { force: true })
+    })
     cy.get('#btnSearchVendor').click();
 
 

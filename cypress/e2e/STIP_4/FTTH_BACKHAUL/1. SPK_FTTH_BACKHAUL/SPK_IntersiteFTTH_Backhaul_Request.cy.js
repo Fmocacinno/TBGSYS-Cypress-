@@ -45,7 +45,6 @@ describe('template spec', () => {
       userPMFO = values.userPMFO;
       userARO = values.userARO;
       UserRequestSPKProject = values.UserRequestSPKProject;
-      UserRequestSPKFTTH = values.UserRequestSPKFTTH;
       Uservendor = values.Uservendor;
       pass = values.pass;
       baseUrlVP = values.baseUrlVP;
@@ -189,10 +188,10 @@ describe('template spec', () => {
 
     cy.get('#txtRemark').type('Remark' + unique);
     cy.get('#btnAssign').click();
-    cy.wait(2000);
+    cy.wait(5000);
     cy.contains('.sa-confirm-button-container button', 'Ok').click();
 
-    cy.wait(2000)
+    cy.wait(5000)
     cy.contains('a', 'Log Out').click({ force: true });
 
   });

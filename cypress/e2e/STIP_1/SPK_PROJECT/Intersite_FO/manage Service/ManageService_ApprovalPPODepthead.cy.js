@@ -160,12 +160,23 @@ describe('template spec', () => {
 
     cy.get('.btnSelect').first().trigger('click', { force: true });
     cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
-      cy.visit(`http://tbgappdev111.tbg.local:8127${href}`);
+      cy.visit(`${baseUrlTBGSYS}${href}`);
     });
 
+    cy.wait(2000)
+
+    cy.get('#slCore').then(($select) => {
+      cy.wrap($select).select('54', { force: true })
+    })
+    cy.wait(6000);
+    cy.get('#slSubCore').then(($select) => {
+      cy.wrap($select).select('56', { force: true })
+    })
     cy.wait(6000);
 
     cy.get('#btnSearchVendor').click();
+
+
 
 
     cy.wait(2000)
