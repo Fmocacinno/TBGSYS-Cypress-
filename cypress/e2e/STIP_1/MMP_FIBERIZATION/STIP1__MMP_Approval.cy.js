@@ -29,12 +29,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -53,6 +53,7 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
+
     });
 
 
@@ -65,6 +66,7 @@ describe('template spec', () => {
   it('AM Test Case', () => {
 
     cy.visit(`${baseUrlTBGSYS}${login}`);
+
     cy.get('#tbxUserID').type(userAM);
     cy.get('#tbxPassword').type(pass);
     cy.get('#RefreshButton').click();
@@ -77,7 +79,6 @@ describe('template spec', () => {
 
     cy.get("#btnSubmit").click();
     cy.wait(2000);
-
     cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
     cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
     // Ensure the page changes or some result occurs
@@ -149,7 +150,7 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(4000);
+    cy.wait(2000);
     cy.contains('a', 'Log Out').click({ force: true });
   });
 
@@ -237,7 +238,7 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(5000);
+    cy.wait(2000);
     cy.contains('a', 'Log Out').click({ force: true });
   });
   //LEAD PM
@@ -313,6 +314,7 @@ describe('template spec', () => {
       cy.log("📌 Status Found:", text);
       cy.wait(6000);
 
+
       if (text === "Waiting for Confirmation Lead PM") {
         cy.log("✅ Status matches, proceeding with approval...");
 
@@ -324,6 +326,12 @@ describe('template spec', () => {
         // Attempt to click the approval button only if it's visible and enabled
         cy.get("#btnConfirm").then(($btn) => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
+            cy.wait(3000);
+            cy.get('.nav-tabs a[href="#tabPMAssignment"]').click();
+            cy.wait(3000);
+            cy.get('#slsAssignedPM').select(userPMFO, { force: true });
+            cy.get('.nav-tabs a[href="#tabApprovalDetail"]').click();
+            cy.wait(3000);
             cy.wrap($btn).click();
 
             cy.log("✅ Button clicked successfully");
@@ -335,7 +343,7 @@ describe('template spec', () => {
       } else {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
-      cy.wait(4000);
+      cy.wait(2000);
     });
 
     cy.wait(4000);
@@ -344,7 +352,6 @@ describe('template spec', () => {
 
   //ARO
   it('ARO Test Case', () => {
-
     cy.visit(`${baseUrlTBGSYS}${login}`);
     cy.url().should('include', `${baseUrlTBGSYS}`);
     cy.get('#tbxUserID').type(userARO);
@@ -419,7 +426,7 @@ describe('template spec', () => {
       } else {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
-      cy.wait(4000);
+      cy.wait(2000);
     });
     cy.wait(2000);
     cy.contains('a', 'Log Out').click({ force: true });

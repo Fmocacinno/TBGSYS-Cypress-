@@ -145,7 +145,7 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(2000);
+    cy.wait(5000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -165,7 +165,7 @@ describe('template spec', () => {
       .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '11') // Find the row where the first column contains '6'
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
-    cy.wait(3000);
+    cy.wait(10000);
     worktypeRows.forEach((index) => {
       cy.get('#tblOSPFOInstallation tbody tr')
         .eq(index) // Pilih baris sesuai indeks

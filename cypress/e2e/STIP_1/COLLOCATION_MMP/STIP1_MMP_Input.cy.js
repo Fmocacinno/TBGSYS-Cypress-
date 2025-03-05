@@ -1,10 +1,11 @@
+import { timeStamp } from 'console';
 import 'cypress-file-upload';
 const XLSX = require('xlsx');
 const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'test-results.xlsx'; // Path to the Excel file
+  const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -16,74 +17,121 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
+const testResults = []; // Array to store test results
+const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
+// const unique = `APP_PKP_`;
+
+function generateRandomString(minLength, maxLength) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+}
+
+let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
+
+const minLength = 5;
+const maxLength = 15;
+const randomString = generateRandomString(minLength, maxLength);
+let maxPages = 10; // Batasi jumlah halaman yang dicek untuk menghindari loop tak terbatas
+let currentPage = 1;
+
+// Function to find and click the button
+// Function to find and click the button
+// Function to find and click the button
+function checkRowsSequentially(page = 1, maxPages = 10) {
+  if (page > maxPages) return;
+
+  cy.get('tbody tr .btnSelect:visible:not(:disabled)').first().then(($btn) => {
+    if ($btn.length) {
+      cy.wrap($btn).click();
+    } else {
+      // No available buttons, go to the next page
+      cy.get('#tblSite_paginate a[title="Next"]:visible').then(($next) => {
+        if ($next.length) {
+          cy.wrap($next).click();
+          cy.wait(2000);
+          checkRowsSequentially(page + 1, maxPages);
+        }
+      });
+    }
+  });
+}
+
+// const date = "2-Jan-2025";
+// const user = "555504220025"
+// const pass = "123456"
+const filePath = 'documents/pdf/C (1).pdf';
+const latMin = -11.0; // Southernmost point
+const latMax = 6.5;   // Northernmost point
+const longMin = 94.0; // Westernmost point
+const longMax = 141.0; // Easternmost point
+
+// Generate random latitude and longitude within bounds
+const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
+const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
+//Batas
+
 describe('template spec', () => {
+  let testResults = []; // Shared results array
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
+
+  before(() => {
+    testResults = []; // Reset results before all tests
+  });
+
+  after(() => {
+    exportToExcel(testResults); // Export after all tests complete
+  });
+  beforeEach(() => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+      cy.log(values);
+      sonumb = values.soNumber;
+      siteId = values.siteId;
+    });
+
+    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+      cy.log(values);
+      unique = values.unique;
+      userAM = values.userAM;
+      userInputStip = values.userInputStip;
+      userLeadAM = values.userLeadAM;
+      userLeadPM = values.userLeadPM;
+      userPMFO = values.userPMFO;
+      userARO = values.userARO;
+      pass = values.pass;
+      date = values.date;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
+      PICVendorMobile1 = values.PICVendorMobile1;
+      PICVendorMobile2 = values.PICVendorMobile2;
+    });
+
+
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      return false;
+    });
+  });
   const loopCount = 1; // Jumlah iterasi loop
 
   for (let i = 0; i < loopCount; i++) {
-    it(`passes iteration ${i + 1}`, () => {
-      const testResults = []; // Array to store test results
-      const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
-      const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
-      const unique = `APP_${randomValue}`;
-
-      function generateRandomString(minLength, maxLength) {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-        let result = '';
-
-        for (let i = 0; i < length; i++) {
-          const randomIndex = Math.floor(Math.random() * characters.length);
-          result += characters.charAt(randomIndex);
-        }
-        return result;
-      }
-      let maxPages = 10; // Batasi jumlah halaman yang dicek untuk menghindari loop tak terbatas
-      let currentPage = 1;
-
-      // Function to find and click the button
-      // Function to find and click the button
-      // Function to find and click the button
-      function checkRowsSequentially(page = 1, maxPages = 10) {
-        if (page > maxPages) return;
-
-        cy.get('tbody tr .btnSelect:visible:not(:disabled)').first().then(($btn) => {
-          if ($btn.length) {
-            cy.wrap($btn).click();
-          } else {
-            // No available buttons, go to the next page
-            cy.get('#tblSite_paginate a[title="Next"]:visible').then(($next) => {
-              if ($next.length) {
-                cy.wrap($next).click();
-                cy.wait(2000);
-                checkRowsSequentially(page + 1, maxPages);
-              }
-            });
-          }
-        });
-      }
-      const minLength = 5;
-      const maxLength = 15;
-      const randomString = generateRandomString(minLength, maxLength);
-      const date = "10-Feb-2025";
-      const user = "201301180003"
-      const pass = "123456"
-      const filePath = 'documents/pdf/receipt.pdf';
-      const latMin = -11.0; // Southernmost point
-      const latMax = 6.5;   // Northernmost point
-      const longMin = 94.0; // Westernmost point
-      const longMax = 141.0; // Easternmost point
-
-      // Generate random latitude and longitude within bounds
-      const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
-      const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
-
-      Cypress.on('uncaught:exception', (err, runnable) => {
-        return false
-      })
-
-      cy.visit('http://tbgappdev111.tbg.local:8042/Login')
-
-      cy.get('#tbxUserID').type(user).should('have.value', user).then(() => {
+    it.only(`passes iteration ${i + 1}`, () => {
+      cy.visit(`${baseUrlTBGSYS}${login}`);
+      cy.wait(2000)
+      cy.get('#tbxUserID').type(userInputStip).should('have.value', userInputStip).then(() => {
         // Log the test result if input is successful
         testResults.push({
           Test: 'User ID Input',
@@ -92,16 +140,14 @@ describe('template spec', () => {
         });
       });
 
-      cy.get('#tbxPassword').type(pass)
-        .should('have.value', pass)
-        .then(() => {
-          // Log the test result if input is successful
-          testResults.push({
-            Test: 'Passworhasbeeninputed',
-            Status: 'Pass',
-            Timestamp: new Date().toISOString(),
-          });
+      cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
+        // Log the test result if input is successful
+        testResults.push({
+          Test: 'Password has been inputed',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
         });
+      });
 
       cy.get('#RefreshButton').click();
 
@@ -113,7 +159,7 @@ describe('template spec', () => {
       });
 
       cy.get('#btnSubmit').click();
-      cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/Dashboard'); // Ensure the page changes or some result occurs
+      cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'Button Clicked',
         Status: 'Pass',
@@ -121,15 +167,8 @@ describe('template spec', () => {
       });
 
       // Export results to Excel after the test
-
-
-
-
-
-      cy.wait(2000)
-
-      cy.visit('http://tbgappdev111.tbg.local:8042/STIP/Input')
-      cy.url().should('include', 'http://tbgappdev111.tbg.local:8042/STIP/Input'); // Ensure the page changes or some result occurs
+      cy.visit(`${baseUrlTBGSYS}/STIP/Input`);
+      cy.url().should('include', `${baseUrlTBGSYS}/STIP/Input`);// Ensure the page changes or some result occurs
       testResults.push({
         Test: 'User masuk ke Page Stip Input',
         Status: 'Pass',
@@ -151,8 +190,8 @@ describe('template spec', () => {
       })
 
       cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('2', { force: true })
-          .should('have.value', '2') // Menunggu hingga value benar-benar berubah
+        cy.wrap($select).select('45', { force: true })
+          .should('have.value', '45') // Menunggu hingga value benar-benar berubah
           .then(() => {
             // Log the test result if selection is successful
             testResults.push({
@@ -163,20 +202,9 @@ describe('template spec', () => {
           });
       })
 
-      cy.get('#slsColocationCompany').then(($select) => {
-        cy.wrap($select).select('TB', { force: true })
-          .should('have.value', 'TB') // Menunggu hingga value benar-benar berubah
-          .then(() => {
-            // Log the test result if selection is successful
-            testResults.push({
-              Test: 'User memilih Customer di dropdown Colocation Customer',
-              Status: 'Pass',
-              Timestamp: new Date().toISOString(),
-            });
-          });
-      })
 
-      cy.get('#slsColocationCustomer').then(($select) => {
+
+      cy.get('#slsFiberizationCustomer').then(($select) => {
         cy.wrap($select).select('XL', { force: true })
           .should('have.value', 'XL') // Menunggu hingga value benar-benar berubah
           .then(() => {
@@ -189,7 +217,7 @@ describe('template spec', () => {
           });
       })
 
-      cy.get('#slsColocationRegion').then(($select) => {
+      cy.get('#slsFiberizationRegion').then(($select) => {
         cy.wrap($select).select('1', { force: true })
           .should('have.value', '1') // Menunggu hingga value benar-benar berubah
           .then(() => {
@@ -203,7 +231,7 @@ describe('template spec', () => {
       });
 
 
-      cy.get('#btnColocationPriceAmountPopUp')
+      cy.get('#btnFiberizationPriceAmountPopUp')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
@@ -215,7 +243,7 @@ describe('template spec', () => {
             Timestamp: new Date().toISOString(),
           });
         });
-      cy.get('tbody > tr:nth-child(3) .btnSelect')
+      cy.get('tbody > tr:nth-child(2) .btnSelect')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
@@ -230,33 +258,33 @@ describe('template spec', () => {
       cy.wait(2000)
 
       cy.get('.slsBatchSLD').eq(0)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('29', { force: true });
+        .select('667', { force: true });
 
-      cy.get('#btnColocationSitePopUp')
+      cy.get('#btnFiberizationSitePopUp')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
@@ -269,7 +297,7 @@ describe('template spec', () => {
           });
         });
 
-      cy.get('.col-md-6.col-sm-6 select[name="tblSite_length"]')
+      cy.get('.col-md-6.col-sm-6 select[name="tblSiteHaveMMP_length"]')
         .should('be.visible') // Ensure it's visible
         .select('50')
         .should('have.value', '50'); // Confirm the selection worked
@@ -280,50 +308,42 @@ describe('template spec', () => {
       checkRowsSequentially();
 
 
-      cy.get('#tbxColocationCustomerSiteID').type('Site_' + unique);
-      cy.get('#tbxColocationCustomerSiteName').type('Cust_' + unique);
 
-      cy.get('#slsColocationDocumentOrder').then(($select) => {
-        cy.wrap($select).select('7', { force: true })
+      cy.get('#slsColocationMMPAvailableMMP').then(($select) => {
+        cy.wrap($select).select('20240700011', { force: true })
       })
+      cy.get('#tbxFiberizationSPKWOLOINumber').type('SPK_' + unique + randomValue);
 
-      cy.get('#tbxColocationDocumentName').type('DoctName_' + unique);
+      cy.get('#tbxColocationMMPDocumentName').type('DoctName_' + unique + randomValue);
 
-      cy.get('#fleColocationDocument').attachFile(filePath);
+      cy.get('#fleColocationMMPDocument').attachFile(filePath);
+      cy.get('#fleColocationMMPColocationForm').attachFile(filePath);
 
-
-      cy.get('#fleColocationColocationForm').attachFile(filePath);
-
-      cy.get('#slsColocationLeadProjectManager').then(($select) => {
+      cy.get('#slsColocationMMPLeadProjectManager').then(($select) => {
         cy.wrap($select).select('201102180019', { force: true })
       })
-      cy.get('#slsColocationAccountManager').then(($select) => {
+      cy.get('#slsColocationMMPAccountManager').then(($select) => {
         cy.wrap($select).select('201301180003', { force: true })
       })
 
-      cy.get('#slsNewTowerHeight').then(($select) => {
-        cy.wrap($select).select('0', { force: true })
-      })
-
-      cy.get('#slsColocationShelterType').then(($select) => {
-        cy.wrap($select).select('4', { force: true })
-      })
-      cy.get('#tbxColocationPLNPowerKVA').type(RangerandomValue);
+      cy.get('#tbxColocationMMPFOCore').type(RangerandomValue);
+      cy.get('#tbxColocationMMPFOLength').type(RangerandomValue);
+      cy.get('#tbxColocationMMPDocumentName').type('tbxColocationMMPFOSegment_' + unique + randomValue);
 
       cy.get('#dpkColocationRFITarget')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#slsColocationMLANumber').then(($select) => {
+      cy.get('#tbxColocationMMPLeasePeriod').type(RangerandomValue);
+      cy.get('#slsColocationMMPMLANumber').then(($select) => {
         cy.wrap($select).select('0010-14-F07-39033', { force: true })
       })
-      cy.get('#tbxColocationLeasePeriod').type(RangerandomValue);
 
-      cy.get('#dpkColocationMLADate')
+      cy.get('#dpkColocationMMPMLADate')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tarColocationRemark').type('Remark' + unique);
+      cy.get('#tarColocationMMPRemark').type('Remark' + unique);
 
 
       cy.get("#btnSubmitColocation").click();
@@ -371,8 +391,8 @@ describe('template spec', () => {
         // Add your logic here using the Site ID
       });
 
-
       cy.contains('a', 'Log Out').click({ force: true });
+
       cy.then(() => {
         exportToExcel(testResults);
       });

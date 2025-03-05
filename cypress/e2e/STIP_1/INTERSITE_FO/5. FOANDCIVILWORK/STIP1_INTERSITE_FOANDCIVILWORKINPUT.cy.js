@@ -198,20 +198,6 @@ describe('template spec', () => {
     cy.wait(5000);
 
 
-    cy.get('body').then(($body) => {
-      if ($body.find("#slsMobilePIC").length > 0) {
-        cy.get('#slsMobilePIC').then(($select) => {
-          cy.wrap($select).select(PICVendorMobile1, { force: true });
-        });
-
-        cy.get('#slsMobileCoPIC').then(($select) => {
-          cy.wrap($select).select(PICVendorMobile2, { force: true });
-        });
-
-        cy.get("#btnMobilePICSubmit").click();
-        cy.wait(5000);
-      }
-    });
     cy.get('tr')
       .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '7') // Find the row where the first column contains '6'
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
