@@ -260,9 +260,16 @@ describe('template spec', () => {
 
 
 
-    cy.wait(2000);
-    cy.get("#btnSubmit").click();
-    cy.wait(25000);
+    cy.get('#btnSubmit')
+      .should('be.visible')  // Ensure button is visible
+      .click({ force: true }); // Click the button
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
+
+    cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
+
+    cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
+
+
     // cy.get('.confirm.btn-success').click({ force: true });
     // cy.wait(5000)
 

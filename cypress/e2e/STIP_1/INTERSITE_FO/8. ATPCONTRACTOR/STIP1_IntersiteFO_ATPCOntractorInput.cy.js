@@ -1,9 +1,11 @@
+import 'cypress-file-upload';
 // Fungsi untuk menghasilkan nilai acak dalam rentang tertentu
 const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 
 // Daftar indeks baris yang ingin diubah
 const worktypeRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+const GDLRows = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 const XLSX = require('xlsx');
 const fs = require('fs');
 
@@ -32,6 +34,11 @@ describe('template spec', () => {
   after(() => {
     exportToExcel(testResults); // Export after all tests complete
   });
+  const sorFilePath = "documents/SOR/1a0863_TO_0492_1550_14_20.sor"; // .sor file path
+  const photoFilePath = "documents/IMAGE/adopt.png"; // Photo file path\
+  const excelfilepath = "documents/EXCEL/.xlsx/EXCEL_(1).xlsx"; // Photo file path
+  const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
+  const PDFFilepath = "documents/PDF/C (1).pdf"; // Photo file path
 
   beforeEach(() => {
     const testResults = []; // Array to store test results
@@ -159,24 +166,38 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.wait(3000);
+    cy.wait(5000);
 
     cy.get('tr')
       .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '11') // Find the row where the first column contains '6'
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
-    cy.wait(10000);
+
+
+    // Wait for the table to be visible before proceeding
+    cy.get('#tblOSPFOInstallation', { timeout: 10000 }).should('be.visible');
+
+    // Wait for at least one row with the edit button to appear
+    cy.get('tr .btnEditWorktype', { timeout: 10000 }).should('be.visible');
+
     worktypeRows.forEach((index) => {
+      cy.wait(2000);
       cy.get('#tblOSPFOInstallation tbody tr')
         .eq(index) // Pilih baris sesuai indeks
         .find('.btnEditWorktype') // Temukan tombol edit
         .click({ force: true });
 
       // Input nilai acak ke dalam "tbxTotal"
-      cy.get('#tbxTotal').clear().type(randomRangeValue(10, 100)); // Rentang bisa disesuaikan
-      cy.get('#tarRemarkVendor').type('Remark' + unique);
-      cy.get('#btnSaveWorktypeData').click();
       cy.wait(2000);
+      cy.get('#tbxTotal')
+        .should('be.enabled') // Pastikan input bisa diedit
+        .focus() // Fokus ke input
+        .clear()
+        .type(randomRangeValue(10, 100));
+      cy.wait(2000);
+      cy.get('#tarRemarkVendor').clear().type('Remark' + unique);
+      cy.get('#btnSaveWorktypeData').click();
+      cy.wait(3000);
       cy.get('.sa-confirm-button-container button.confirm').click();
     });
     cy.wait(2000);
@@ -185,15 +206,68 @@ describe('template spec', () => {
     cy.get('#dpkATPPlanDate')
       .invoke('val', date)
       .trigger('change');
-    cy.wait(5000);
+    cy.get('#tblOSPFOInstallation', { timeout: 10000 }).should('be.visible');
+
+    // Wait for at least one row with the edit button to appear
+    cy.get('tr .btnEditWorktype', { timeout: 10000 }).should('be.visible');
 
     cy.get('#tbxVendorProjectManager').type('PICVENDOR' + randomRangeValue);
     cy.wait(1000);
     cy.get('#tbxCableLength').type(randomValue);
     cy.wait(1000);
-    cy.get('#btnSubmitScheduling').click();
-    cy.wait(10000);
+    // Check if the submit button is disabled
+    cy.get('#btnSubmitScheduling').should('be.disabled').then(($btn) => {
+      if ($btn.is(':disabled')) {
+        // Click btnBaso
+        cy.get('#btnBaso').click();
 
+        // Type quantity
+
+
+        // Type GDL number, ensuring max is 8
+        for (let i = 1; i <= 8; i++) {
+          cy.get(`#txtGDLNumber${i}`).type(`GDL-${i}`);
+          cy.get(`#txtQuantity${i}`).should('be.enabled') // Pastikan input bisa diedit
+            .focus() // Fokus ke input
+            .clear()
+            .type(randomRangeValue(250, 500));
+        }
+
+        // Type warehouse location and notes
+        cy.get('#tarWarehouseLocation').type('Main Warehouse');
+        cy.get('#tarGDLNotes').type('Handled with care');
+
+
+        // Select the "Yes" radio button for AvailabilityAdditionalGDL
+        // Try different approaches to ensure the radio button is checked
+        cy.get('input[name="AvailabilityAdditionalGDL"][value="Yes"]').parent().click(); // Preferred for iCheck
+        cy.get('input[name="AvailabilityAdditionalGDL"][value="Yes"]').check({ force: true }); // Backup solution
+
+        // Upload document
+        cy.get('#fleAdditionalGDLDocument').attachFile(PDFFilepath);
+        cy.wait(1000);
+        cy.get('#fleJustificationDocument').attachFile(PDFFilepath);
+        cy.wait(1000);
+
+        // Select the "Yes" radio button for AvailabilityAdditionalGDL
+        cy.get('#btnSaveGDL').click();
+        // Wait for the modal to close and verify btnSubmitScheduling is enabled
+        cy.get('.sweet-alert.confirm.visible', { timeout: 10000 }).should('be.visible');
+        cy.get('.sweet-alert .confirm').click();
+        cy.get('.sweet-alert').should('not.exist'); // Pastikan popup hilang
+        cy.get('#tblOSPFOInstallation', { timeout: 10000 }).should('be.visible');
+        // Wait for at least one row with the edit button to appear
+        cy.get('tr .btnEditWorktype', { timeout: 10000 }).should('be.visible');
+
+
+        cy.get('#btnSubmitScheduling').click();
+        // Wait for the modal to close and verify btnSubmitScheduling is enabled
+        cy.get('#btnSubmitScheduling').should('not.be.disabled').click();
+
+      }
+    });
+    // Add wait to ensure processing
+    cy.wait(10000);
 
 
     cy.contains('a', 'Log Out').click({ force: true });

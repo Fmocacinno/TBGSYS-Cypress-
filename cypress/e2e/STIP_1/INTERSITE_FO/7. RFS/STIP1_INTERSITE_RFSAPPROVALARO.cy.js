@@ -159,11 +159,15 @@ describe('template spec', () => {
 
 
 
-    cy.get('#btnApprove').click();
-    cy.wait(7000);
-    cy.get('.sa-confirm-button-container button.confirm').click();
+    cy.get('#btnApprove')
+      .should('be.visible')  // Ensure button is visible
+      .click({ force: true }); // Click the button
 
-    cy.wait(2000);
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 15000 }).should('be.visible');
+
+    cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
+
+    cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
 
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
