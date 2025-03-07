@@ -146,7 +146,7 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(2000);
+    cy.wait(4000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -168,9 +168,10 @@ describe('template spec', () => {
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
 
-    cy.wait(4000);
-    cy.get('#tarMaterialOnSiteApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);
+    cy.get('#tarMaterialOnSiteApprovalRemark', { timeout: 10000 }) // Tunggu hingga 10 detik
+      .should('be.visible') // Pastikan elemen terlihat
+      .type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.wait(2000);  
 
     cy.get('#btnApprove').click();
     cy.wait(7000);

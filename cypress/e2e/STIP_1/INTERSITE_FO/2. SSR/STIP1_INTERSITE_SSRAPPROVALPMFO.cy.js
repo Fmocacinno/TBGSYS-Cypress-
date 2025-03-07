@@ -172,7 +172,11 @@ describe('template spec', () => {
       .click(); // Click the button
 
     cy.wait(4000);
-    cy.get('#tarSSRApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.wait(2000); // Menunggu 2 detik sebelum memeriksa elemen
+    cy.get('#tarSSRApprovalRemark', { timeout: 15000 })
+      .should('be.visible')
+      .type('Remark FROM AUTOMATION' + unique + randomString);
+    // cy.get('#tarSSRApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
     cy.wait(2000);
 
     cy.get('#btnApprove').click();

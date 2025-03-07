@@ -264,7 +264,14 @@ describe('template spec', () => {
     cy.get('#tarOTDRInstallationRemark').type('Remark FROM AUTOMATION' + unique + randomRangeValue);
     cy.wait(2000);
     cy.get("#btnSubmit").click();
-    cy.wait(25000);
+    // cy.wait(30000);
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 15000 })
+      .should('be.visible')
+      .contains('Success');
+
+    cy.get('.sa-confirm-button-container .confirm') // Target tombol "OK"
+      .should('be.visible')
+      .click();
 
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {

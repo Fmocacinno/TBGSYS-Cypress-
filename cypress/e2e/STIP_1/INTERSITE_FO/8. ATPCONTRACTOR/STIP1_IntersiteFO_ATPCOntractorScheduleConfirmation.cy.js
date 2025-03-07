@@ -95,7 +95,7 @@ describe('template spec', () => {
   //AM
   it('OTDR Input by vendor', () => {
 
-    cy.visit(`${baseUrlTBGSYS}/login`);
+    cy.visit(`${baseUrlVP}/login`);
 
 
     cy.get('#tbUserID').type(PICVendorManageServiceMapped);

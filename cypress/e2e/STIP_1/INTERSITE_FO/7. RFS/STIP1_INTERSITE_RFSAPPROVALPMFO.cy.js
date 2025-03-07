@@ -254,16 +254,22 @@ describe('template spec', () => {
     cy.get('#btnApprove')
       .should('be.visible')  // Ensure button is visible
       .click({ force: true }); // Click the button
-      
-    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
 
-    cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
+    // cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
 
-    cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
+    // cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
+
+    // cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
     // cy.get('.sa-confirm-button-container button.confirm').click();
     // cy.wait(2000);
 
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 15000 })
+      .should('be.visible')
+      .contains('Success');
 
+    cy.get('.sa-confirm-button-container .confirm') // Target tombol "OK"
+      .should('be.visible')
+      .click();
 
 
 

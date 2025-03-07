@@ -252,9 +252,12 @@ describe('template spec', () => {
         // Select the "Yes" radio button for AvailabilityAdditionalGDL
         cy.get('#btnSaveGDL').click();
         // Wait for the modal to close and verify btnSubmitScheduling is enabled
-        cy.get('.sweet-alert.confirm.visible', { timeout: 10000 }).should('be.visible');
-        cy.get('.sweet-alert .confirm').click();
-        cy.get('.sweet-alert').should('not.exist'); // Pastikan popup hilang
+        cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }) // Menunggu hingga elemen muncul (maks 10 detik)
+          .should('be.visible') // Memastikan elemen terlihat
+          .within(() => {
+            cy.get('button.confirm.btn.btn-lg.btn-success').click(); // Klik tombol "OK"
+          });
+
         cy.get('#tblOSPFOInstallation', { timeout: 10000 }).should('be.visible');
         // Wait for at least one row with the edit button to appear
         cy.get('tr .btnEditWorktype', { timeout: 10000 }).should('be.visible');

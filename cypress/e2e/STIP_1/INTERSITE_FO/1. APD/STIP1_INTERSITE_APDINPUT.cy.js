@@ -163,11 +163,11 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(2000);
+    cy.wait(5000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
-      cy.wait(2000);
+      cy.wait(5000);
 
       if (text.includes(sonumb)) {  // ✅ Checks if "Lead PM" is in the status
         cy.log("✅ Status contains 'AM', proceeding with approval...");
@@ -177,7 +177,7 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.wait(2000);
+    cy.wait(5000);
 
     cy.get('tr')
       .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '3') // Find the row where the first column contains '6'

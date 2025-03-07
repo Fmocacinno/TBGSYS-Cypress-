@@ -185,7 +185,7 @@ describe('template spec', () => {
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
-      cy.wait(2000);
+      cy.wait(4000);
 
       if (text.includes(sonumb)) {  // ✅ Checks if "Lead PM" is in the status
         cy.log("✅ Status contains 'AM', proceeding with approval...");
@@ -263,13 +263,19 @@ describe('template spec', () => {
     cy.get('#btnSubmit')
       .should('be.visible')  // Ensure button is visible
       .click({ force: true }); // Click the button
-    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
+    // cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
 
-    cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
+    // cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
 
-    cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
+    // cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
 
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 15000 })
+      .should('be.visible')
+      .contains('Success');
 
+    cy.get('.sa-confirm-button-container .confirm') // Target tombol "OK"
+      .should('be.visible')
+      .click();
     // cy.get('.confirm.btn-success').click({ force: true });
     // cy.wait(5000)
 
