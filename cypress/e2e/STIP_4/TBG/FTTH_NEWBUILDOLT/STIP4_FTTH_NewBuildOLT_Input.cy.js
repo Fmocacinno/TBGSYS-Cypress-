@@ -55,7 +55,7 @@ const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, SONumberBackhaul, SiteIDMacro;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -65,13 +65,13 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -93,6 +93,8 @@ describe('template spec', () => {
       dashboard = values.dashboard;
       PICVendorMobile1 = values.PICVendorMobile1;
       PICVendorMobile2 = values.PICVendorMobile2;
+      SONumberBackhaul = values.SONumberBackhaul;
+      SiteIDMacro = values.SiteIDMacro;
     });
 
 
@@ -164,14 +166,26 @@ describe('template spec', () => {
       cy.wait(2000);
 
       cy.get('#slsSTIPCategory').select('4', { force: true });
-      cy.get('#slsProduct').select('93', { force: true });
+      cy.get('#slsProduct').select('96', { force: true });
       cy.get('#slsAssetSupportCompany').select('PT. TOWER BERSAMA', { force: true });
       cy.get('#slsAssetSupportCustomer').select('TBG', { force: true });
+      cy.get('input[name="rdoSiteSurveyProjectType"][value="1"]').parent().click()
+      cy.wait(2000);
       cy.get('#slsAssetSupportRegion').select('1', { force: true });
-      cy.get('#slsAssetSupportBatch').select('UMU - Q3 AOP 2024 Batch 2', { force: true });
+      cy.get('#slsAssetSupportBatch').select('FTTH SEKARTAJI RIK TEST', { force: true });
+      cy.get('#btnFTTHSTIPBackhaulPopUp').click();
+      cy.get('#tbxFTTHBackhaulSearchSONumber').type(lat);
 
-      cy.get('#tbxAssetSupportSiteName').type('Site_' + unique + randomValue);
-      cy.get('#tbxAssetSupportCustomerSiteID').type('Cust_' + unique + randomValue);
+
+      cy.get('tbody > tr:nth-child(3) .btnSelect').click();
+
+      cy.wait(2000)
+
+
+
+
+
+
 
       cy.get('#slsNewDocumentOrder').select('7', { force: true });
       cy.get('#slsAssetSupportDocumentOrder').select('BAK', { force: true });
@@ -227,7 +241,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/soDataBackhaul.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
