@@ -65,13 +65,13 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_NEWBUILDOLT/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -169,7 +169,7 @@ describe('template spec', () => {
       cy.get('#slsProduct').select('96', { force: true });
       cy.get('#slsAssetSupportCompany').select('PT. TOWER BERSAMA', { force: true });
       cy.get('#slsAssetSupportCustomer').select('TBG', { force: true });
-      cy.get('input[name="rdoEndCustomer"][value="1"]').parent().click()
+      cy.get('input[name="rdoSiteSurveyProjectType"][value="1"]').parent().click()
       cy.wait(2000);
       cy.get('#slsAssetSupportRegion').select('1', { force: true });
       cy.get('#slsAssetSupportBatch').select('FTTH SEKARTAJI RIK TEST', { force: true });
@@ -241,7 +241,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/TBG/FTTH_NEWBUILDOLT/soDataOLT.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
