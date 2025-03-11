@@ -65,13 +65,13 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_NEWBUILDOLT/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_NEWBUILDOLT/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -241,7 +241,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/TBG/FTTH_NEWBUILDOLT/soDataNewBuildOLT.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
