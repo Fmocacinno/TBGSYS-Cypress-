@@ -30,5 +30,7 @@
   "menu1": "/STIP/Input",
   "menu2": "/STIP/Approval",
   "menu3": "/STIP/Input",
-  "menu4": "/STIP/Input"
+  "menu4": "/STIP/Input",
+  "SONumberBackhaul": "0030274100031",
+  "SiteIDMacro": "1108721003 "
 }

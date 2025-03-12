@@ -182,7 +182,8 @@ describe('template spec', () => {
       cy.get('#tbxSiteSurveyCustomerSiteID').type('Site_' + unique + randomValue);
       cy.get('#tbxSiteSurveyTargetHomepass').type(RangerandomValue);
       cy.wait(2000);
-      cy.get('#slsSiteSurveyBatch2').select('FTTH SEKARTAJI RIK TEST', { force: true });
+      cy.get('#slsSiteSurveyBatch2').select('UMU - Q3 AOP 2024 Batch 2', { force: true });
+      //UMU - Q3 AOP 2024 Batch 2
       cy.get('#slsSiteSurveyPIC').select('Project', { force: true });
       cy.wait(2000);
       cy.get('#slsSiteSurveyLeadProjectManager').select(userLeadPM, { force: true });
@@ -225,12 +226,53 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
+
+            // const backhaulFilePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/PKP/FTTH_BACKHAUL/DataVariable.json';
+            // const newBuildFilePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/PKP/FTTH_NEWBUILDOLT/DataVariable.json';
             const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_8/TBG/FTTH_SURVEY/soDataSurvey.json';
+            // cy.readFile(backhaulFilePath).then((backhaulData) => {
+            //   backhaulData.SONumberBackhaul = soNumber; // ✅ Update the field
+            //   cy.writeFile(backhaulFilePath, backhaulData);
+            //   cy.log('✅ Updated SONumberBackhaul in FTTH_BACKHAUL DataVariable.json');
+            // });
+
+            // cy.readFile(newBuildFilePath).then((newBuildData) => {
+            //   newBuildData.SONumberBackhaul = soNumber; // ✅ Update the field
+            //   cy.writeFile(newBuildFilePath, newBuildData);
+            //   cy.log('✅ Updated SONumberBackhaul in FTTH_NEWBUILDOLT DataVariable.json');
+            // });
+
+
+
+
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
         });
+
         // Add your logic here using the Site ID
+      });
+
+      cy.get('@soNumber').then((soNumber) => {
+        cy.get('@siteId').then((siteId) => {
+          const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/PKP/FTTH_BACKHAUL/soDataBackhaul.json';
+          const backhaulFilePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/PKP/FTTH_BACKHAUL/DataVariable.json';
+          const newBuildFilePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/PKP/FTTH_NEWBUILDOLT/DataVariable.json';
+          // Read, update, and write for FTTH_BACKHAUL
+          cy.readFile(backhaulFilePath).then((backhaulData) => {
+            backhaulData.SONumberBackhaul = soNumber; // ✅ Update the field
+            cy.writeFile(backhaulFilePath, backhaulData);
+            cy.log('✅ Updated SONumberBackhaul in FTTH_BACKHAUL DataVariable.json');
+          });
+
+          cy.readFile(newBuildFilePath).then((newBuildData) => {
+            newBuildData.SONumberBackhaul = soNumber; // ✅ Update the field
+            cy.writeFile(newBuildFilePath, newBuildData);
+            cy.log('✅ Updated SONumberBackhaul in FTTH_NEWBUILDOLT DataVariable.json');
+          });
+          cy.writeFile(filePath, { soNumber, siteId });
+
+        });
       });
       cy.contains('a', 'Log Out').click({ force: true });
       cy.then(() => {

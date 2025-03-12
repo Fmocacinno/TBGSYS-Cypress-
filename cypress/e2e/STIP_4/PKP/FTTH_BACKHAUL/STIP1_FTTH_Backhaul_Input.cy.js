@@ -65,13 +65,13 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -227,13 +227,31 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/PKP/FTTH_BACKHAUL/soDataBackhaul.json';
+            const backhaulFilePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/PKP/FTTH_BACKHAUL/DataVariable.json';
+            const newBuildFilePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_4/PKP/FTTH_NEWBUILDOLT/DataVariable.json';
+            // Read, update, and write for FTTH_BACKHAUL
+            cy.readFile(backhaulFilePath).then((backhaulData) => {
+              backhaulData.SONumberBackhaul = soNumber; // ✅ Update the field
+              cy.writeFile(backhaulFilePath, backhaulData);
+              cy.log('✅ Updated SONumberBackhaul in FTTH_BACKHAUL DataVariable.json');
+            });
+
+            cy.readFile(newBuildFilePath).then((newBuildData) => {
+              newBuildData.SONumberBackhaul = soNumber; // ✅ Update the field
+              cy.writeFile(newBuildFilePath, newBuildData);
+              cy.log('✅ Updated SONumberBackhaul in FTTH_NEWBUILDOLT DataVariable.json');
+            });
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
         });
         // Add your logic here using the Site ID
       });
+
+
+
+
       cy.contains('a', 'Log Out').click({ force: true });
       cy.then(() => {
         exportToExcel(testResults);
