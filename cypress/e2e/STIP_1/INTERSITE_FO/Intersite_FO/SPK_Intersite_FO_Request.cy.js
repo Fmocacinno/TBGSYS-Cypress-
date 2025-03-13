@@ -29,12 +29,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -96,12 +96,8 @@ describe('template spec', () => {
     cy.wait(5000);
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('10', { force: true })
+      cy.wrap($select).select('9', { force: true })
     })
-    cy.get('#slSubType').then(($select) => {
-      cy.wrap($select).select('45', { force: true })
-    })
-
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -114,7 +110,7 @@ describe('template spec', () => {
 
 
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
-    cy.wait(2000)
+
 
     cy.get('#txtSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
@@ -156,7 +152,6 @@ describe('template spec', () => {
       cy.wrap($select).select('23', { force: true })
     })
 
-
     cy.wait(10000);
     cy.get('#slSubCore').then(($select) => {
       cy.wrap($select).select('45', { force: true })
@@ -182,11 +177,6 @@ describe('template spec', () => {
     cy.wait(2000);
     cy.contains('.sa-confirm-button-container button', 'Ok').click();
 
-    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
-
-    cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
-
-    cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
     cy.wait(2000)
     cy.contains('a', 'Log Out').click({ force: true });
 

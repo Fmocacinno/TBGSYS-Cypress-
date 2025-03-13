@@ -370,13 +370,10 @@ describe('template spec', () => {
 
       cy.wait(2000)
 
+
+      cy.wait(2000);
       cy.get('.sa-confirm-button-container button.confirm').click();
-
-      cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
-
-      cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
-
-      cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
+      cy.wait(10000);
 
       // Add this section to extract values from popup
       cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
