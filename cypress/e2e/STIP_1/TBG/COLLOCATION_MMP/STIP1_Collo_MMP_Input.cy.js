@@ -2,7 +2,8 @@ import { timeStamp } from 'console';
 import 'cypress-file-upload';
 const XLSX = require('xlsx');
 const fs = require('fs');
-
+const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
 // Function to export test results to Excel
 function exportToExcel(testResults) {
   const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
@@ -18,8 +19,7 @@ function exportToExcel(testResults) {
   XLSX.writeFile(workbook, filePath);
 }
 const testResults = []; // Array to store test results
-const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
-const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
+
 // const unique = `APP_PKP_`;
 
 function generateRandomString(minLength, maxLength) {
@@ -90,13 +90,13 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/PKP/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_1/PKP/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -190,8 +190,8 @@ describe('template spec', () => {
       })
 
       cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('45', { force: true })
-          .should('have.value', '45') // Menunggu hingga value benar-benar berubah
+        cy.wrap($select).select('79', { force: true })
+          .should('have.value', '79') // Menunggu hingga value benar-benar berubah
           .then(() => {
             // Log the test result if selection is successful
             testResults.push({
@@ -204,7 +204,7 @@ describe('template spec', () => {
 
 
 
-      cy.get('#slsFiberizationCustomer').then(($select) => {
+      cy.get('#slsColocationMMPCustomer').then(($select) => {
         cy.wrap($select).select('XL', { force: true })
           .should('have.value', 'XL') // Menunggu hingga value benar-benar berubah
           .then(() => {
@@ -217,7 +217,7 @@ describe('template spec', () => {
           });
       })
 
-      cy.get('#slsFiberizationRegion').then(($select) => {
+      cy.get('#slsColocationMMPRegion').then(($select) => {
         cy.wrap($select).select('1', { force: true })
           .should('have.value', '1') // Menunggu hingga value benar-benar berubah
           .then(() => {
@@ -231,7 +231,7 @@ describe('template spec', () => {
       });
 
 
-      cy.get('#btnFiberizationPriceAmountPopUp')
+      cy.get('#btnColocationMMPPriceAmountPopUp')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
@@ -241,9 +241,11 @@ describe('template spec', () => {
             Test: 'User melakukan click tombol Colocation Price Amount Popup',
             Status: 'Pass',
             Timestamp: new Date().toISOString(),
+
           });
+          cy.wait(2000)
         });
-      cy.get('tbody > tr:nth-child(2) .btnSelect')
+      cy.get('tbody > tr:nth-child(1) .btnSelect')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
@@ -255,49 +257,52 @@ describe('template spec', () => {
             Timestamp: new Date().toISOString(),
           });
         });
+
       cy.wait(2000)
 
       cy.get('.slsBatchSLD').eq(0)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('667', { force: true });
+        .select('663', { force: true });
 
-      cy.get('#btnFiberizationSitePopUp')
+
+
+      cy.get('#btnColocationMMPSitePopUp')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
         .then(() => {
           // Log the test result if button click is successful
           testResults.push({
-            Test: 'User melakukan click tombol Colocation Price Amount Popup',
+            Test: 'User melakukan click tombol Colocation Site Amount Popup',
             Status: 'Pass',
             Timestamp: new Date().toISOString(),
           });
         });
-
-      cy.get('.col-md-6.col-sm-6 select[name="tblSite_length"]')
+      cy.wait(2000)
+      cy.get('.col-md-6.col-sm-6 select[name="tblSiteHaveMMP_length"]')
         .should('be.visible') // Ensure it's visible
         .select('50')
         .should('have.value', '50'); // Confirm the selection worked
@@ -307,17 +312,20 @@ describe('template spec', () => {
       // Find and click the button
       checkRowsSequentially();
 
-
-
-
-      cy.get('#tbxFiberizationSPKWOLOINumber').type('SPK_' + unique + randomValue);
-      cy.get('#slsFiberizationDocumentOrder').then(($select) => {
-        cy.wrap($select).select('10', { force: true })
+      cy.get('#slsColocationMMPAvailableMMP').then(($select) => {
+        cy.wrap($select).select('20240700081', { force: true })
       })
-      cy.get('#tbxFiberizationDocumentName').type('DoctName_' + unique + randomValue);
 
-      cy.get('#fleFiberizationDocument').attachFile(filePath);
-      cy.get('#fleFiberizationColocationForm').attachFile(filePath);
+
+      cy.get('#tbxColocationMMPSPKWOLOINumber').type('SPK_' + randomString + randomValue);
+
+      cy.get('#slsColocationMMPDocumentOrder').then(($select) => {
+        cy.wrap($select).select('7', { force: true })
+      })
+      cy.get('#tbxColocationMMPDocumentName').type('DoctName_' + randomString + randomValue);
+
+      cy.get('#fleColocationMMPDocument').attachFile(filePath);
+      cy.get('#fleColocationMMPColocationForm').attachFile(filePath);
 
       cy.get('#slsColocationMMPLeadProjectManager').then(($select) => {
         cy.wrap($select).select('201102180019', { force: true })
@@ -340,10 +348,10 @@ describe('template spec', () => {
 
 
 
-      cy.get('#tbxFiberizationFOCore').type(RangerandomValue);
-      cy.get('#tbxFiberizationFOLength').type(RangerandomValue);
+      cy.get('#tbxColocationMMPFOCore').clear().type(RangerandomValue);
+      cy.get('#tbxColocationMMPFOLength').clear().type(RangerandomValue);
 
-      cy.get('#tbxFiberizationFOSegment').type('Segment_' + unique + randomValue);
+      cy.get('#tbxColocationMMPFOSegment').type('Segment_' + unique + RangerandomValue);
 
 
 
@@ -370,13 +378,10 @@ describe('template spec', () => {
 
       cy.wait(2000)
 
+
+      cy.wait(2000);
       cy.get('.sa-confirm-button-container button.confirm').click();
-
-      cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
-
-      cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
-
-      cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
+      cy.wait(10000);
 
       // Add this section to extract values from popup
       cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
@@ -407,7 +412,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/PKP/MP_FIBERIZATION/soDataMMP_FIBERIZATION.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

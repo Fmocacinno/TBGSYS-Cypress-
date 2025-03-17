@@ -34,7 +34,7 @@ describe('template spec', () => {
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/PKP/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/PKP/MP_FIBERIZATION/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -333,7 +333,7 @@ describe('template spec', () => {
             cy.get('.nav-tabs a[href="#tabApprovalDetail"]').click();
             cy.wait(3000);
             cy.wrap($btn).click();
-
+            cy.wait(3000);
             cy.log("✅ Button clicked successfully");
           } else {
             cy.log("⚠️ Button not clickable, skipping...");
@@ -343,7 +343,7 @@ describe('template spec', () => {
       } else {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
-      cy.wait(2000);
+      cy.wait(4000);
     });
 
     cy.wait(4000);
@@ -426,9 +426,9 @@ describe('template spec', () => {
       } else {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
-      cy.wait(2000);
+      cy.wait(4000);
     });
-    cy.wait(2000);
+    cy.wait(4000);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);

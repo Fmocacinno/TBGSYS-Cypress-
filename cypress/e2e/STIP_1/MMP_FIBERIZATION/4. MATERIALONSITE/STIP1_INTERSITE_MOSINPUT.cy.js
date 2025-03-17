@@ -1,5 +1,7 @@
-// Fungsi untuk menghasilkan nilai acak dalam rentang tertentu
 import 'cypress-file-upload';
+const minLength = 5;
+const maxLength = 15;
+const randomString = generateRandomString(minLength, maxLength);
 const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 // Daftar indeks baris yang ingin diubah
@@ -22,26 +24,40 @@ function exportToExcel(testResults) {
   XLSX.writeFile(workbook, filePath);
 }
 
+function generateRandomString(minLength, maxLength) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+}
+// const date = "2-Jan-2025";
+// const user = "555504220025"
+// const pass = "123456"
+const filePath = 'documents/pdf/C (1).pdf';
+const latMin = -11.0; // Southernmost point
+const latMax = 6.5;   // Northernmost point
+const longMin = 94.0; // Westernmost point
+const longMax = 141.0; // Easternmost point
+
+// Generate random latitude and longitude within bounds
+const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
+const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
+//Batas
 describe('template spec', () => {
 
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
   const baseId = 24; // Base ID
   const index = 1; // Increment index for unique IDs
   before(() => {
     testResults = []; // Reset results before all tests
   });
-  function generateRandomString(minLength, maxLength) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-    let result = '';
 
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters.charAt(randomIndex);
-    }
-    return result;
-  }
   const minLength = 5;
   const maxLength = 15;
   const randomString = generateRandomString(minLength, maxLength);
@@ -54,6 +70,7 @@ describe('template spec', () => {
   const photoFilePath = "documents/IMAGE/adopt.png"; // Photo file path\
   const excelfilepath = "documents/EXCEL/.xlsx/EXCEL_(1).xlsx"; // Photo file path
   const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
+  const PDFFilepath = "documents/PDF/C (1).pdf"; // Photo file path
 
 
 
@@ -66,13 +83,13 @@ describe('template spec', () => {
     const user = "555504220025";
 
 
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -93,6 +110,8 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
+      PICVendorMobile1 = values.PICVendorMobile1;
+      PICVendorMobile2 = values.PICVendorMobile2;
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -105,6 +124,7 @@ describe('template spec', () => {
 
     cy.visit(`${baseUrlVP}${login}`);
 
+
     cy.get('#tbUserID').type(PICVendor);
     cy.get('#tbPassword').type(pass);
 
@@ -115,7 +135,7 @@ describe('template spec', () => {
     });
 
     cy.get("#btnsubmit").click();
-    cy.wait(2000);
+    cy.wait(2000)
 
     cy.visit(`${baseUrlVP}/ProjectActivity/ProjectActivityHeader`)
       .url().should('include', `${baseUrlVP}/ProjectActivity/ProjectActivityHeader`);
@@ -167,7 +187,7 @@ describe('template spec', () => {
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
-      cy.wait(5000);
+      cy.wait(2000);
 
       if (text.includes(sonumb)) {  // ✅ Checks if "Lead PM" is in the status
         cy.log("✅ Status contains 'AM', proceeding with approval...");
@@ -179,29 +199,78 @@ describe('template spec', () => {
     });
     cy.wait(5000);
 
-    cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '4') // Find the row where the first column contains '6'
-      .find('td:nth-child(2) .btnSelect') // Find the button in the second column
-      .click(); // Click the button
-    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
+
+
+
+
+    cy.get('body').then(($body) => {
+      if ($body.find('#slsMobilePIC').length > 0 && $body.find('#slsMobilePIC').is(':visible')) {
+        // Run the first set of actions
+        cy.get('#slsMobilePIC').then(($select) => {
+          cy.wrap($select).select(PICVendorMobile1, { force: true });
+        });
+
+        cy.get('#slsMobileCoPIC').then(($select) => {
+          cy.wrap($select).select(PICVendorMobile2, { force: true });
+        });
+
+        cy.get("#btnMobilePICSubmit").click({ force: true });
+        cy.wait(5000);
+      }
+
+      // Run the second block of code (always executed)
+      cy.get('tr')
+        .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'
+        .find('td:nth-child(2) .btnSelect') // Find the button in the second column
+        .click(); // Click the button
+      cy.wait(1000);
+    });
+
+
+    // Always execute this part
+    // cy.get('tr')
+    //   .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6')
+    //   .find('td:nth-child(2) .btnSelect')
+    //   .click();
+    // cy.wait(1000);
+
+
+
+
+
+
+    cy.get('#dpkMaterialOnSiteDate')
+      .invoke('val', date)
+      .trigger('change');
+    cy.get('#fleMaterialOnSiteDocument').attachFile(PDFFilepath);
     cy.wait(1000);
 
-    cy.get('#fleKMLFile').attachFile(KMLfilepath);
-    cy.wait(5000);
-    cy.get("#btnProcess").click();
+    cy.get('.form-group')
+      .contains('Penyimpanan Material yang Memadai')
+      .parent()
+      .find('.iradio_flat-blue')
+      .eq(0) // Click the second radio button (Not OK)
+      .click({ force: true }); //<<radio button
+
+    cy.get('#tarMaterialOnSiteRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.wait(2000);
+
+
+    cy.get("#btnSubmit").click();
     cy.wait(5000);
     cy.get('.confirm.btn-success').click({ force: true });
     cy.wait(5000)
-    cy.get('#tarDrumplanDropFORemark').type('Remark FROM AUTOMATION' + unique + randomRangeValue(0, 10));
-    cy.wait(2000);
-    cy.get("#btnSubmit").click();
-    cy.wait(2000);
 
-    cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
-      .should('be.visible');
+    // cy.get("#btnSubmit").click();
+    // cy.wait(7000);
 
-    cy.get('.sweet-alert button.confirm')
-      .click({ force: true });
+    // cy.get('.confirm.btn-success').click({ force: true });
+    // cy.wait(5000)
+    // cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
+    //   .should('be.visible');
+
+    // cy.get('.sweet-alert button.confirm')
+    //   .click({ force: true });
 
     cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });

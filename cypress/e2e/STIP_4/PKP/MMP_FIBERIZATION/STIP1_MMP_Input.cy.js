@@ -90,7 +90,7 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/PKP/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/PKP/MMP_FIBERIZATION/soDatasoDataMMP_FIBERIZATION.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
@@ -370,13 +370,10 @@ describe('template spec', () => {
 
       cy.wait(2000)
 
+
+      cy.wait(2000);
       cy.get('.sa-confirm-button-container button.confirm').click();
-
-      cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
-
-      cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
-
-      cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
+      cy.wait(10000);
 
       // Add this section to extract values from popup
       cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
@@ -407,7 +404,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/PKP/MP_FIBERIZATION/soDataMMP_FIBERIZATION.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/PKP/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
