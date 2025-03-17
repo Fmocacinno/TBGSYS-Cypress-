@@ -369,7 +369,7 @@ describe('template spec', () => {
           .should('be.visible')
           .click();
 
-        cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
+        cy.contains('a', 'Log Out').click({ force: true });
         cy.then(() => {
           exportToExcel(testResults);
         });

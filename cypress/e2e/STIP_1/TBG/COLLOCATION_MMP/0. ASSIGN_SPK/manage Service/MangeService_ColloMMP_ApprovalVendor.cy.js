@@ -19,7 +19,9 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, PICVendor, PICVendorManageService, UservendorManageService, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+
+
   before(() => {
     testResults = []; // Reset results before all tests
   });
@@ -28,12 +30,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -47,6 +49,8 @@ describe('template spec', () => {
       Uservendor = values.Uservendor;
       pass = values.pass;
       PICVendor = values.PICVendor;
+      PICVendorManageService = values.PICVendorManageService;
+      UservendorManageService = values.UservendorManageService;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
       menu1 = values.menu1;
@@ -56,6 +60,7 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
+
     });
 
 
@@ -66,8 +71,9 @@ describe('template spec', () => {
 
   //AM
   it('Material ON Site Approval PM FO', () => {
+
     cy.visit(`${baseUrlVP}${login}`);
-    cy.get('#tbUserID').type(PICVendor);
+    cy.get('#tbUserID').type(PICVendorManageService);
     cy.get('#tbPassword').type(pass);
 
 
@@ -91,11 +97,12 @@ describe('template spec', () => {
 
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('10', { force: true })
+      cy.wrap($select).select('11', { force: true })
     })
     cy.get('#slSubType').then(($select) => {
-      cy.wrap($select).select('45', { force: true })
+      cy.wrap($select).select('92', { force: true })
     })
+
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -144,7 +151,7 @@ describe('template spec', () => {
     // //   .should('have.attr', 'href')
     // //   .then((href) => {
     // //     const baseUrl = "http://tbgappdev111.tbg.local:8128";
-    // //     cy.visit(`${ baseUrl }${ href }`);
+    // //     cy.visit(`${baseUrl}${href}`);
     // //   });
     // cy.get('.btnSelect').first().click();
     // cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
@@ -154,6 +161,7 @@ describe('template spec', () => {
 
     cy.get('.btnSelect').first().trigger('click', { force: true });
     cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
+
       cy.visit(`${baseUrlVP}${href}`);
     });
 
@@ -166,11 +174,14 @@ describe('template spec', () => {
 
     cy.get('#btnSubmit').click();
     cy.wait(2000);
-    cy.contains('.sa-confirm-button-container button', 'Ok').click();
 
-    cy.wait(5000)
     cy.get('.sa-confirm-button-container .confirm').click();
-    cy.wait(5000)
+
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }).should('be.visible');
+
+    cy.get('.sweet-alert h2').should('have.text', 'Success'); // Verify success message
+
+    cy.get('.sweet-alert .confirm').click(); // Click the "OK" button
 
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {

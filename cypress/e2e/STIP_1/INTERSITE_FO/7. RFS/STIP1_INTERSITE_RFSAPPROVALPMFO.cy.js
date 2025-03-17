@@ -113,17 +113,20 @@ describe('template spec', () => {
     });
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
-    // Check if the error pop-up is visible
-    cy.get('h2').then(($h2) => {
-      if ($h2.text().includes('Error on System')) {
+    // Check if the error pop-up exists without failing the test
+    cy.document().then((doc) => {
+      const errorPopup = doc.querySelector('h2');
+
+      if (errorPopup && errorPopup.innerText.includes('Error on System')) {
         cy.log('🚨 Error pop-up detected! Clicking OK.');
 
-        // Click the "OK" button
-        cy.get('.confirm.btn-error').click();
+        // Click the "OK" button if the pop-up is present
+        cy.get('.confirm.btn-error').should('be.visible').click();
       } else {
-        cy.log('✅ No error pop-up detected.');
+        cy.log('✅ No error pop-up detected, continuing...');
       }
     });
+
 
     cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
@@ -133,6 +136,7 @@ describe('template spec', () => {
         Timestamp: new Date().toISOString(),
       });
     }); // << Search Filter SONumber  disable it if u dont need
+
 
 
 

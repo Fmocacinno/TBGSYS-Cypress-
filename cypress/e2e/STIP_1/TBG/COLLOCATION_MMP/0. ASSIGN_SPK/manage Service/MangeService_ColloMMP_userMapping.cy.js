@@ -83,13 +83,12 @@ describe('template spec', () => {
     const user = "555504220025";
 
 
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;

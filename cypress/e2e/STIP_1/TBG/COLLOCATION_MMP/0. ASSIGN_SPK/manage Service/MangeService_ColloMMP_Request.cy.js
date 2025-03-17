@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor, UservendorManageService, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -29,12 +29,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -43,10 +43,10 @@ describe('template spec', () => {
       userLeadPM = values.userLeadPM;
       userPMFO = values.userPMFO;
       userARO = values.userARO;
-      UserSPKProject = values.UserSPKProject;
-      UserRequestSPKApproval = values.UserRequestSPKApproval;
+      UserRequestSPKProject = values.UserRequestSPKProject;
       Uservendor = values.Uservendor;
       pass = values.pass;
+      UservendorManageService = values.UservendorManageService;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
       menu1 = values.menu1;
@@ -69,8 +69,7 @@ describe('template spec', () => {
 
     cy.visit(`${baseUrlTBGSYS}${login}`);
 
-
-    cy.get('#tbxUserID').type(UserRequestSPKApproval);
+    cy.get('#tbxUserID').type(UserRequestSPKProject);
     cy.get('#tbxPassword').type(pass);
     cy.get('#RefreshButton').click();
 
@@ -92,24 +91,45 @@ describe('template spec', () => {
     });
     cy.wait(5000);
 
+    cy.get('#btnRequest').invoke('removeAttr', 'target').click();
+
     cy.wait(5000);
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('10', { force: true })
+      cy.wrap($select).select('11', { force: true })
     })
     cy.get('#slSubType').then(($select) => {
-      cy.wrap($select).select('45', { force: true })
+      cy.wrap($select).select('92', { force: true })
     })
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di SPK Project',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
     }); //
 
 
+    // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
+    //   // Log the test result if button click is successful
+    //   testResults.push({
+    //     Test: 'User PM FO melakukan klik tombol Search di Stip approval',
+    //     Status: 'Pass',
+    //     Timestamp: new Date().toISOString(),
+    //   });
+    // }); // << Search Filter SONumber  disable it if u dont need
+
+    // cy.contains('label', /^\s *By SO Number\s*$/)
+    //   .click(); // search By Radio Button SONumber
+    // cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+    //   // Log the test result if button click is successful
+    //   testResults.push({
+    //     Test: 'User AM melakukan klik tombol Search di Stip approval',
+    //     Status: 'Pass',
+    //     Timestamp: new Date().toISOString(),
+    //   });
+    // }); // << Search Filter
 
 
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
@@ -118,13 +138,13 @@ describe('template spec', () => {
     cy.get('#txtSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di SPK Project',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
     }); // << Search Filter SONumber  disable it if u dont need
     cy.get('td[rowspan="1"][colspan="1"]')
-      .eq(0)
+      .eq(1)
       .find('.btnSearch')
       .click();
 
@@ -137,44 +157,35 @@ describe('template spec', () => {
     });
 
 
-    // cy.get('a.btnSelect')
-    //   .should('have.attr', 'href') // Ensure the element has an href
-    //   .then((href) => {
-    //     const baseUrl = "http://tbgappdev111.tbg.local:8127/BusinessSupport/SPKProject/"; // Base URL
-    //     const fullUrl = new URL(href, baseUrl).href; // Correctly construct the full URL
-    //     cy.visit(fullUrl); // Visit the page
-    //   });
-    // // cy.get('a.btnSelect', { timeout: 10000 })
-    // //   .should('have.attr', 'href')
-    // //   .then((href) => {
-    // //     const baseUrl = "http://tbgappdev111.tbg.local:8127";
-    // //     cy.visit(`${baseUrl}${href}`);
-    // //   });
-    // cy.get('.btnSelect').first().click();
-    // cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
-    //   cy.visit(`http://tbgappdev111.tbg.local:8127${href}`);
-    // });
-    // Prevent new tabs by stubbing window.open
-
-    cy.get('.btnSelect').first().trigger('click', { force: true });
-    cy.get('.btnSelect').first().should('have.attr', 'href').then((href) => {
-      cy.visit(`${baseUrlTBGSYS}${href}`);
+    cy.window().then((win) => {
+      cy.stub(win, 'open').callsFake((url) => {
+        const fullUrl = `${baseUrlTBGSYS}${url}`; // Ensure full URL
+        cy.visit(fullUrl);
+      });
     });
-    cy.get('#slCore').then(($select) => {
-      cy.wrap($select).select('23', { force: true })
-    })
 
+    cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
 
     cy.wait(10000);
+
+
+
+    cy.get('#slCore').then(($select) => {
+      cy.wrap($select).select('54', { force: true })
+    })
+    cy.wait(6000);
     cy.get('#slSubCore').then(($select) => {
-      cy.wrap($select).select('45', { force: true })
+      cy.wrap($select).select('56', { force: true })
     })
 
     cy.wait(6000);
 
+
     cy.get('#btnSearchVendor').click();
+
+
     cy.wait(2000)
-    cy.get('#tbxSearchVendorName').type(Uservendor);
+    cy.get('#tbxSearchVendorName').type(UservendorManageService);
     cy.wait(2000)
     cy.get('td[rowspan="1"][colspan="1"]')
       .eq(1)
@@ -183,16 +194,13 @@ describe('template spec', () => {
     cy.wait(2000)
     cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
     cy.wait(2000);
-    cy.get('#txtRemarkApproval').type('Remark' + unique);
-    cy.get('#btnApprove').click();
+    cy.get('#txtRemark').type('Remark' + unique);
+    cy.get('#btnAssign').click();
     cy.wait(2000);
     cy.contains('.sa-confirm-button-container button', 'Ok').click();
 
-    cy.wait(5000)
+    cy.wait(2000)
     cy.contains('a', 'Log Out').click({ force: true });
-    cy.then(() => {
-      exportToExcel(testResults);
-    });
-
   });
+
 });

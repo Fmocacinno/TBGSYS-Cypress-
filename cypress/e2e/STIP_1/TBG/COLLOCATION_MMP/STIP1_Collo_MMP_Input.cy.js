@@ -333,8 +333,6 @@ describe('template spec', () => {
       cy.get('#slsColocationMMPAccountManager').then(($select) => {
         cy.wrap($select).select('201301180003', { force: true })
       })
-      cy.get('#tbxFiberizationNomLatitudeEnd').type(lat);
-      cy.get('#tbxFiberizationNomLongitudeEnd').type(long);
 
       cy.get('#slsFiberizationLeadProjectManager').then(($select) => {
         cy.wrap($select).select(userLeadPM, { force: true })
@@ -351,30 +349,28 @@ describe('template spec', () => {
       cy.get('#tbxColocationMMPFOCore').clear().type(RangerandomValue);
       cy.get('#tbxColocationMMPFOLength').clear().type(RangerandomValue);
 
-      cy.get('#tbxColocationMMPFOSegment').type('Segment_' + unique + RangerandomValue);
+      cy.get('#tbxColocationMMPFOSegment').type('Segment_' + RangerandomValue + randomString);
 
 
 
-      cy.get('#dpkFiberizationRFITarget')
+      cy.get('#dpkColocationMMPRFITarget')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tbxFiberizationLeasePeriod').type(RangerandomValue);
+      cy.get('#tbxColocationMMPLeasePeriod').type(RangerandomValue);
 
 
-      cy.get('#slsFiberizationMLANumber').then(($select) => {
+      cy.get('#dpkColocationMMPMLADate')
+        .invoke('val', date)
+        .trigger('change');
+
+      cy.get('#slsColocationMMPMLANumber').then(($select) => {
         cy.wrap($select).select('0042-09-F07-39033', { force: true })
       })
-
-      cy.get('#dpkFiberizationMLADate')
-        .invoke('val', date)
-        .trigger('change');
+      cy.get('#tarColocationMMPRemark').type('Remark' + unique);
 
 
-      cy.get('#tarFiberizationRemark').type('Remark' + unique);
-
-
-      cy.get("#btnSubmitFiberization").click();
+      cy.get("#btnSubmitColocationMMP").click();
 
       cy.wait(2000)
 
