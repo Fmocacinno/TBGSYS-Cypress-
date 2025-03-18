@@ -180,7 +180,7 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(5000);
+    cy.wait(4000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -197,18 +197,28 @@ describe('template spec', () => {
     cy.wait(4000);
 
     cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '3') // Find the row where the first column contains '6'
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '5') // Find the row where the first column contains '6'
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
-    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
     cy.wait(1000);
 
-    // cy.get('#tbxFOLengthKabupaten').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxFOLengthProvinsi').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxFOLengthNasional').type(randomValue);
-    // cy.wait(1000);
+    cy.get('#dpkMaterialDeliveryDate')
+      .invoke('val', date)
+      .trigger('change');
+
+
+    cy.get('#tbxVechicleNumber').type('B-' + randomValue + '-ZZH');
+    cy.wait(1000);
+    cy.get('#tbxDriverName').type('Driver' + randomValue + randomString);
+    cy.wait(1000);
+
+    cy.get('#tbxDriverPhone').type('089' + randomValue + '928282923');
+    cy.wait(1000);
+
+    cy.get('#fleMaterialDeliveryDocument').attachFile(PDFFilepath);
+    cy.wait(1000);
+
+
     // cy.get('#tbxFOLengthInlineKAI').type(randomValue);
     // cy.wait(1000);
     // cy.get('#tbxFOLengthCrossFOKAI').type(randomValue);
@@ -219,29 +229,18 @@ describe('template spec', () => {
     // cy.wait(1000);
     // cy.get('#tbxFOLengthKorporasi').type(randomValue);
     // cy.wait(1000);
-    //----
-    cy.get('#dpkRFSTargetDate')
-      .invoke('val', date)
-      .trigger('change');
-    cy.wait(1000);
-    cy.get('#dpkKickOffMeetingDate')
-      .invoke('val', date)
-      .trigger('change');
-    cy.get('#fleKickOffMeetingDocument').attachFile(PDFFilepath);
-    cy.wait(1000);
-    cy.get('#tbxLatitudeMMP').type(lat);
-    cy.wait(1000);
-    cy.get('#tbxLongitudeMMP').type(long);
-    cy.wait(1000);
-    cy.get('#tarMMPAddress').type('address FROM AUTOMATION' + unique + randomString);
-    cy.wait(1000);
-
-    cy.get('#fleDocumentPolePositionPhoto').attachFile(photoFilePath);
-    cy.wait(1000);
-    cy.get('#fleSSRDocument').attachFile(photoFilePath);
-    cy.wait(1000);
+    // //----
 
 
+    // cy.get('#fleKickOffMeetingDocument').attachFile(PDFFilepath);
+    // cy.wait(1000);
+
+    // cy.get('#tbxSSRLatitudeA').type(lat);
+    // cy.wait(1000);
+    // cy.get('#tbxSSRLongitudeA').type(randomValue);
+    // cy.wait(1000);
+    // cy.get('#tarMMPAddressNearEnd').type('address FROM AUTOMATION' + unique + randomString);
+    // cy.wait(1000);
     // cy.get('#slsProviderNE').then(($select) => {
     //   cy.wrap($select).select('10', { force: true })
     // })
@@ -328,17 +327,18 @@ describe('template spec', () => {
     //   .trigger('change');
     // cy.get("#btnAddResult").click();
     // cy.wait(5000);
-    cy.get('#tarSSRRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+
+    cy.get('#tarMaterialDeliveryRemark').type('Remark FROM AUTOMATION' + unique + randomString);
     cy.wait(2000);
 
 
-    // // cy.get("#btnProcess").click();
-    // // cy.wait(5000);
-    // // cy.get('.confirm.btn-success').click({ force: true });
-    // // cy.wait(5000)
+    // cy.get("#btnProcess").click();
+    // cy.wait(5000);
+    // cy.get('.confirm.btn-success').click({ force: true });
+    // cy.wait(5000)
 
     cy.get("#btnSubmit").click();
-    cy.wait(5000);
+    cy.wait(7000);
 
     // cy.get('.confirm.btn-success').click({ force: true });
     // cy.wait(5000)
@@ -348,6 +348,8 @@ describe('template spec', () => {
     cy.get('.sweet-alert button.confirm')
       .click({ force: true });
 
+    cy.wait(5000);
+    //cy.visit(`${baseUrlTBGSYS}${logout}`);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);

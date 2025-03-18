@@ -177,7 +177,7 @@ describe('template spec', () => {
 
     cy.get('#btnApprove').click();
     // cy.get('.confirm.btn-success').click({ force: true });
-    // cy.wait(5000)
+    cy.wait(5000)
     cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
       .should('be.visible');
 
