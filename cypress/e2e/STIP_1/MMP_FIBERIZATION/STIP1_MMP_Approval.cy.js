@@ -238,7 +238,7 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(2000);
+    cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });
   });
   //LEAD PM

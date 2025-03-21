@@ -54,13 +54,13 @@ describe('template spec', () => {
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
 
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -81,7 +81,6 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
-
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -93,7 +92,8 @@ describe('template spec', () => {
   it('OTDR Input by vendor', () => {
 
     cy.visit(`${baseUrlTBGSYS}${login}`);
-    cy.get('#tbxUserID').type(userPMFO);
+
+    cy.get('#tbxUserID').type(userARO);
     cy.get('#tbxPassword').type(pass);
 
 
@@ -115,17 +115,6 @@ describe('template spec', () => {
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
     // Check if the error pop-up is visible
-    cy.get('h2').then(($h2) => {
-      if ($h2.text().includes('Error on System')) {
-        cy.log('🚨 Error pop-up detected! Clicking OK.');
-
-        // Click the "OK" button
-        cy.get('.confirm.btn-error').click();
-      } else {
-        cy.log('✅ No error pop-up detected.');
-      }
-    });
-
     cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -146,7 +135,7 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(4000);
+    cy.wait(2000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -160,7 +149,7 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.wait(5000);
+    cy.wait(2000);
 
     cy.get('tr')
       .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'    cy.wait(2000);
@@ -168,10 +157,9 @@ describe('template spec', () => {
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
 
-    cy.get('#tarMaterialOnSiteApprovalRemark', { timeout: 10000 }) // Tunggu hingga 10 detik
-      .should('be.visible') // Pastikan elemen terlihat
-      .type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);  
+    cy.wait(4000);
+    cy.get('#tarMaterialOnSiteApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.wait(2000);
 
     cy.get('#btnApprove').click();
     cy.wait(7000);

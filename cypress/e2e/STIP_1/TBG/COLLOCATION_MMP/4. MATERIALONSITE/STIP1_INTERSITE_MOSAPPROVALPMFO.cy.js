@@ -54,14 +54,13 @@ describe('template spec', () => {
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
 
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
-      cy.log(values);
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/DataVariable.json').then((values) => {
       unique = values.unique;
       userAM = values.userAM;
       userInputStip = values.userInputStip;
@@ -114,15 +113,19 @@ describe('template spec', () => {
     });
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
+
     // Check if the error pop-up is visible
-    cy.get('h2').then(($h2) => {
-      if ($h2.text().includes('Error on System')) {
+    cy.document().then((doc) => {
+      const errorPopup = doc.querySelector('h2');
+
+      if (errorPopup && errorPopup.innerText.includes('Error on System')) {
         cy.log('🚨 Error pop-up detected! Clicking OK.');
 
-        // Click the "OK" button
-        cy.get('.confirm.btn-error').click();
+        // Click the "OK" button if the pop-up is present
+        cy.get('.confirm.btn-error').should('be.visible').click();
       } else {
-        cy.log('✅ No error pop-up detected.');
+        cy.log('✅ No error pop-up detected, continuing...');
       }
     });
 
@@ -171,13 +174,17 @@ describe('template spec', () => {
     cy.get('#tarMaterialOnSiteApprovalRemark', { timeout: 10000 }) // Tunggu hingga 10 detik
       .should('be.visible') // Pastikan elemen terlihat
       .type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);  
+    cy.wait(2000);
 
     cy.get('#btnApprove').click();
-    cy.wait(7000);
-    cy.get('.sa-confirm-button-container button.confirm').click();
 
-    cy.wait(2000);
+    cy.get('.sweet-alert', { timeout: 30000 }) // Wait up to 10s for the modal
+      .should('be.visible');
+
+    cy.get('.sweet-alert button.confirm')
+      .click({ force: true });
+
+    cy.wait(5000);
 
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {

@@ -185,10 +185,18 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.get('#btnApprove').click();
-    cy.wait(7000);
-    cy.get('.sa-confirm-button-container button.confirm').click();
+    // cy.get('.confirm.btn-success').click({ force: true });
+    cy.wait(5000)
+    cy.get('.sweet-alert', { timeout: 20000 }) // Wait up to 10s for the modal
+      .should('be.visible');
 
-    cy.wait(2000);
+    cy.get('.sweet-alert button.confirm')
+      .click({ force: true });
+
+    cy.contains('a', 'Log Out').click({ force: true });
+    cy.then(() => {
+      exportToExcel(testResults);
+    });
 
     // cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
     cy.contains('a', 'Log Out').click({ force: true });

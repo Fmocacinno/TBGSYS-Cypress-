@@ -15,7 +15,7 @@ describe('template spec', () => {
   it('passes', () => {
     const unique = "APP_002"
     const random = 55
-    const siteid = "010016109"
+    const siteid = "1101981001"
     const phone = "0851728319"
     const date = "2-Jan-2025";
     const user = "555504220025"
@@ -73,12 +73,12 @@ describe('template spec', () => {
 
 
     cy.get('#slCustomerID').then(($select) => {
-      cy.wrap($select).select('API', { force: true })
+      cy.wrap($select).select('TELKOMSEL', { force: true })
     })
 
     cy.get('#txtSiteNameCustomer').type('SiteName_' + unique);
     cy.get('#txtSiteIDCustomer').type('SiteID_' + unique);
-
+    // 4 atau 1
     cy.get('#slsGeneralSoW').then(($select) => {
       cy.wrap($select).select('1', { force: true })
     })

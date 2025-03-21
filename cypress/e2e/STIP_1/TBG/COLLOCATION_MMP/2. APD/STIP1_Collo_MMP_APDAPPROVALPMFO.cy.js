@@ -185,7 +185,7 @@ describe('template spec', () => {
 
     cy.get('#btnApprove').click();
 
-    cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
+    cy.get('.sweet-alert', { timeout: 30000 }) // Wait up to 10s for the modal
       .should('be.visible');
 
     cy.get('.sweet-alert button.confirm')

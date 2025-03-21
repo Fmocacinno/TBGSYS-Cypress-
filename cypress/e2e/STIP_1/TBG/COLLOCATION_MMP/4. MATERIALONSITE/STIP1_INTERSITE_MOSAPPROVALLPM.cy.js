@@ -54,13 +54,13 @@ describe('template spec', () => {
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
 
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -162,10 +162,14 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.get('#btnApprove').click();
-    cy.wait(7000);
-    cy.get('.sa-confirm-button-container button.confirm').click();
 
-    cy.wait(2000);
+    cy.get('.sweet-alert', { timeout: 30000 }) // Wait up to 10s for the modal
+      .should('be.visible');
+
+    cy.get('.sweet-alert button.confirm')
+      .click({ force: true });
+
+    cy.wait(5000);
 
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
