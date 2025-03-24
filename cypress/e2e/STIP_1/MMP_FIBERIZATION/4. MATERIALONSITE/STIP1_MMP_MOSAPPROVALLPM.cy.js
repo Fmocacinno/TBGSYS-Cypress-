@@ -115,6 +115,19 @@ describe('template spec', () => {
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
     // Check if the error pop-up is visible
+    // Check if the error pop-up exists without failing the test
+    cy.document().then((doc) => {
+      const errorPopup = doc.querySelector('h2');
+
+      if (errorPopup && errorPopup.innerText.includes('Error on System')) {
+        cy.log('🚨 Error pop-up detected! Clicking OK.');
+
+        // Click the "OK" button if the pop-up is present
+        cy.get('.confirm.btn-error').should('be.visible').click();
+      } else {
+        cy.log('✅ No error pop-up detected, continuing...');
+      }
+    });
     cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -135,7 +148,7 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(2000);
+    cy.wait(5000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);

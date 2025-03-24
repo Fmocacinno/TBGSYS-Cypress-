@@ -124,7 +124,8 @@ describe('template spec', () => {
     });
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
-    // Check if the error pop-up is visible
+
+    // Check if the error pop-up exists without failing the test
     cy.document().then((doc) => {
       const errorPopup = doc.querySelector('h2');
 

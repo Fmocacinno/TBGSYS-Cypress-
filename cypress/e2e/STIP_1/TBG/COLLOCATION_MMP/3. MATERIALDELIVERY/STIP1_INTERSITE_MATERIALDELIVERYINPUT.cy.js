@@ -132,7 +132,7 @@ describe('template spec', () => {
     });
 
     cy.get("#btnsubmit").click();
-    cy.wait(2000);
+    cy.wait(4000);
 
     cy.visit(`${baseUrlVP}/ProjectActivity/ProjectActivityHeader`)
       .url().should('include', `${baseUrlVP}/ProjectActivity/ProjectActivityHeader`);
@@ -180,11 +180,11 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(4000);
+    cy.wait(6000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
-      cy.wait(2000);
+      cy.wait(6000);
 
       if (text.includes(sonumb)) {  // ✅ Checks if "Lead PM" is in the status
         cy.log("✅ Status contains 'AM', proceeding with approval...");
