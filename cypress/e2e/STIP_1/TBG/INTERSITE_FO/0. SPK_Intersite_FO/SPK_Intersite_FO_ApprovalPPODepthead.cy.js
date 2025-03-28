@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, PICVendorManageService, UservendorManageService, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, Uservendor, UserRequestSPKApproval, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -29,12 +29,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -46,8 +46,6 @@ describe('template spec', () => {
       UserSPKProject = values.UserSPKProject;
       UserRequestSPKApproval = values.UserRequestSPKApproval;
       Uservendor = values.Uservendor;
-      PICVendorManageService = values.PICVendorManageService;
-      UservendorManageService = values.UservendorManageService;
       pass = values.pass;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
@@ -58,7 +56,6 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
-
     });
 
 
@@ -71,6 +68,7 @@ describe('template spec', () => {
   it('Material ON Site Approval PM FO', () => {
 
     cy.visit(`${baseUrlTBGSYS}${login}`);
+
 
     cy.get('#tbxUserID').type(UserRequestSPKApproval);
     cy.get('#tbxPassword').type(pass);
@@ -98,9 +96,6 @@ describe('template spec', () => {
 
     cy.get('#slType').then(($select) => {
       cy.wrap($select).select('9', { force: true })
-    })
-    cy.get('#slSubType').then(($select) => {
-      cy.wrap($select).select('91', { force: true })
     })
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
@@ -163,24 +158,13 @@ describe('template spec', () => {
       cy.visit(`${baseUrlTBGSYS}${href}`);
     });
 
-    cy.wait(2000)
-
-    cy.get('#slCore').then(($select) => {
-      cy.wrap($select).select('54', { force: true })
-    })
-    cy.wait(6000);
-    cy.get('#slSubCore').then(($select) => {
-      cy.wrap($select).select('56', { force: true })
-    })
     cy.wait(6000);
 
     cy.get('#btnSearchVendor').click();
 
 
-
-
     cy.wait(2000)
-    cy.get('#tbxSearchVendorName').type(UservendorManageService);
+    cy.get('#tbxSearchVendorName').type(Uservendor);
     cy.wait(2000)
     cy.get('td[rowspan="1"][colspan="1"]')
       .eq(1)

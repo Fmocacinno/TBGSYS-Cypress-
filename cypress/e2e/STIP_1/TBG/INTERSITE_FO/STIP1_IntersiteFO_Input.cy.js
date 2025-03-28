@@ -39,31 +39,6 @@ let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass,
 const minLength = 5;
 const maxLength = 15;
 const randomString = generateRandomString(minLength, maxLength);
-let maxPages = 10; // Batasi jumlah halaman yang dicek untuk menghindari loop tak terbatas
-let currentPage = 1;
-
-// Function to find and click the button
-// Function to find and click the button
-// Function to find and click the button
-function checkRowsSequentially(page = 1, maxPages = 10) {
-  if (page > maxPages) return;
-
-  cy.get('tbody tr .btnSelect:visible:not(:disabled)').first().then(($btn) => {
-    if ($btn.length) {
-      cy.wrap($btn).click();
-    } else {
-      // No available buttons, go to the next page
-      cy.get('#tblSite_paginate a[title="Next"]:visible').then(($next) => {
-        if ($next.length) {
-          cy.wrap($next).click();
-          cy.wait(2000);
-          checkRowsSequentially(page + 1, maxPages);
-        }
-      });
-    }
-  });
-}
-
 // const date = "2-Jan-2025";
 // const user = "555504220025"
 // const pass = "123456"
@@ -90,13 +65,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -129,8 +103,12 @@ describe('template spec', () => {
 
   for (let i = 0; i < loopCount; i++) {
     it.only(`passes iteration ${i + 1}`, () => {
+      // cy.visit('http://tbgappdev111.tbg.local:8127/Login')
       cy.visit(`${baseUrlTBGSYS}${login}`);
-      cy.wait(2000)
+      // cy.get('#tbxUserID').type(userInputStip);
+      // cy.get('#tbxPassword').type(pass);
+
+
       cy.get('#tbxUserID').type(userInputStip).should('have.value', userInputStip).then(() => {
         // Log the test result if input is successful
         testResults.push({
@@ -167,8 +145,15 @@ describe('template spec', () => {
       });
 
       // Export results to Excel after the test
+
+
+
+
+      cy.wait(2000)
+
       cy.visit(`${baseUrlTBGSYS}/STIP/Input`);
-      cy.url().should('include', `${baseUrlTBGSYS}/STIP/Input`);// Ensure the page changes or some result occurs
+      cy.url().should('include', `${baseUrlTBGSYS}/STIP/Input`);
+      // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'User masuk ke Page Stip Input',
         Status: 'Pass',
@@ -176,177 +161,168 @@ describe('template spec', () => {
       });
       cy.wait(2000)
 
+
       cy.get('#slsSTIPCategory').then(($select) => {
         cy.wrap($select).select('1', { force: true })
-          .should('have.value', '1') // Menunggu hingga value benar-benar berubah
-          .then(() => {
-            // Log the test result if selection is successful
-            testResults.push({
-              Test: 'User memilih STIPCategory di dropdown Colocation STIPCategory',
-              Status: 'Pass',
-              Timestamp: new Date().toISOString(),
-            });
-          });
       })
 
       cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('45', { force: true })
-          .should('have.value', '45') // Menunggu hingga value benar-benar berubah
-          .then(() => {
-            // Log the test result if selection is successful
-            testResults.push({
-              Test: 'User memilih Product di dropdown Colocation Product',
-              Status: 'Pass',
-              Timestamp: new Date().toISOString(),
-            });
-          });
+        cy.wrap($select).select('83', { force: true })
       })
 
+      cy.get('#slsIntersiteFOCompany').then(($select) => {
+        cy.wrap($select).select('TB', { force: true })
+      })
 
-
-      cy.get('#slsFiberizationCustomer').then(($select) => {
+      cy.get('#slsIntersiteFOCustomer').then(($select) => {
         cy.wrap($select).select('XL', { force: true })
-          .should('have.value', 'XL') // Menunggu hingga value benar-benar berubah
-          .then(() => {
-            // Log the test result if selection is successful
-            testResults.push({
-              Test: 'User memilih Customer di dropdown Colocation Customer',
-              Status: 'Pass',
-              Timestamp: new Date().toISOString(),
-            });
-          });
       })
 
-      cy.get('#slsFiberizationRegion').then(($select) => {
+      cy.get('#slsIntersiteFORegion').then(($select) => {
         cy.wrap($select).select('1', { force: true })
-          .should('have.value', '1') // Menunggu hingga value benar-benar berubah
-          .then(() => {
-            // Log the test result if selection is successful
-            testResults.push({
-              Test: 'User memilih region di dropdown Colocation Region',
-              Status: 'Pass',
-              Timestamp: new Date().toISOString(),
-            });
-          });
-      });
+      })
+      cy.wait(1000); // Ensure dropdown selection is applied
+      /// radio button with regex
+      cy.contains('label', /^\s *Segment\s*$/)
+        .click(); // Click the label
 
+      // Assert that the "Segment" radio button is selected
+      cy.get('input[type="radio"][value="Segment"]').should('be.checked');
 
-      cy.get('#btnFiberizationPriceAmountPopUp')
-        .should('be.visible') // Pastikan tombol terlihat sebelum diklik
-        .click()
-        // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
-        .then(() => {
-          // Log the test result if button click is successful
-          testResults.push({
-            Test: 'User melakukan click tombol Colocation Price Amount Popup',
-            Status: 'Pass',
-            Timestamp: new Date().toISOString(),
-          });
-        });
-      cy.get('tbody > tr:nth-child(2) .btnSelect')
-        .should('be.visible') // Pastikan tombol terlihat sebelum diklik
-        .click()
-        // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
-        .then(() => {
-          // Log the test result if button click is successful
-          testResults.push({
-            Test: 'User melakukan click tombol Price Amount Popup',
-            Status: 'Pass',
-            Timestamp: new Date().toISOString(),
-          });
-        });
+      cy.get('#btnIntersiteFOPriceAmountPopUp').click();
+
+      cy.get('tbody tr:first-child .btnSelect').click();
+
       cy.wait(2000)
 
-      cy.get('.slsBatchSLD').eq(0)
-        .select('667', { force: true });
+      // handle HTML
 
-      cy.get('.slsBatchSLD').eq(1)
-        .select('667', { force: true });
+      // cy.get('.slsBatchSLD').eq(0)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(2)
-        .select('667', { force: true });
+      // cy.get('.slsBatchSLD').eq(1)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(3)
-        .select('667', { force: true });
 
-      cy.get('.slsBatchSLD').eq(4)
-        .select('667', { force: true });
+      // cy.get('.slsBatchSLD').eq(2)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(5)
-        .select('667', { force: true });
+      // cy.get('.slsBatchSLD').eq(3)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(6)
-        .select('667', { force: true });
+      // cy.get('.slsBatchSLD').eq(4)
+      //   .select('180', { force: true });
 
-      cy.get('.slsBatchSLD').eq(7)
-        .select('667', { force: true });
 
-      cy.get('.slsBatchSLD').eq(8)
-        .select('667', { force: true });
+      // cy.get('.slsBatchSLD').eq(5)
+      //   .select('180', { force: true });
 
-      cy.get('#btnFiberizationSitePopUp')
-        .should('be.visible') // Pastikan tombol terlihat sebelum diklik
-        .click()
-        // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
-        .then(() => {
-          // Log the test result if button click is successful
-          testResults.push({
-            Test: 'User melakukan click tombol Colocation Price Amount Popup',
-            Status: 'Pass',
-            Timestamp: new Date().toISOString(),
-          });
-        });
+      // cy.get('.slsBatchSLD').eq(6)
+      //   .select('180', { force: true });
 
-      cy.get('.col-md-6.col-sm-6 select[name="tblSiteHaveMMP_length"]')
-        .should('be.visible') // Ensure it's visible
-        .select('50')
-        .should('have.value', '50'); // Confirm the selection worked
-      // Step 2: Click all enabled buttons in the third row
+      // cy.get('.slsBatchSLD').eq(7)
+      //   .select('180', { force: true });
 
+      // cy.get('.slsBatchSLD').eq(8)
+      //   .select('180', { force: true });
+      // handle HTML
+
+      cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique + randomValue);
+
+      cy.get('#slsIntersiteFODocumentOrder').then(($select) => {
+        cy.wrap($select).select('7', { force: true })
+      })
+
+      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + randomValue);
+
+      cy.get('#fleIntersiteFODocument').attachFile(filePath);
+
+      cy.get('#slsIntersiteFOProvince').then(($select) => {
+        cy.wrap($select).select('11', { force: true })
+      })
       cy.wait(2000)
-      // Find and click the button
-      checkRowsSequentially();
-
-
-
-      cy.get('#slsColocationMMPAvailableMMP').then(($select) => {
-        cy.wrap($select).select('20240700011', { force: true })
+      // Near ENd
+      cy.get('#slsIntersiteFOResidence').then(($select) => {
+        cy.wrap($select).select('178', { force: true })
       })
-      cy.get('#tbxFiberizationSPKWOLOINumber').type('SPK_' + unique + randomValue);
-
-      cy.get('#tbxColocationMMPDocumentName').type('DoctName_' + unique + randomValue);
-
-      cy.get('#fleColocationMMPDocument').attachFile(filePath);
-      cy.get('#fleColocationMMPColocationForm').attachFile(filePath);
-
-      cy.get('#slsColocationMMPLeadProjectManager').then(($select) => {
-        cy.wrap($select).select('201102180019', { force: true })
+      cy.get('#slsIntersiteFOTowerProviderNearEnd').then(($select) => {
+        cy.wrap($select).select('10', { force: true })
       })
-      cy.get('#slsColocationMMPAccountManager').then(($select) => {
-        cy.wrap($select).select('201301180003', { force: true })
+      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOTowerIDNearEnd').type('Site_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOTowerNameNearEnd').type('SiteName_' + unique + randomValue);
+      cy.get('#tbxLatitudeA').type(lat);
+      cy.get('#tbxLongitudeA').type(long);
+
+      // Far end
+      // cy.get('#slsIntersiteFOResidence').then(($select) => {
+      //   cy.wrap($select).select('178', { force: true })
+      // })
+      cy.get('#slsIntersiteFOTowerProviderFarEnd').then(($select) => {
+        cy.wrap($select).select('11', { force: true })
+      })
+      cy.get('#tbxIntersiteFOTowerIDFarEnd').type('Site_' + unique + randomValue);
+      cy.get('#tbxIntersiteFOTowerNameFarEnd').type('SiteName_' + unique + randomValue);
+      cy.get('#tbxLatitudeB').type(lat);
+      cy.get('#tbxLongitudeB').type(long);
+
+      cy.get('#slsIntersiteFOLeadProjectManager').then(($select) => {
+        cy.wrap($select).select(userLeadPM, { force: true })
+      })
+      cy.wait(2000)
+
+      cy.get('#slsIntersiteFOAccountManager').then(($select) => {
+        cy.wrap($select).select(userLeadAM, { force: true })
       })
 
-      cy.get('#tbxColocationMMPFOCore').type(RangerandomValue);
-      cy.get('#tbxColocationMMPFOLength').type(RangerandomValue);
-      cy.get('#tbxColocationMMPDocumentName').type('tbxColocationMMPFOSegment_' + unique + randomValue);
+      cy.get('#tbxFOCore').type(randomValue);
+      cy.get('#tbxFOLengthSPK').type(randomValue);
+      cy.get('#tbxIntersiteFOSegment').type('Segment_' + unique + randomValue);
 
-      cy.get('#dpkColocationRFITarget')
+      // Debug: Log all labels inside the container
+
+
+      // // cy.get('input[name=""][value="0"]').check({ force: true });
+      // cy.get('input[type="Radio"][value="0"]').check().should('be.checked')
+
+      cy.wait(1000); // Ensure dropdown selection is applied
+      /// radio button with regex
+      // cy.get('input[type="radio"]').filter((index, el) => /No\s*/i.test(el.value)).check()
+
+      // input value No
+
+
+      cy.get('input[name="rdoOverlapping"][value="0"]').parent().click()
+
+      cy.get('#dpkIntersiteFORFSTarget')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tbxColocationMMPLeasePeriod').type(RangerandomValue);
-      cy.get('#slsColocationMMPMLANumber').then(($select) => {
+      cy.get('#tbxIntersiteFOLeasePeriod').type(randomValue);
+
+      cy.get('#dpkIntersiteFOMLADate')
+        .invoke('val', date)
+        .trigger('change');
+
+      cy.get('#slsIntersiteFOMLANumber').then(($select) => {
         cy.wrap($select).select('0010-14-F07-39033', { force: true })
       })
-
-      cy.get('#dpkColocationMMPMLADate')
+      // 2l36-0031 - 14 - F07 - 121782
+      // 0010 - 14 - F07 - 39033
+      cy.get('#dpkIntersiteFOMLADate')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tarColocationMMPRemark').type('Remark' + unique);
+      cy.get('#tarIntersiteFORemark').type('Remark' + unique);
 
 
-      cy.get("#btnSubmitColocation").click();
+
+
+
+
+      cy.get("#btnSubmitIntersiteFO").click();
 
       cy.wait(2000)
 
@@ -383,20 +359,17 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFo.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
         });
         // Add your logic here using the Site ID
       });
-
       cy.contains('a', 'Log Out').click({ force: true });
-
       cy.then(() => {
         exportToExcel(testResults);
       });
-
     })
   }
 })
