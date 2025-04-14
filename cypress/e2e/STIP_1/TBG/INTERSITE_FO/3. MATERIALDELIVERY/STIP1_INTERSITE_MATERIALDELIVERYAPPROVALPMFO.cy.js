@@ -53,23 +53,12 @@ describe('template spec', () => {
 
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
-
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
-      baseUrlVP = values.baseUrlVP;
-      baseUrlTBGSYS = values.baseUrlTBGSYS;
-      menu1 = values.menu1;
-      menu2 = values.menu2;
-      menu3 = values.menu3;
-      menu4 = values.menu4;
-      login = values.login;
-      logout = values.logout;
-      dashboard = values.dashboard;
     });
-
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;

@@ -54,13 +54,12 @@ describe('template spec', () => {
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
 
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-
-    cy.readFile('cypress/e2e/STIP_1/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -171,7 +170,7 @@ describe('template spec', () => {
     cy.get('#tarMaterialOnSiteApprovalRemark', { timeout: 10000 }) // Tunggu hingga 10 detik
       .should('be.visible') // Pastikan elemen terlihat
       .type('Remark FROM AUTOMATION' + unique + randomString);
-    cy.wait(2000);  
+    cy.wait(2000);
 
     cy.get('#btnApprove').click();
     cy.wait(7000);
