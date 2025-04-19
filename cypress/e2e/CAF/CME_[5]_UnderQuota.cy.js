@@ -21,7 +21,7 @@ describe('template spec', () => {
       return false
     })
 
-    cy.visit('http://localhost:41699/Marketing/CAF/Grid')
+    cy.visit('http://tbgappdev111.tbg.local:8045/Marketing/CAF/Grid')
 
     cy.get('#tbxUserID').type(user)
     cy.get('#tbxPassword').type(pass)
@@ -39,7 +39,7 @@ describe('template spec', () => {
     
     cy.wait(2000)
 
-    cy.visit('http://localhost:41699/Marketing/CAF/Grid')
+    cy.visit('http://tbgappdev111.tbg.local:8045/Marketing/CAF/Grid')
 
     cy.wait(5000)
 

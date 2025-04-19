@@ -5,7 +5,7 @@ describe('template spec', () => {
     const unique = "ATP_19"
     const date = "2-Jan-2025";
     const user = "555510230156"
-    const pass = "123456" 
+    const pass = "123456"
     const filePath = 'documents/pdf/receipt.pdf';
     const lat = 5.4
     const long = 94
@@ -14,7 +14,7 @@ describe('template spec', () => {
       return false
     })
 
-    cy.visit('http://localhost:41699/STIP/Input')
+    cy.visit('http://tbgappdev111.tbg.local:8045/STIP/Input')
 
     cy.get('#tbxUserID').type(user)
     cy.get('#tbxPassword').type(pass)
@@ -22,68 +22,68 @@ describe('template spec', () => {
     cy.get('#RefreshButton').click();
 
     cy.window().then((window) => {
-      const rightCode = window.rightCode;  
+      const rightCode = window.rightCode;
       cy.log('Right Code:', rightCode);
 
-      cy.get('#captchaInsert').type(rightCode); 
+      cy.get('#captchaInsert').type(rightCode);
     });
 
     cy.get('#btnSubmit').click();
-    
+
     cy.wait(2000)
 
-    cy.visit('http://localhost:41699/STIP/Input')
+    cy.visit('http://tbgappdev111.tbg.local:8045/STIP/Input')
 
     cy.wait(2000)
 
     cy.get('#slsSTIPCategory').then(($select) => {
-      cy.wrap($select).select('1', { force: true }) 
+      cy.wrap($select).select('1', { force: true })
     })
 
     cy.get('#slsProduct').then(($select) => {
-      cy.wrap($select).select('2', { force: true }) 
+      cy.wrap($select).select('2', { force: true })
     })
 
     cy.get('#slsColocationCompany').then(($select) => {
-      cy.wrap($select).select('TB', { force: true }) 
+      cy.wrap($select).select('TB', { force: true })
     })
-    
+
     cy.get('#slsColocationCustomer').then(($select) => {
-      cy.wrap($select).select('API', { force: true }) 
+      cy.wrap($select).select('API', { force: true })
     })
-    
+
     cy.get('#slsColocationRegion').then(($select) => {
-      cy.wrap($select).select('6', { force: true }) 
+      cy.wrap($select).select('6', { force: true })
     })
 
-    
+
     cy.get('#slsColocationBatch').then(($select) => {
-      cy.wrap($select).select('196', { force: true }) 
+      cy.wrap($select).select('196', { force: true })
     })
 
 
-    
+
     cy.get('#slsNewBatchSLD').then(($select) => {
-      cy.wrap($select).select('6', { force: true }) 
+      cy.wrap($select).select('6', { force: true })
     })
 
 
 
     // cy.get('#tbxNewSiteName').type('Site_' + unique); 
     // cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique); 
-    
+
     // cy.get('#slsNewDocumentOrder').then(($select) => {
     //   cy.wrap($select).select('7', { force: true }) 
     // })
-    
+
     // cy.get('#tbxNewDocumentName').type('DoctName_' + unique); 
-    
+
     // cy.get('#fleNewDocument').attachFile(filePath);
 
     // cy.get('#slsNewProvince').then(($select) => {
     //   cy.wrap($select).select('12', { force: true }) 
     // })
-    
+
     // cy.get('#tbxNewNomLatitude').type(lat); 
     // cy.get('#tbxNewNomLongitude').type(long); 
 
@@ -93,7 +93,7 @@ describe('template spec', () => {
     // cy.get('#slsNewAccountManager').then(($select) => {
     //   cy.wrap($select).select('201301180003', { force: true }) 
     // })
-    
+
     // cy.get('#slsNewTowerHeight').then(($select) => {
     //   cy.wrap($select).select('0', { force: true }) 
     // })
@@ -102,7 +102,7 @@ describe('template spec', () => {
     //   cy.wrap($select).select('7', { force: true }) 
     // })
     // cy.get('#tbxNewPLNPowerKVA').type(5); 
-    
+
     // cy.get('#dpkNewRFITarget')
     //   .invoke('val', date)  
     //   .trigger('change'); 
@@ -110,7 +110,7 @@ describe('template spec', () => {
     // cy.get('#slsNewMLANumber').then(($select) => {
     //   cy.wrap($select).select('Risalah Rapat 9 Jul 2015', { force: true }) 
     // })
-      
+
     // cy.get('#tbxNewLeasePeriod').type(5); 
 
     // cy.get('#dpkNewMLADate')
@@ -118,7 +118,7 @@ describe('template spec', () => {
     // .trigger('change');  
 
     // cy.get('#tarNewRemark').type('Remark' + unique); 
-    
+
     // cy.get('#slsNewResidence').then(($select) => {
     //   cy.wrap($select).select('205', { force: true }) 
     // })
@@ -145,7 +145,7 @@ describe('template spec', () => {
     // cy.get('.slsBatchSLD').eq(4)  
     //   .select('967', { force: true });
 
-    
+
     // cy.get('.slsBatchSLD').eq(5)  
     //   .select('967', { force: true });
 
@@ -163,9 +163,9 @@ describe('template spec', () => {
     // cy.wait(2000)
 
     // cy.get('.sa-confirm-button-container button.confirm').click();
-    
+
     // cy.wait(15000)
 
-    // cy.visit('http://localhost:41699/Login/Logout')
+    // cy.visit('http://tbgappdev111.tbg.local:8045/Login/Logout')
   })
 })

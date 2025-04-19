@@ -15,7 +15,7 @@ describe('template spec', () => {
   it('passes', () => {
     const unique = "APP_002"
     const random = 55
-    const siteid = "1101981001"
+    const siteid = "110160110"
     const phone = "0851728319"
     const date = "2-Jan-2025";
     const user = "555504220025"
@@ -31,7 +31,7 @@ describe('template spec', () => {
       return false
     })
 
-    cy.visit('http://tbgappdev111:8044/Login')
+    cy.visit('http://tbgappdev111.tbg.local:8044/Login')
 
     cy.get('#tbxUserID').type(user)
     cy.get('#tbxPassword').type(pass)
@@ -49,7 +49,7 @@ describe('template spec', () => {
 
     cy.wait(2000)
 
-    cy.visit('http://tbgappdev111:8044/Marketing/CAF/Create')
+    cy.visit('http://tbgappdev111.tbg.local:8044/Marketing/CAF/Create')
 
     cy.wait(2000)
 
