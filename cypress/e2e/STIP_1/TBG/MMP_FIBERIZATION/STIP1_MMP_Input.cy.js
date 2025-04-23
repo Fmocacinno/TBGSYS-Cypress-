@@ -90,13 +90,13 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -404,7 +404,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

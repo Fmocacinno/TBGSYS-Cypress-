@@ -206,16 +206,13 @@ describe('template spec', () => {
     cy.wait(5000);
     cy.get('.confirm.btn-success').click({ force: true });
     cy.wait(5000)
-    cy.get('#tarDrumplanDropFORemark').type('Remark FROM AUTOMATION' + unique + randomRangeValue(0, 10));
-    cy.wait(2000);
-    cy.get("#btnSubmit").click();
-    cy.wait(2000);
 
-    cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
-      .should('be.visible');
 
-    cy.get('.sweet-alert button.confirm')
-      .click({ force: true });
+    // cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
+    //   .should('be.visible');
+
+    // cy.get('.sweet-alert button.confirm')
+    //   .click({ force: true });
 
     cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });

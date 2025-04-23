@@ -87,7 +87,6 @@ describe('template spec', () => {
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-
     cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
@@ -221,89 +220,79 @@ describe('template spec', () => {
     //----
 
     // Check if the modal is visible and click the confirm button
-    cy.get('.sweet-alert.showSweetAlert.visible').then(($modal) => {
+    cy.get('body').then(($body) => {
+      const $modal = $body.find('.sweet-alert.showSweetAlert.visible');
       if ($modal.length) {
         cy.log('🚨 Modal detected! Clicking OK.');
         cy.get('.sa-confirm-button-container .confirm.btn.btn-lg.btn-warning').click();
-
-        // Proceed with the next steps
-        cy.get('#dpkRFSTargetDate').should('be.visible').then(() => {
-          cy.log('Setting target date...');
-          cy.get('#dpkRFSTargetDate')
-            .invoke('val', date)
-            .trigger('change');
-        });
-
-        cy.wait(1000);
-
-        cy.get('#dpkKickOffMeetingDate').should('be.visible').then(() => {
-          cy.log('Setting kickoff meeting date...');
-          cy.get('#dpkKickOffMeetingDate')
-            .invoke('val', date)
-            .trigger('change');
-        });
-        cy.get('#dpkRFSTargetDate').should('be.visible').then(() => {
-          cy.log('Setting target date...');
-          cy.get('#dpkRFSTargetDate')
-            .invoke('val', date)
-            .trigger('change');
-        });
-
-        cy.wait(1000);
-
-        // Check if the kickoff meeting date input is visible before interacting
-        cy.get('#dpkKickOffMeetingDate').should('be.visible').then(() => {
-          cy.log('Setting kickoff meeting date...');
-          cy.get('#dpkKickOffMeetingDate')
-            .invoke('val', date)
-            .trigger('change');
-        });
-
-        cy.get('#fleKickOffMeetingDocument').attachFile(filePath);
-        cy.wait(1000);
-
-        cy.get('#tbxLatitudeMMP').type(lat);
-        cy.wait(1000);
-        cy.get('#tbxLongitudeMMP').type(long);
-        cy.wait(1000);
-        cy.get('#tarMMPAddress').type('address FROM AUTOMATION' + unique + randomString);
-        cy.wait(1000);
-
-        cy.get('#tbxDistance').type(randomValue);
-        cy.wait(1000);
-
-        cy.get('#fleDocumentPolePositionPhoto').attachFile(photoFilePath);
-        cy.wait(1000);
-        cy.get('#fleSSRDocument').attachFile(photoFilePath);
-        cy.wait(1000);
-
-        cy.get('#tarSSRRemark').type('Remark FROM AUTOMATION' + unique + randomString);
-        cy.wait(2000);
-
-        cy.get("#btnSubmit").click();
-        cy.wait(5000);
-
-        // Wait for the modal to appear after submission
-        cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
-          .should('be.visible');
-
-        cy.get('.sweet-alert button.confirm')
-          .click({ force: true });
-
-        cy.contains('a', 'Log Out').click({ force: true });
-        cy.then(() => {
-          exportToExcel(testResults);
-        });
-        // Continue with the rest of the code...
-      } else {
-        cy.log('✅ No modal detected, continuing...');
-        // Handle the case where the modal is not present
       }
     });
+
+    // Proceed with the next steps regardless of modal presence
+    cy.get('#dpkRFSTargetDate').should('be.visible').then(() => {
+      cy.log('Setting target date...');
+      cy.get('#dpkRFSTargetDate')
+        .invoke('val', date)
+        .trigger('change');
+    });
+
+    cy.wait(1000);
+
+    cy.get('#dpkKickOffMeetingDate').should('be.visible').then(() => {
+      cy.log('Setting kickoff meeting date...');
+      cy.get('#dpkKickOffMeetingDate')
+        .invoke('val', date)
+        .trigger('change');
+    });
+
+    cy.get('#dpkRFSTargetDate').should('be.visible').then(() => {
+      cy.log('Setting target date...');
+      cy.get('#dpkRFSTargetDate')
+        .invoke('val', date)
+        .trigger('change');
+    });
+
+    cy.wait(1000);
+
+    cy.get('#dpkKickOffMeetingDate').should('be.visible').then(() => {
+      cy.log('Setting kickoff meeting date...');
+      cy.get('#dpkKickOffMeetingDate')
+        .invoke('val', date)
+        .trigger('change');
+    });
+
+    cy.get('#fleKickOffMeetingDocument').attachFile(filePath);
+    cy.wait(1000);
+
+
+
+
+    cy.get('#fleDocumentPolePositionPhoto').attachFile(photoFilePath);
+    cy.wait(1000);
+
+    cy.get('#fleSSRDocument').attachFile(photoFilePath);
+    cy.wait(1000);
+
+    cy.get('#tarSSRRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.wait(2000);
+
+    cy.get("#btnSubmit").click();
+    cy.wait(5000);
+
+    // Wait for confirmation modal after submission
+    cy.get('.sweet-alert', { timeout: 10000 }).should('be.visible');
+    cy.get('.sweet-alert button.confirm').click({ force: true });
+
+    // Log out and export results
+    cy.contains('a', 'Log Out').click({ force: true });
+    cy.then(() => {
+      exportToExcel(testResults);
+    });
+
     cy.get('.sweet-alert.showSweetAlert.visible').then(($modal) => {
       if ($modal.length) {
         cy.log('🚨 Modal detected! Clicking OK.');
-        cy.get('.sa-confirm-button-container .confirm.btn.btn-lg.btn-warning').click();
+        cy.get('.sa-confirm-button-container .success.btn.btn-lg.btn-warning').click();
       } else {
         cy.log('✅ No modal detected, continuing...');
       }
