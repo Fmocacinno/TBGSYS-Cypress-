@@ -66,13 +66,13 @@ describe('template spec', () => {
     const user = "555504220025";
 
 
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -192,6 +192,12 @@ describe('template spec', () => {
     cy.wait(5000);
     cy.get('.confirm.btn-success').click({ force: true });
     cy.wait(5000)
+    cy.get('tr')
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '4') // Find the row where the first column contains '6'
+      .find('td:nth-child(2) .btnSelect') // Find the button in the second column
+      .click(); // Click the button
+    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
+    cy.wait(1000);
     cy.get('#tarDrumplanDropFORemark').type('Remark FROM AUTOMATION' + unique + randomRangeValue(0, 10));
     cy.wait(2000);
     cy.get("#btnSubmit").click();

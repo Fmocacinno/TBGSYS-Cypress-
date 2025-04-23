@@ -54,23 +54,13 @@ describe('template spec', () => {
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
 
-    cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
-      baseUrlVP = values.baseUrlVP;
-      baseUrlTBGSYS = values.baseUrlTBGSYS;
-      menu1 = values.menu1;
-      menu2 = values.menu2;
-      menu3 = values.menu3;
-      menu4 = values.menu4;
-      login = values.login;
-      logout = values.logout;
-      dashboard = values.dashboard;
     });
 
-
-    cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -98,6 +88,7 @@ describe('template spec', () => {
     });
   });
 
+
   //AM
   it('OTDR Input by vendor', () => {
 
@@ -115,6 +106,7 @@ describe('template spec', () => {
     cy.get("#btnSubmit").click();
     cy.wait(2000);
 
+
     cy.visit(`${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`)
       .url().should('include', `${baseUrlTBGSYS}/ProjectActivity/ProjectActivityHeader`);
     testResults.push({
@@ -124,8 +116,7 @@ describe('template spec', () => {
     });
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
-
-    // Check if the error pop-up exists without failing the test
+    // Check if the error pop-up is visible
     cy.document().then((doc) => {
       const errorPopup = doc.querySelector('h2');
 
@@ -176,30 +167,21 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '5') // Find the row where the first column contains '6'    cy.wait(2000);
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '7') // Find the row where the first column contains '6'    cy.wait(2000);
 
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
 
     cy.wait(4000);
-    cy.get('#tarMaterialDeliveryApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.get('#tarInstallationOTBApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
     cy.wait(2000);
 
     cy.get('#btnApprove').click();
-    // cy.get('.confirm.btn-success').click({ force: true });
-    cy.wait(5000)
-    cy.get('.sweet-alert', { timeout: 20000 }) // Wait up to 10s for the modal
-      .should('be.visible');
+    cy.wait(7000);
+    cy.get('.sa-confirm-button-container button.confirm').click();
 
-    cy.get('.sweet-alert button.confirm')
-      .click({ force: true });
+    cy.wait(2000);
 
-    cy.contains('a', 'Log Out').click({ force: true });
-    cy.then(() => {
-      exportToExcel(testResults);
-    });
-
-    // cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);

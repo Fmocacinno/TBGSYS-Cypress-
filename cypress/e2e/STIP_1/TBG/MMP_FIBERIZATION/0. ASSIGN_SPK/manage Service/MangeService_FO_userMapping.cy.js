@@ -82,38 +82,48 @@ describe('template spec', () => {
 
     const user = "555504220025";
 
-
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
-      cy.log(values);
-      sonumb = values.soNumber;
-      siteId = values.siteId;
+    before(() => {
+      testResults = []; // Reset results before all tests
     });
 
-    cy.readFile('cypress/e2e/STIP_1/MMP_FIBERIZATION/DataVariable.json').then((values) => {
-      cy.log(values);
-      unique = values.unique;
-      userAM = values.userAM;
-      userInputStip = values.userInputStip;
-      PICVendorManageService = values.PICVendorManageService;
-      userLeadAM = values.userLeadAM;
-      userLeadPM = values.userLeadPM;
-      userPMFO = values.userPMFO;
-      userARO = values.userARO;
-      PICVendorPMOMobile = values.PICVendorPMOMobile;
-      PICVendor = values.PICVendor;
-      date = values.date;
-      pass = values.pass;
-      baseUrlVP = values.baseUrlVP;
-      baseUrlTBGSYS = values.baseUrlTBGSYS;
-      menu1 = values.menu1;
-      menu2 = values.menu2;
-      menu3 = values.menu3;
-      menu4 = values.menu4;
-      login = values.login;
-      logout = values.logout;
-      dashboard = values.dashboard;
-      PICVendorMobile1 = values.PICVendorMobile1;
-      PICVendorMobile2 = values.PICVendorMobile2;
+    after(() => {
+      exportToExcel(testResults); // Export after all tests complete
+    });
+    beforeEach(() => {
+      cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
+        cy.log(values);
+        sonumb = values.soNumber;
+        siteId = values.siteId;
+      });
+
+      cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/DataVariable.json').then((values) => {
+        cy.log(values);
+        unique = values.unique;
+        userAM = values.userAM;
+        userInputStip = values.userInputStip;
+        userLeadAM = values.userLeadAM;
+        userLeadPM = values.userLeadPM;
+        userPMFO = values.userPMFO;
+        userARO = values.userARO;
+        UserRequestSPKProject = values.UserRequestSPKProject;
+        Uservendor = values.Uservendor;
+        pass = values.pass;
+        baseUrlVP = values.baseUrlVP;
+        baseUrlTBGSYS = values.baseUrlTBGSYS;
+        menu1 = values.menu1;
+        menu2 = values.menu2;
+        menu3 = values.menu3;
+        menu4 = values.menu4;
+        login = values.login;
+        logout = values.logout;
+        dashboard = values.dashboard;
+
+      });
+
+
+      Cypress.on('uncaught:exception', (err, runnable) => {
+        return false;
+      });
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {

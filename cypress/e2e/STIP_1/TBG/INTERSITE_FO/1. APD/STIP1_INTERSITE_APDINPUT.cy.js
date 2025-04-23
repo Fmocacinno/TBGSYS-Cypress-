@@ -183,7 +183,12 @@ describe('template spec', () => {
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
     cy.wait(2000);
+    cy.get('#tbxSegmentID')
+      .should('be.visible')
+      .clear()
+      .type('Remark FROM AUTOMATION' + unique + randomRangeValue);
 
+    cy.wait(2000);
     cy.get('#fleKMLFile').attachFile(KMLfilepath);
     cy.wait(5000);
     cy.get("#btnProcess").click();
