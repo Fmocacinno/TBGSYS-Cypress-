@@ -42,7 +42,7 @@ const randomString = generateRandomString(minLength, maxLength);
 // const date = "2-Jan-2025";
 // const user = "555504220025"
 // const pass = "123456"
-const filePath = 'documents/pdf/receipt.pdf';
+const filePath = 'documents/pdf/C (1).pdf';
 const latMin = -11.0; // Southernmost point
 const latMax = 6.5;   // Northernmost point
 const longMin = 94.0; // Westernmost point
@@ -55,7 +55,7 @@ const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -65,13 +65,13 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/MCP_NON_FO/soDataMCPNONFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
 
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/MCP_NON_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -82,6 +82,17 @@ describe('template spec', () => {
       userARO = values.userARO;
       pass = values.pass;
       date = values.date;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
+      PICVendorMobile1 = values.PICVendorMobile1;
+      PICVendorMobile2 = values.PICVendorMobile2;
 
     });
 
@@ -95,8 +106,7 @@ describe('template spec', () => {
   for (let i = 0; i < loopCount; i++) {
     it.only(`passes iteration ${i + 1}`, () => {
 
-      cy.visit('http://tbgappdev111.tbg.local:8127/Login')
-
+      cy.visit(`${baseUrlTBGSYS}${login}`);
       cy.get('#tbxUserID').type(userInputStip).should('have.value', userInputStip).then(() => {
         // Log the test result if input is successful
         testResults.push({
@@ -125,7 +135,7 @@ describe('template spec', () => {
       });
 
       cy.get('#btnSubmit').click();
-      cy.url().should('include', 'http://tbgappdev111.tbg.local:8127/Dashboard'); // Ensure the page changes or some result occurs
+      cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'Button Clicked',
         Status: 'Pass',
@@ -133,8 +143,8 @@ describe('template spec', () => {
       });
       cy.wait(2000)
 
-      cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Input')
-      cy.url().should('include', 'http://tbgappdev111.tbg.local:8127/STIP/Input'); // Ensure the page changes or some result occurs
+      cy.visit(`${baseUrlTBGSYS}/STIP/Input`);
+      cy.url().should('include', `${baseUrlTBGSYS}/STIP/Input`); // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'User masuk ke Page Stip Input',
         Status: 'Pass',
@@ -151,7 +161,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsNewCompany').then(($select) => {
-        cy.wrap($select).select('PKP', { force: true })
+        cy.wrap($select).select('TB', { force: true })
       })
 
       cy.get('#slsNewCustomer').then(($select) => {
@@ -253,7 +263,7 @@ describe('template spec', () => {
 
 
       cy.get('#slsNewMLANumber').then(($select) => {
-        cy.wrap($select).select('0031-14-F07-121782', { force: true })
+        cy.wrap($select).select('0010-14-F07-39033', { force: true })
       })
 
       cy.get('#tbxNewLeasePeriod').type(5);
@@ -302,7 +312,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/MCP_NON_FO/soDataMCPNONFO.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/MCP_NON_FO/soDataMCPNONFO.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
@@ -311,7 +321,7 @@ describe('template spec', () => {
       });
 
 
-      cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout')
+      cy.contains('a', 'Log Out').click({ force: true });
       cy.then(() => {
         exportToExcel(testResults);
       });

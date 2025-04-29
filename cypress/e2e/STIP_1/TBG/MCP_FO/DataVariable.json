@@ -1,5 +1,5 @@
 {
-  "unique": "_SPKV2_",
+  "unique": "_BASO_",
   "date": "2-Jan-2025",
   "Custom_": "Custom_",
   "userInputStip": "555504220025",
@@ -23,8 +23,8 @@
   "UserRequestSPKProjectOPSIC": "202311020148",
   "UserRequestSPKApproval": "201810150080",
   "pass": "123456",
-  "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8023",
-  "baseUrlVP": "http://tbgappdev111.tbg.local:8023",
+  "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8127",
+  "baseUrlVP": "http://tbgappdev111.tbg.local:8128",
   "login": "/Login",
   "logout": "/Logout",
   "dashboard": "/ProjectActivity/ProjectActivityHeader",
