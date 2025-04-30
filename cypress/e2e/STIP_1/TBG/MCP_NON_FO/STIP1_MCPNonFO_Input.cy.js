@@ -5,7 +5,7 @@ const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
+  const filePath = 'resultsApproval_MCP_NON_FO.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -165,7 +165,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsNewCustomer').then(($select) => {
-        cy.wrap($select).select('XL', { force: true })
+        cy.wrap($select).select('TSEL', { force: true })
       })
 
       cy.get('#slsNewRegion').then(($select) => {
@@ -181,33 +181,33 @@ describe('template spec', () => {
       // handle HTML
 
       cy.get('.slsBatchSLD').eq(0)
-        .select('180', { force: true });
+        .select('179', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('180', { force: true });
+        .select('179', { force: true });
 
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('180', { force: true });
+        .select('179', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('180', { force: true });
+        .select('179', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('180', { force: true });
+        .select('179', { force: true });
 
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('180', { force: true });
+        .select('179', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('180', { force: true });
+        .select('179', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('180', { force: true });
+        .select('179', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('180', { force: true });
+        .select('179', { force: true });
       // handle HTML
 
       cy.get('#tbxNewSiteName').type('Site_' + unique + RangerandomValue);
@@ -263,7 +263,7 @@ describe('template spec', () => {
 
 
       cy.get('#slsNewMLANumber').then(($select) => {
-        cy.wrap($select).select('0010-14-F07-39033', { force: true })
+        cy.wrap($select).select('060/BC/PROC-01/LOG/2010', { force: true })
       })
 
       cy.get('#tbxNewLeasePeriod').type(5);

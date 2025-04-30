@@ -284,25 +284,39 @@ describe('template spec', () => {
         cy.log("⚠️ Skipping remark input...");
         cy.wait(10000);
         cy.get("#btnConfirm").then(($btn) => {
-          if ($btn.is(':visible')) {
-            // Use dynamic values in select fields
-            if (userPMSitac) {
-              cy.get('#slsPMSitac').select(userPMSitac, { force: true });
-            } else {
-              cy.log('userPMSitac is missing or invalid');
-            }
-
-            if (userPMCME) {
-              cy.get('#slsPMCME').select(userPMCME, { force: true });
-            } else {
-              cy.log('userPMCME is missing or invalid');
-            } // Use dynamic values in 
+          if ($btn.is(':visible') && !$btn.is(':disabled')) {
+            cy.wait(3000);
+            cy.get('.nav-tabs a[href="#tabPMAssignment"]').click();
+            cy.wait(3000);
+            cy.get('#slsPMSitac').select(userPMSitac, { force: true });
+            cy.get('#slsPMCME').select(userPMCME, { force: true });
+            cy.get('.nav-tabs a[href="#tabApprovalDetail"]').click();
+            cy.wait(3000);
             cy.wrap($btn).click();
+            cy.wait(3000);
             cy.log("✅ Button clicked successfully");
-            cy.wait(6000);
           } else {
             cy.log("⚠️ Button not clickable, skipping...");
           }
+          // if ($btn.is(':visible')) {
+          //   // Use dynamic values in select fields
+          //   if (userPMSitac) {
+          //     cy.get('#slsPMSitac').select(userPMSitac, { force: true });
+          //   } else {
+          //     cy.log('userPMSitac is missing or invalid');
+          //   }
+
+          //   if (userPMCME) {
+          //     cy.get('#slsPMCME').select(userPMCME, { force: true });
+          //   } else {
+          //     cy.log('userPMCME is missing or invalid');
+          //   } // Use dynamic values in 
+          //   cy.wrap($btn).click();
+          //   cy.log("✅ Button clicked successfully");
+          //   cy.wait(6000);
+          // } else {
+          //   cy.log("⚠️ Button not clickable, skipping...");
+          // }
         });
 
       } else {

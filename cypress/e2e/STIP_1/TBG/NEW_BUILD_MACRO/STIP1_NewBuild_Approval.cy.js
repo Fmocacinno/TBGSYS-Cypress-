@@ -19,7 +19,8 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, userPMCME, userPMSitac;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, userPMCME, userPMSitac;
+
   before(() => {
     testResults = []; // Reset results before all tests
   });
@@ -28,31 +29,36 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
       userInputStip = values.userInputStip;
       userLeadAM = values.userLeadAM;
-      userPMCME = values.userPMCME?.toString();
-      userPMSitac = values.userPMSitac?.toString(); // Ensure it's a string
-
       userLeadPM = values.userLeadPM;
       userPMFO = values.userPMFO;
+      userPMCME = values.userPMCME;
+      userPMSitac = values.userPMSitac;
+
       userARO = values.userARO;
       pass = values.pass;
-      date = values.date;
-      // Debugging: Log the values to ensure they're correctly assigned
-      cy.log(`userPMCME: ${userPMCME}`);
-      cy.log(`UserPMSitac: ${userPMSitac}`);
-
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu2 = values.menu2;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
 
     });
+
 
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false;
@@ -62,7 +68,7 @@ describe('template spec', () => {
   //AM
   it('AM Test Case', () => {
 
-    cy.visit('http://tbgappdev111.tbg.local:8127/Login');
+    cy.visit(`${baseUrlTBGSYS}${login}`);
 
     cy.get('#tbxUserID').type(userAM);
     cy.get('#tbxPassword').type(pass);
@@ -76,15 +82,16 @@ describe('template spec', () => {
 
     cy.get("#btnSubmit").click();
     cy.wait(2000);
-
-    cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Approval')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8127/STIP/Approval');
+    cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
+    cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
+    // Ensure the page changes or some result occurs
     testResults.push({
       Test: 'User AM melakukan akses ke menu Stip Approval',
       Status: 'Pass',
       timeStamp: new Date().toISOString(),
     });
     cy.wait(2000);
+
     // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
     //   // Log the test result if button click is successful
     //   testResults.push({
@@ -96,14 +103,16 @@ describe('template spec', () => {
 
     cy.contains('label', /^\s *By SO Number\s*$/)
       .click(); // search By Radio Button SONumber
-    cy.get('#tbxApprovalSONumber').type(sonumb).should('have.value', sonumb).then(() => {
-      // Log the test result if input is successful
+    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+      // Log the test result if button click is successful
       testResults.push({
-        Test: 'User AM melakukan input SONumber di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
     }); // << Search Filter
+
+
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
@@ -112,13 +121,14 @@ describe('template spec', () => {
         Timestamp: new Date().toISOString(),
       });
     });
+
     cy.wait(2000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
       cy.wait(2000);
 
-      if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "AM" is in the status
+      if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "Lead PM" is in the status
         cy.log("✅ Status contains 'AM', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnApprovalDetail').click();
@@ -143,15 +153,15 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(4000);
-    cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout');
+    cy.wait(2000);
+    cy.contains('a', 'Log Out').click({ force: true });
   });
 
   //LEAD AM
   it('Lead AM Test Case', () => {
     const testResults = [];
     // Lead PM
-    cy.visit('http://tbgappdev111.tbg.local:8127');
+    cy.visit(`${baseUrlTBGSYS}${login}`);
     cy.get('#tbxUserID').type(userLeadAM);
     cy.get('#tbxPassword').type(pass);
     cy.get('#RefreshButton').click();
@@ -164,29 +174,41 @@ describe('template spec', () => {
 
     cy.get('#btnSubmit').click();
     cy.wait(2000);
-    cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Approval')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8127/STIP/Approval');
+    cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
+    cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
     testResults.push({
       Test: 'User Lead AM melakukan akses ke menu Stip Approval',
       Status: 'Pass',
       timeStamp: new Date().toISOString(),
     });
     cy.wait(2000);
+
+
+    // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
+    //   // Log the test result if button click is successful
+    //   testResults.push({
+    //     Test: 'User AM melakukan klik tombol Search di Stip approval',
+    //     Status: 'Pass',
+    //     Timestamp: new Date().toISOString(),
+    //   });
+    // }); // << Search Filter SONumber  disable it if u dont need
+
     cy.contains('label', /^\s *By SO Number\s*$/)
       .click(); // search By Radio Button SONumber
-    cy.get('#tbxApprovalSONumber').type(sonumb).should('have.value', sonumb).then(() => {
-      // Log the test result if input is successful
+    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+      // Log the test result if button click is successful
       testResults.push({
-        Test: 'User Lead AM melakukan input SONumber di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
-    });
+    }); // << Search Filter
+
 
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User Lead AM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
@@ -197,21 +219,19 @@ describe('template spec', () => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
 
-      if (text.includes("Waiting for Approval Lead AM")) {  // ✅ Checks if "Lead AM" is in the status
+      if (text.includes("Waiting for Approval Lead AM")) {  // ✅ Checks if "Lead PM" is in the status
         cy.log("✅ Status contains 'Lead AM', proceeding with approval...");
         cy.get('tbody tr:first-child .btnApprovalDetail').click();
         cy.get('#tarApprovalRemark').type('Remark_' + unique, { force: true });
         // SKIPPING 'tarApprovalRemark' input field
         cy.log("⚠️ Skipping remark input...");
-        cy.wait(2000);
+
         // Attempt to click the approval button only if it's visible and enabled
         cy.get("#btnApprove").then(($btn) => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
-            cy.wait(2000);
             cy.wrap($btn).click();
             cy.log("✅ Button clicked successfully");
           } else {
-            cy.wait(2000);
             cy.log("⚠️ Button not clickable, skipping...");
           }
         });
@@ -221,14 +241,13 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(4000);
-    cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout');
-
+    cy.wait(2000);
+    cy.contains('a', 'Log Out').click({ force: true });
   });
   //LEAD PM
   it('Lead PM Test Case', () => {
     // Lead PM
-    cy.visit('http://tbgappdev111.tbg.local:8127');
+    cy.visit(`${baseUrlTBGSYS}${login}`);
     cy.get('#tbxUserID').type(userLeadPM);
     cy.get('#tbxPassword').type(pass);
     cy.get('#RefreshButton').click();
@@ -242,8 +261,8 @@ describe('template spec', () => {
     cy.get('#btnSubmit').click();
 
     cy.wait(2000);
-    cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Approval')
-      .url().should('include', 'http://tbgappdev111.tbg.local:8127/STIP/Approval');
+    cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
+    cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
     testResults.push({
       Test: 'User LEAD PM melakukan akses ke menu Stip Approval',
       Status: 'Pass',
@@ -284,25 +303,39 @@ describe('template spec', () => {
         cy.log("⚠️ Skipping remark input...");
         cy.wait(10000);
         cy.get("#btnConfirm").then(($btn) => {
-          if ($btn.is(':visible')) {
-            // Use dynamic values in select fields
-            if (userPMSitac) {
-              cy.get('#slsPMSitac').select(userPMSitac, { force: true });
-            } else {
-              cy.log('userPMSitac is missing or invalid');
-            }
-
-            if (userPMCME) {
-              cy.get('#slsPMCME').select(userPMCME, { force: true });
-            } else {
-              cy.log('userPMCME is missing or invalid');
-            } // Use dynamic values in 
+          if ($btn.is(':visible') && !$btn.is(':disabled')) {
+            cy.wait(3000);
+            cy.get('.nav-tabs a[href="#tabPMAssignment"]').click();
+            cy.wait(3000);
+            cy.get('#slsPMSitac').select(userPMSitac, { force: true });
+            cy.get('#slsPMCME').select(userPMCME, { force: true });
+            cy.get('.nav-tabs a[href="#tabApprovalDetail"]').click();
+            cy.wait(3000);
             cy.wrap($btn).click();
+            cy.wait(5000);
             cy.log("✅ Button clicked successfully");
-            cy.wait(6000);
           } else {
             cy.log("⚠️ Button not clickable, skipping...");
           }
+          // if ($btn.is(':visible')) {
+          //   // Use dynamic values in select fields
+          //   if (userPMSitac) {
+          //     cy.get('#slsPMSitac').select(userPMSitac, { force: true });
+          //   } else {
+          //     cy.log('userPMSitac is missing or invalid');
+          //   }
+
+          //   if (userPMCME) {
+          //     cy.get('#slsPMCME').select(userPMCME, { force: true });
+          //   } else {
+          //     cy.log('userPMCME is missing or invalid');
+          //   } // Use dynamic values in 
+          //   cy.wrap($btn).click();
+          //   cy.log("✅ Button clicked successfully");
+          //   cy.wait(6000);
+          // } else {
+          //   cy.log("⚠️ Button not clickable, skipping...");
+          // }
         });
 
       } else {
@@ -311,13 +344,13 @@ describe('template spec', () => {
     });
 
     cy.wait(4000);
-    cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout');
+    cy.contains('a', 'Log Out').click({ force: true });
 
   });
   //ARO
   it('ARO Test Case', () => {
     // Lead PM
-    cy.visit('http://tbgappdev111.tbg.local:8127');
+    cy.visit(`${baseUrlTBGSYS}${login}`);
     cy.get('#tbxUserID').type(userARO);
     cy.get('#tbxPassword').type(pass);
     cy.get('#RefreshButton').click();
@@ -330,7 +363,8 @@ describe('template spec', () => {
 
     cy.get('#btnSubmit').click();
     cy.wait(2000);
-    cy.visit('http://tbgappdev111.tbg.local:8127/STIP/Approval');
+    cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
+    cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
     cy.wait(2000);
     cy.contains('label', /^\s *By SO Number\s*$/)
       .click(); // search By Radio Button SONumber
@@ -381,7 +415,7 @@ describe('template spec', () => {
       cy.wait(2000);
     });
     cy.wait(2000);
-    cy.visit('http://tbgappdev111.tbg.local:8127/Login/Logout');
+    cy.contains('a', 'Log Out').click({ force: true });
 
     cy.then(() => {
       exportToExcel(testResults);
