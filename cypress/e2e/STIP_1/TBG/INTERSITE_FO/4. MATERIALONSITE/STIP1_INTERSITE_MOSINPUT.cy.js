@@ -176,7 +176,7 @@ describe('template spec', () => {
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di PROJECT ACTIVITY',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
@@ -186,10 +186,10 @@ describe('template spec', () => {
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
-      cy.wait(2000);
+      cy.wait(4000);
 
       if (text.includes(sonumb)) {  // ✅ Checks if "Lead PM" is in the status
-        cy.log("✅ Status contains 'AM', proceeding with approval...");
+        cy.log("✅ Status contains 'SONUUMBER', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').invoke('removeAttr', 'target').click();
       } else {

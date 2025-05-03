@@ -128,7 +128,7 @@ describe('template spec', () => {
       cy.log("📌 Status Found:", text);
       cy.wait(2000);
 
-      if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "Lead PM" is in the status
+      if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "Lead AM" is in the status
         cy.log("✅ Status contains 'AM', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnApprovalDetail').click();
@@ -349,7 +349,7 @@ describe('template spec', () => {
   });
   //ARO
   it('ARO Test Case', () => {
-    // Lead PM
+    // ARO
     cy.visit(`${baseUrlTBGSYS}${login}`);
     cy.get('#tbxUserID').type(userARO);
     cy.get('#tbxPassword').type(pass);

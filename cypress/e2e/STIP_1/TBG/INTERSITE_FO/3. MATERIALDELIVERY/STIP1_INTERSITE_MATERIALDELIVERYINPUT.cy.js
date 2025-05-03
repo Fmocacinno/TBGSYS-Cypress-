@@ -173,33 +173,55 @@ describe('template spec', () => {
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di PROJECT ACTIVITY',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
     });
 
-    cy.wait(4000);
+    cy.wait(5000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
       cy.wait(2000);
 
       if (text.includes(sonumb)) {  // ✅ Checks if "Lead PM" is in the status
-        cy.log("✅ Status contains 'AM', proceeding with approval...");
+        cy.log("✅ Status contains 'SONUUMBER', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').invoke('removeAttr', 'target').click();
       } else {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.wait(4000);
+    cy.wait(5000);
 
-    cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '5') // Find the row where the first column contains '6'
-      .find('td:nth-child(2) .btnSelect') // Find the button in the second column
-      .click(); // Click the button
-    cy.wait(1000);
+
+
+
+
+    cy.get('body').then(($body) => {
+      if ($body.find('#slsMobilePIC').length > 0 && $body.find('#slsMobilePIC').is(':visible')) {
+        // Run the first set of actions
+        cy.get('#slsMobilePIC').then(($select) => {
+          cy.wrap($select).select(PICVendorMobile1, { force: true });
+        });
+
+        cy.get('#slsMobileCoPIC').then(($select) => {
+          cy.wrap($select).select(PICVendorMobile2, { force: true });
+        });
+
+        cy.get("#btnMobilePICSubmit").click({ force: true });
+        cy.wait(5000);
+      }
+
+      // Run the second block of code (always executed)
+      cy.get('tr')
+        .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '5') // Find the row where the first column contains '6'
+        .find('td:nth-child(2) .btnSelect') // Find the button in the second column
+        .click(); // Click the button
+      cy.wait(1000);
+    });
+
 
     cy.get('#dpkMaterialDeliveryDate')
       .invoke('val', date)
