@@ -33,27 +33,56 @@ function generateRandomString(minLength, maxLength) {
   }
   return result;
 }
+function clickAllEnabledButtons(buttons, index = 0, callback) {
+  if (index >= buttons.length) {
+    callback(); // Done with this page
+    return;
+  }
+
+  cy.wrap(buttons[index])
+    .scrollIntoView()
+    .should('be.visible')
+    .click()
+    .then(() => {
+      // Small wait to allow DOM updates after click
+      cy.wait(1000);
+      clickAllEnabledButtons(buttons, index + 1, callback);
+    });
+}
+
 function checkRowsSequentially(page = 1, maxPages = 10) {
   if (page > maxPages) return;
 
-  cy.get('tbody tr .btnSelect:visible:not(:disabled)').first().then(($btn) => {
-    if ($btn.length) {
-      cy.wrap($btn)
-        .scrollIntoView() // Scroll to the element
-        .should('be.visible') // Optional: ensure it's visible
+  // Optional wait to ensure table content is rendered
+  cy.wait(1000);
+
+  cy.get('button.btnSelect').then(($buttons) => {
+    const $enabledBtns = $buttons.filter((i, el) =>
+      !el.disabled && Cypress.$(el).is(':visible')
+    );
+
+    if ($enabledBtns.length > 0) {
+      cy.wrap($enabledBtns[0])
+        .scrollIntoView()
+        .should('be.visible')
         .click();
     } else {
-      // No available buttons, go to the next page
-      cy.get('#tblSite_paginate a[title="Next"]:visible').then(($next) => {
-        if ($next.length) {
+      // Try going to the next page
+      cy.get('a[title="Next"]:visible').then(($next) => {
+        if ($next.length > 0) {
           cy.wrap($next).click();
-          cy.wait(2000);
+          cy.wait(2000); // wait for table to update
           checkRowsSequentially(page + 1, maxPages);
+        } else {
+          cy.log('No next page available');
         }
       });
     }
   });
 }
+
+
+
 let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
 
 const minLength = 5;
