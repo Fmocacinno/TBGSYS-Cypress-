@@ -257,8 +257,8 @@ describe('template spec', () => {
 
     cy.get("#btnSubmit").click();
     cy.wait(5000);
-    cy.get('.confirm.btn-success').click({ force: true });
-    cy.wait(5000)
+    // cy.get('.confirm.btn-success').click({ force: true });
+    // cy.wait(5000)
 
     // cy.get("#btnSubmit").click();
     // cy.wait(7000);

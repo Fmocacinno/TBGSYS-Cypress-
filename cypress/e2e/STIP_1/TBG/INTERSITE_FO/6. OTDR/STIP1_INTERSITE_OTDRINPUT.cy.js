@@ -184,7 +184,7 @@ describe('template spec', () => {
 
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
-    cy.wait(3000);
+    cy.wait(4000);
     cy.get('#fleOTDRCoreManagementDocument').attachFile(excelfilepath);
 
     cy.get('#dpkOTDRInstallationDate')

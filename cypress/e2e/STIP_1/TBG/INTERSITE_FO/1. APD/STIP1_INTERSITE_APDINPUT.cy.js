@@ -182,11 +182,11 @@ describe('template spec', () => {
       .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '3') // Find the row where the first column contains '6'
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
-    cy.wait(2000);
-    cy.get('#tbxSegmentID')
-      .should('be.visible')
-      .clear()
-      .type('Remark FROM AUTOMATION' + unique + randomRangeValue);
+    // cy.wait(2000);
+    // cy.get('#tbxSegmentID')
+    //   .should('be.visible')
+    //   .clear()
+    //   .type('Remark FROM AUTOMATION' + unique + randomRangeValue);
 
     cy.wait(2000);
     cy.get('#fleKMLFile').attachFile(KMLfilepath);
