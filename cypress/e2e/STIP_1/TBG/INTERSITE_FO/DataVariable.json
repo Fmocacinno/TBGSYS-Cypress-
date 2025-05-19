@@ -27,7 +27,7 @@
   "baseUrlVP": "http://tbgappdev111.tbg.local:8128",
   "login": "/Login",
   "logout": "/Logout",
-  "dashboard": "/ProjectActivity/ProjectActivityHeader",
+  "dashboard": "/Dashboard",
   "menu1": "/STIP/Input",
   "menu2": "/STIP/Approval",
   "menu3": "/STIP/Input",
