@@ -318,6 +318,14 @@ describe('template spec', () => {
         cy.log("✅ Status contains 'Lead PM', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnApprovalDetail').click();
+
+        // cy.get("#btnApprovalFOHubEdit").click();
+
+        // cy.get('#slsApprovalFOHub').then(($select) => {
+        //   cy.wrap($select).select('2', { force: true })
+        // })
+        // cy.get("#btnApprovalFOHubSave").click();
+
         cy.get('#tarApprovalRemark').type('Remark_' + unique, { force: true });
         cy.log("⚠️ Skipping remark input...");
         cy.wait(6000);

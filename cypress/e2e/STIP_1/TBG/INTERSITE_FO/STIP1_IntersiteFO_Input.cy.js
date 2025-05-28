@@ -186,6 +186,7 @@ describe('template spec', () => {
       cy.contains('label', /^\s *Segment\s*$/)
         .click(); // Click the label
 
+
       // Assert that the "Segment" radio button is selected
       cy.get('input[type="radio"][value="Segment"]').should('be.checked');
 
@@ -247,6 +248,13 @@ describe('template spec', () => {
       cy.get('#slsIntersiteFOResidence').then(($select) => {
         cy.wrap($select).select('178', { force: true })
       })
+      
+      cy.get('#slsFOHubIntersiteFO').then(($select) => {
+        cy.wrap($select).select('2', { force: true })
+      })
+
+
+
       cy.get('#slsIntersiteFOTowerProviderNearEnd').then(($select) => {
         cy.wrap($select).select('10', { force: true })
       })

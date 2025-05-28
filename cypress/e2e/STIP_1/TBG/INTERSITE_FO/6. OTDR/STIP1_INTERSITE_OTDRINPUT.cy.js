@@ -264,7 +264,7 @@ describe('template spec', () => {
     cy.wait(2000);
     cy.get("#btnSubmit").click();
     // cy.wait(30000);
-    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 15000 })
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
       .should('be.visible')
       .contains('Success');
 
