@@ -289,13 +289,6 @@ describe('template spec', () => {
       exportToExcel(testResults);
     });
 
-    cy.get('.sweet-alert.showSweetAlert.visible').then(($modal) => {
-      if ($modal.length) {
-        cy.log('🚨 Modal detected! Clicking OK.');
-        cy.get('.sa-confirm-button-container .success.btn.btn-lg.btn-warning').click();
-      } else {
-        cy.log('✅ No modal detected, continuing...');
-      }
-    });
+
   });
 });
