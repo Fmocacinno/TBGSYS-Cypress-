@@ -266,14 +266,16 @@ describe('template spec', () => {
     // cy.get('.sa-confirm-button-container button.confirm').click();
     // cy.wait(2000);
 
-    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 15000 })
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
       .should('be.visible')
-      .contains('Success');
+      .within(() => {
+        // Verifikasi isi teks popup
+        cy.contains('Success').should('be.visible');
+        cy.contains('Has been approved').should('be.visible');
 
-    cy.get('.sa-confirm-button-container .confirm') // Target tombol "OK"
-      .should('be.visible')
-      .click();
-
+        // Klik tombol "OK"
+        cy.get('.confirm.btn-success').should('be.visible').click();
+      });
 
 
     cy.contains('a', 'Log Out').click({ force: true });
