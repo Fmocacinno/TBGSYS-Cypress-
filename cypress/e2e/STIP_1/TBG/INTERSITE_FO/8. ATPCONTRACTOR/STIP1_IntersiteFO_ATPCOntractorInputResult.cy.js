@@ -219,62 +219,76 @@ describe('template spec', () => {
     // cy.get('#tbxCableLength').type(randomValue);
     // cy.wait(1000);
     // Check if the submit button is disabled
-    cy.get('#btnSubmitInputATP').should('be.disabled').then(($btn) => {
-      if ($btn.is(':disabled')) {
-        // Click btnBaso
-        // cy.get('#btnBaso').click();
 
-        // Type quantity
+    cy.get('#btnSubmitInputATP').click();
+    // Wait for the modal to close and verify btnSubmitScheduling is enabled
+    cy.get('#btnSubmitInputATP').should('not.be.disabled').click();
 
+    // cy.get('#btnSubmitInputATP').should('be.disabled').then(($btn) => {
+    //   if ($btn.is(':disabled')) {
+    //     // Click btnBaso
+    //     // cy.get('#btnBaso').click();
 
-        // Type GDL number, ensuring max is 8
-        // for (let i = 1; i <= 8; i++) {
-        //   cy.get(`#txtGDLNumber${i}`).type(`GDL-${i}`);
-        //   cy.get(`#txtQuantity${i}`).should('be.enabled') // Pastikan input bisa diedit
-        //     .focus() // Fokus ke input
-        //     .clear()
-        //     .type(randomRangeValue(250, 500));
-        // }
-
-        // // // Type warehouse location and notes
-        // // cy.get('#tarWarehouseLocation').type('Main Warehouse');
-        // // cy.get('#tarGDLNotes').type('Handled with care');
+    //     // Type quantity
 
 
-        // // Select the "Yes" radio button for AvailabilityAdditionalGDL
-        // // Try different approaches to ensure the radio button is checked
-        // cy.get('input[name="AvailabilityAdditionalGDL"][value="Yes"]').parent().click(); // Preferred for iCheck
-        // cy.get('input[name="AvailabilityAdditionalGDL"][value="Yes"]').check({ force: true }); // Backup solution
+    //     // Type GDL number, ensuring max is 8
+    //     // for (let i = 1; i <= 8; i++) {
+    //     //   cy.get(`#txtGDLNumber${i}`).type(`GDL-${i}`);
+    //     //   cy.get(`#txtQuantity${i}`).should('be.enabled') // Pastikan input bisa diedit
+    //     //     .focus() // Fokus ke input
+    //     //     .clear()
+    //     //     .type(randomRangeValue(250, 500));
+    //     // }
 
-        // // Upload document
-        // cy.get('#fleAdditionalGDLDocument').attachFile(PDFFilepath);
-        // cy.wait(1000);
-        // cy.get('#fleJustificationDocument').attachFile(PDFFilepath);
-        // cy.wait(1000);
-
-        // // Select the "Yes" radio button for AvailabilityAdditionalGDL
-        // cy.get('#btnSaveGDL').click();
-        // Wait for the modal to close and verify btnSubmitScheduling is enabled
-        cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }) // Menunggu hingga elemen muncul (maks 10 detik)
-          .should('be.visible') // Memastikan elemen terlihat
-          .within(() => {
-            cy.get('button.confirm.btn.btn-lg.btn-success').click(); // Klik tombol "OK"
-          });
-
-        cy.get('#tblOSPFOInstallation', { timeout: 10000 }).should('be.visible');
-        // Wait for at least one row with the edit button to appear
-        cy.get('tr .btnEditWorktype', { timeout: 10000 }).should('be.visible');
+    //     // // // Type warehouse location and notes
+    //     // // cy.get('#tarWarehouseLocation').type('Main Warehouse');
+    //     // // cy.get('#tarGDLNotes').type('Handled with care');
 
 
-        cy.get('#btnSubmitInputATP').click();
-        // Wait for the modal to close and verify btnSubmitScheduling is enabled
-        cy.get('#btnSubmitInputATP').should('not.be.disabled').click();
+    //     // // Select the "Yes" radio button for AvailabilityAdditionalGDL
+    //     // // Try different approaches to ensure the radio button is checked
+    //     // cy.get('input[name="AvailabilityAdditionalGDL"][value="Yes"]').parent().click(); // Preferred for iCheck
+    //     // cy.get('input[name="AvailabilityAdditionalGDL"][value="Yes"]').check({ force: true }); // Backup solution
 
-      }
-    });
+    //     // // Upload document
+    //     // cy.get('#fleAdditionalGDLDocument').attachFile(PDFFilepath);
+    //     // cy.wait(1000);
+    //     // cy.get('#fleJustificationDocument').attachFile(PDFFilepath);
+    //     // cy.wait(1000);
+
+    //     // // Select the "Yes" radio button for AvailabilityAdditionalGDL
+    //     // cy.get('#btnSaveGDL').click();
+    //     // Wait for the modal to close and verify btnSubmitScheduling is enabled
+    //     // cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 10000 }) // Menunggu hingga elemen muncul (maks 10 detik)
+    //     //   .should('be.visible') // Memastikan elemen terlihat
+    //     //   .within(() => {
+    //     //     cy.get('button.confirm.btn.btn-lg.btn-success').click(); // Klik tombol "OK"
+    //     //   });
+
+    //     // cy.get('#tblOSPFOInstallation', { timeout: 10000 }).should('be.visible');
+    //     // // Wait for at least one row with the edit button to appear
+    //     // cy.get('tr .btnEditWorktype', { timeout: 10000 }).should('be.visible');
+
+
+    //     cy.get('#btnSubmitInputATP').click();
+    //     // Wait for the modal to close and verify btnSubmitScheduling is enabled
+    //     cy.get('#btnSubmitInputATP').should('not.be.disabled').click();
+
+    //   }
+    // });
     // Add wait to ensure processing
     cy.wait(10000);
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
+      .should('be.visible')
+      .within(() => {
+        // Verifikasi isi teks popup
+        cy.contains('Success').should('be.visible');
+        cy.contains('Has been submited').should('be.visible');
 
+        // Klik tombol "OK"
+        cy.get('.confirm.btn-success').should('be.visible').click();
+      });
 
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
