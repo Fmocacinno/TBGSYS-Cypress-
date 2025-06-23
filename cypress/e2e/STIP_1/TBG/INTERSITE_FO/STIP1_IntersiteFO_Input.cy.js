@@ -248,7 +248,7 @@ describe('template spec', () => {
       cy.get('#slsIntersiteFOResidence').then(($select) => {
         cy.wrap($select).select('178', { force: true })
       })
-      
+
       cy.get('#slsFOHubIntersiteFO').then(($select) => {
         cy.wrap($select).select('2', { force: true })
       })
