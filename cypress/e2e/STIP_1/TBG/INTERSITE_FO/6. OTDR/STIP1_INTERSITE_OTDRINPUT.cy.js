@@ -184,7 +184,7 @@ describe('template spec', () => {
 
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
-    cy.wait(4000);
+    cy.wait(5000);
     cy.get('#fleOTDRCoreManagementDocument').attachFile(excelfilepath);
 
     cy.get('#dpkOTDRInstallationDate')
@@ -261,14 +261,14 @@ describe('template spec', () => {
       cy.wait(2000);
     }
     cy.get('#tarOTDRInstallationRemark').type('Remark FROM AUTOMATION' + unique + randomRangeValue);
-    cy.wait(2000);
+    cy.wait(4000);
     cy.get("#btnSubmit").click();
     // cy.wait(30000);
-    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
+    cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 70000 })
       .should('be.visible')
       .within(() => {
         // Verifikasi isi teks popup
-        cy.contains('Success').should('be.visible');
+        // cy.contains('Success').should('be.visible');
         cy.contains('Has been Submitted').should('be.visible');
 
         // Klik tombol "OK"

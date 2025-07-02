@@ -230,7 +230,15 @@ describe('template spec', () => {
       .parent() // Move to the parent div (which has visible UI)
       .find('.iCheck-helper') // Target the interactive helper
       .click();
-
+    cy.get('input[type="file"][id="fleCRCODocument"]').then(($input) => {
+      if ($input.length > 0) {
+        // Jika ditemukan, upload dokumen
+        cy.wrap($input).selectFile(`cypress/fixtures/${PDFFilepath}`, { force: true });
+      } else {
+        // Tidak ditemukan, bisa log atau lewati
+        cy.log('Element fleCRCODocument not found, skipping file upload.');
+      }
+    });
     cy.log('✅ Successfully clicked rdoCoreFarEnd1');
     cy.wait(1000);
     cy.get("#btnSubmitCorePhoto").click();
