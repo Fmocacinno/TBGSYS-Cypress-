@@ -22,7 +22,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, randomValue;
 
 
   before(() => {
@@ -35,7 +35,6 @@ describe('template spec', () => {
 
   beforeEach(() => {
     const testResults = []; // Array to store test results
-    const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 
     function generateRandomString(minLength, maxLength) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -81,6 +80,7 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
+
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -170,7 +170,7 @@ describe('template spec', () => {
       .click(); // Click the button
     cy.wait(10000);
 
-    cy.get('#tbxSegmentID').clear().type('Segment' + unique + randomRangeValue);
+    cy.get('#tbxSegmentID').clear().type('Segment' + randomRangeValue);
 
 
     cy.get('#btnApprove').click();
