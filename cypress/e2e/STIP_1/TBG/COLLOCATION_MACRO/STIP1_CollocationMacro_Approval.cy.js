@@ -21,7 +21,7 @@ describe('template spec', () => {
   let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass;
 
   beforeEach(() => {
-    cy.readFile('/cypress/e2e/STIP_1/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
@@ -43,7 +43,7 @@ describe('template spec', () => {
   it('AM Test Case', () => {
     const testResults = [];
 
-    cy.visit('http://tbgappdev111.tbg.local:8042/Login');
+    cy.visit('http://tbgappdev111.tbg.local:8023/Login');
 
     cy.get('#tbxUserID').type(userAM);
     cy.get('#tbxPassword').type(pass);

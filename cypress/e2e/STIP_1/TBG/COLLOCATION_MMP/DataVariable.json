@@ -1,5 +1,5 @@
 {
-  "unique": "Custom_",
+  "unique": "Case_",
   "date": "2-Jan-2025",
   "Custom_": "Custom_",
   "userInputStip": "201301180003",
@@ -22,8 +22,8 @@
   "UserRequestSPKFTTH": "202311020148",
   "UserRequestSPKApproval": "201810150080",
   "pass": "123456",
-  "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8125",
-  "baseUrlVP": "http://tbgappdev111.tbg.local:8126",
+  "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8129",
+  "baseUrlVP": "http://tbgappdev111.tbg.local:8130",
   "login": "/Login",
   "logout": "/Logout",
   "dashboard": "/ProjectActivity/ProjectActivityHeader",

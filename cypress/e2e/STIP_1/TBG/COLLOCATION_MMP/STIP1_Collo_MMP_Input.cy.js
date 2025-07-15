@@ -313,7 +313,7 @@ describe('template spec', () => {
       checkRowsSequentially();
 
       cy.get('#slsColocationMMPAvailableMMP').then(($select) => {
-        cy.wrap($select).select('20240700081', { force: true })
+        cy.wrap($select).select('20250505311', { force: true })
       })
 
 
@@ -337,16 +337,21 @@ describe('template spec', () => {
       // cy.get('#slsColocationMMPLeadProjectManager').then(($select) => {
       //   cy.wrap($select).select(userLeadPM, { force: true })
       // })
-      cy.get('#slsColocationMMPLeadProjectManager option').then(($options) => {
-        const matching = $options.filter((i, opt) => opt.text === userLeadPM || opt.value === userLeadPM);
 
-        if (matching.length === 1) {
-          cy.get('#slsColocationMMPLeadProjectManager').select(userLeadPM, { force: true });
-        } else {
-          // Select the first match as a fallback
-          cy.get('#slsColocationMMPLeadProjectManager').select(matching.first().val(), { force: true });
-        }
-      });
+      cy.get('#slsFiberizationLeadProjectManager').then(($select) => {
+        cy.wrap($select).select(userLeadPM, { force: true })
+      })
+      cy.wait(2000)
+      // cy.get('#slsColocationMMPLeadProjectManager option').then(($options) => {
+      //   const matching = $options.filter((i, opt) => opt.text === userLeadPM || opt.value === userLeadPM);
+
+      //   if (matching.length === 1) {
+      //     cy.get('#slsColocationMMPLeadProjectManager').select(userLeadPM, { force: true });
+      //   } else {
+      //     // Select the first match as a fallback
+      //     cy.get('#slsColocationMMPLeadProjectManager').select(matching.first().val(), { force: true });
+      //   }
+      // });
 
       cy.wait(2000)
       // cy.get('#slsColocationMMPAccountManager').eq(0).select(userLeadAM, { force: true });

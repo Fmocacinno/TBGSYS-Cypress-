@@ -202,7 +202,7 @@ describe('template spec', () => {
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
-    cy.wait(1000);
+    cy.wait(20000);
 
     // cy.get('#tbxFOLengthKabupaten').type(randomValue);
     // cy.wait(1000);
