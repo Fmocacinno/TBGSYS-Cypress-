@@ -198,28 +198,28 @@ describe('template spec', () => {
     });
     cy.wait(5000);
 
-    // cy.get("#divMobilePIC").click();
-    // cy.wait(5000);
-    // cy.get('#slsMobilePIC').then(($select) => {
-    //   cy.wrap($select).select(PICVendorMobile1, { force: true })
-    // })
-    // cy.get('#slsMobileCoPIC').then(($select) => {
-    //   cy.wrap($select).select(PICVendorMobile2, { force: true })
-    // })
+    cy.get("#divMobilePIC").click();
+    cy.wait(5000);
+    cy.get('#slsMobilePIC').then(($select) => {
+      cy.wrap($select).select(PICVendorMobile1, { force: true })
+    })
+    cy.get('#slsMobileCoPIC').then(($select) => {
+      cy.wrap($select).select(PICVendorMobile2, { force: true })
+    })
 
     cy.wait(1000);
 
     // Klik dropdown pertama untuk PIC
-    cy.get('#select2-slsMobilePIC-container').click();
-    cy.get('.select2-results__option')
-      .contains(PICVendorMobile1) // Ganti dengan nilai atau teks yang sesuai
-      .click();
+    // cy.get('#select2-slsMobilePIC-container').click();
+    // cy.get('.select2-results__option')
+    //   .contains(PICVendorMobile1) // Ganti dengan nilai atau teks yang sesuai
+    //   .click();
 
-    // Klik dropdown kedua untuk CoPIC
-    cy.get('#select2-slsMobileCoPIC-container').click();
-    cy.get('.select2-results__option')
-      .contains(PICVendorMobile2) // Ganti juga
-      .click();
+    // // Klik dropdown kedua untuk CoPIC
+    // cy.get('#select2-slsMobileCoPIC-container').click();
+    // cy.get('.select2-results__option')
+    //   .contains(PICVendorMobile2) // Ganti juga
+    //   .click();
     cy.get("#btnMobilePICSubmit").click();
     cy.wait(5000);
 

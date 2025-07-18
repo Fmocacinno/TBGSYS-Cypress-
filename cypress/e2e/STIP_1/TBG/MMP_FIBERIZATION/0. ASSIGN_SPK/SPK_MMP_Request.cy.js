@@ -81,7 +81,7 @@ describe('template spec', () => {
     });
 
     cy.get("#btnSubmit").click();
-    cy.wait(2000);
+    cy.wait(5000);
 
     cy.visit(`${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`)
       .url().should('include', `${baseUrlTBGSYS}/BusinessSupport/SPKProject/List`);
