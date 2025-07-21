@@ -90,7 +90,7 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MMP/soDataColloMMP.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/MMP_FIBERIZATION/soDataMMP_FIBERIZATION.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
@@ -310,10 +310,49 @@ describe('template spec', () => {
 
       cy.wait(2000)
       // Find and click the button
-      checkRowsSequentially();
+      // checkRowsSequentially();
+
+      cy.get('#tbxMMPSearchSiteID').type(siteId).should(() => {
+        // Log the test result if button click is successful
+        testResults.push({
+          Test: 'User AM melakukan klik tombol Search di Stip input',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
+      }); // << Search Filter SONumber  disable it if u dont need
+
+
+
+      cy.get('.btnSiteMMPSearch').first().click().should(() => {
+        // Log the test result if button click is successful
+        testResults.push({
+          Test: 'User AM melakukan klik tombol Search di Stip input',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
+      });
+
+      cy.wait(5000);
+      cy.get('#tblSiteHaveMMP')
+        .find('tbody tr')
+        .each(($row) => {
+          const siteText = $row.find('td:nth-child(3)').text().trim();
+
+          if (siteText.includes(siteId)) {
+            cy.log(`✅ Found matching siteId: ${siteText}`);
+
+            cy.wrap($row).find('.btnSelect').should('be.visible').click();
+            cy.wait(3000); // or your preferred delay
+          } else {
+            cy.log(`⏭️ Skipping unmatched row: ${siteText}`);
+          }
+        });
+      cy.wait(7000);
+
+
 
       cy.get('#slsColocationMMPAvailableMMP').then(($select) => {
-        cy.wrap($select).select('20250505311', { force: true })
+        cy.wrap($select).select(sonumb, { force: true })
       })
 
 
@@ -338,7 +377,7 @@ describe('template spec', () => {
       //   cy.wrap($select).select(userLeadPM, { force: true })
       // })
 
-      cy.get('#slsFiberizationLeadProjectManager').then(($select) => {
+      cy.get('#slsColocationMMPLeadProjectManager').then(($select) => {
         cy.wrap($select).select(userLeadPM, { force: true })
       })
       cy.wait(2000)

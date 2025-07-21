@@ -23,7 +23,7 @@
   "UserRequestSPKProjectOPSIC": "202311020148",
   "UserRequestSPKApproval": "201410180258",
   "pass": "123456",
-  "baseUrlTBGSYS": "http://10.8.1.55:10010",
+  "baseUrlTBGSYS": "http://10.8.1.55:10014",
   "baseUrlVP": "http://10.8.1.55:10011/",
   "IsNeedSPK": "Yes",
   "login": "/Login",
