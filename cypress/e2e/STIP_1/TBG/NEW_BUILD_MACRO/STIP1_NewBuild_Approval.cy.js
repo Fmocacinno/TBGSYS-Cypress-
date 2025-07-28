@@ -312,7 +312,7 @@ describe('template spec', () => {
             cy.get('.nav-tabs a[href="#tabApprovalDetail"]').click();
             cy.wait(3000);
             cy.wrap($btn).click();
-            cy.wait(5000);
+            cy.wait(10000);
             cy.log("✅ Button clicked successfully");
           } else {
             cy.log("⚠️ Button not clickable, skipping...");

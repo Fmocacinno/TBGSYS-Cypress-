@@ -1,4 +1,7 @@
-// Fungsi untuk menghasilkan nilai acak dalam rentang tertentu
+import 'cypress-file-upload';
+const minLength = 5;
+const maxLength = 15;
+const randomString = generateRandomString(minLength, maxLength);
 const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 // Daftar indeks baris yang ingin diubah
@@ -20,14 +23,46 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
+
+function generateRandomString(minLength, maxLength) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+}
+// const date = "2-Jan-2025";
+// const user = "555504220025"
+// const pass = "123456"
+const filePath = 'documents/pdf/C (1).pdf';
+const latMin = -11.0; // Southernmost point
+const latMax = 6.5;   // Northernmost point
+const longMin = 94.0; // Westernmost point
+const longMax = 141.0; // Easternmost point
+
+// Generate random latitude and longitude within bounds
+const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
+const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
+//Batas
 describe('template spec', () => {
+
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, randomValue;
-
-
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  const baseId = 24; // Base ID
+  const index = 1; // Increment index for unique IDs
   before(() => {
     testResults = []; // Reset results before all tests
   });
+
+  const minLength = 5;
+  const maxLength = 15;
+  const randomString = generateRandomString(minLength, maxLength);
+  const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+
 
   after(() => {
     exportToExcel(testResults); // Export after all tests complete
@@ -48,9 +83,7 @@ describe('template spec', () => {
       return result;
     }
 
-    const minLength = 5;
-    const maxLength = 15;
-    const randomString = generateRandomString(minLength, maxLength);
+
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
 
@@ -170,7 +203,7 @@ describe('template spec', () => {
       .click(); // Click the button
     cy.wait(10000);
 
-    cy.get('#tbxSegmentID').clear().type('Segment' + randomRangeValue);
+    cy.get('#tbxSegmentID').clear().type('Segment' + randomString);
 
 
     cy.get('#btnApprove').click();
