@@ -154,13 +154,13 @@ describe('template spec', () => {
 
 
     cy.get('#slCore').then(($select) => {
-      cy.wrap($select).select('23', { force: true })
+      cy.wrap($select).select('42', { force: true })
     })
 
 
     cy.wait(10000);
     cy.get('#slSubCore').then(($select) => {
-      cy.wrap($select).select('45', { force: true })
+      cy.wrap($select).select('2', { force: true })
     })
     cy.wait(6000);
 
