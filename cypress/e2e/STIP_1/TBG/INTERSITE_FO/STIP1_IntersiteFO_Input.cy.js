@@ -137,6 +137,7 @@ describe('template spec', () => {
       });
 
       cy.get('#btnSubmit').click();
+      cy.wait(5000)
       cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'Button Clicked',
@@ -276,9 +277,16 @@ describe('template spec', () => {
       cy.get('#tbxLatitudeB').type(lat);
       cy.get('#tbxLongitudeB').type(long);
 
-      cy.get('#slsIntersiteFOLeadProjectManager').then(($select) => {
-        cy.wrap($select).select(userLeadPM, { force: true })
-      })
+      // cy.get('#slsIntersiteFOLeadProjectManager').then(($select) => {
+      //   cy.wrap($select).select(userLeadPM, { force: true })
+      // })
+      cy.get('#slsIntersiteFOLeadProjectManager')
+        .find('option')         // get all options
+        .eq(1)                  // index 0 is often the placeholder, so use index 1
+        .then(($option) => {
+          const value = $option.val();
+          cy.get('#slsIntersiteFOLeadProjectManager').select(value, { force: true });
+        });
       cy.wait(2000)
 
       cy.get('#slsIntersiteFOAccountManager').then(($select) => {
