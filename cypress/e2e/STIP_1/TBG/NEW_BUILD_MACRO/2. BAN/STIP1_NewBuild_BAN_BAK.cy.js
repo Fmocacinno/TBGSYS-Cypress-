@@ -1,15 +1,32 @@
 import 'cypress-file-upload';
-const minLength = 5;
-const maxLength = 15;
-const randomString = generateRandomString(minLength, maxLength);
-const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
 
 // Daftar indeks baris yang ingin diubah
 const worktypeRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 const XLSX = require('xlsx');
 const fs = require('fs');
+const randomStr = (length) => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+};
 
+const randomRangeValue = (min, max) =>
+  (Math.floor(Math.random() * (max - min + 1)) + min).toString();
+const randomNumber = randomRangeValue(1000000000000000, 9999999999999999);
+// Example: fill all inputs with class .my-input with different random values
+const randomNum = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min.toString();
 // Function to export test results to Excel
+const randnumber = (length) => {
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += Math.floor(Math.random() * 10); // 0–9
+  }
+  return result;
+};
 function exportToExcel(testResults) {
   const filePath = 'test-StipinputNewBuildMacroresults.xlsx'; // Path to the Excel file
 
@@ -24,17 +41,7 @@ function exportToExcel(testResults) {
   XLSX.writeFile(workbook, filePath);
 }
 
-function generateRandomString(minLength, maxLength) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-  let result = '';
 
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    result += characters.charAt(randomIndex);
-  }
-  return result;
-}
 // const date = "2-Jan-2025";
 // const user = "555504220025"
 // const pass = "123456"
@@ -51,17 +58,15 @@ const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 describe('template spec', () => {
 
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, dateleasestart, dateleaseend, userPMSitac;
   const baseId = 24; // Base ID
   const index = 1; // Increment index for unique IDs
   before(() => {
     testResults = []; // Reset results before all tests
   });
 
-  const minLength = 5;
-  const maxLength = 15;
-  const randomString = generateRandomString(minLength, maxLength);
-  const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+
+
 
   after(() => {
     exportToExcel(testResults); // Export after all tests complete
@@ -77,22 +82,26 @@ describe('template spec', () => {
   beforeEach(() => {
     const testResults = []; // Array to store test results
     const user = "555504220025";
-    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
       userInputStip = values.userInputStip;
       userLeadAM = values.userLeadAM;
       userLeadPM = values.userLeadPM;
+      userPMSitac = values.userPMSitac;
+
       userPMFO = values.userPMFO;
       userARO = values.userARO;
       PICVendor = values.PICVendor;
       date = values.date;
+      dateleasestart = values.dateleasestart;
+      dateleaseend = values.dateleaseend;
       pass = values.pass;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
@@ -111,9 +120,9 @@ describe('template spec', () => {
       return false;
     });
   });
-
   //AM
-  it('OTDR Input by vendor', () => {
+
+  it('BAN BAK Input by vendor', () => {
 
     cy.visit(`${baseUrlVP}${login}`);
 
@@ -213,7 +222,7 @@ describe('template spec', () => {
 
       // Run the second block of code (always executed)
       cy.get('tr')
-        .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'
+        .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '4') // Find the row where the first column contains '6'
         .find('td:nth-child(2) .btnSelect') // Find the button in the second column
         .click(); // Click the button
       cy.wait(1000);
@@ -232,38 +241,161 @@ describe('template spec', () => {
 
 
 
-    cy.get('#dpkMaterialOnSiteDate')
-      .invoke('val', date)
-      .trigger('change');
-    cy.get('#fleMaterialOnSiteDocument').attachFile(PDFFilepath);
+    cy.get('#btnCreate', { timeout: 10000 })
+      .should('exist')
+      .click({ force: true });
     cy.wait(1000);
 
-    cy.get('.form-group')
-      .contains('Penyimpanan Material yang Memadai')
-      .parent()
-      .find('.iradio_flat-blue')
-      .eq(0) // Click the second radio button (Not OK)
-      .click({ force: true }); //<<radio button
+    cy.get('#slsBAKType').then(($select) => {
+      cy.wrap($select).select('1', { force: true })
+    })
+    cy.get('#slsAcquisitionStatus').then(($select) => {
+      cy.wrap($select).select('0001', { force: true })
+    })
+    cy.get('#tbxOwnerIDCardNumber').type(`${randomNum(1000999, 9999999999999999)}`);
 
-    cy.get('#tarMaterialOnSiteRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.get('#tbxOwnerName').clear().type(randomStr(8));
+    cy.wait(200);
+
+    cy.get('#tbxOwnerBehalf').type(randomStr(8) + `${randomNum(1000, 9999)}`); // 4-digit random
+    cy.get('#tarAddress').type(randomStr(50) + `${randomNum(1000, 9999)}`); // 4-digit random
+    cy.wait(200);
+    cy.get('#tbxOwnerPhone').type(randnumber(11)); // 4-digit random
+    cy.wait(200);
+    cy.get('#tbxOwnerOccupation').type(randnumber(11)); // 4-digit random
+    cy.wait(200);
+    cy.get('#tbxBankNumber').type(randnumber(11)); // 4-digit random
+    cy.wait(200);
+    cy.get('#slsBankName').then(($select) => {
+      cy.wrap($select).select('60', { force: true })
+    })
+    cy.get('#tbxBankOwner').type(`${randomNum(1000, 99999999999)}`); // 4-digit random
+    cy.wait(200);
+    cy.get('#tbxLandLength').type(randnumber(2)); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#tbxLandWidth').type(randnumber(2)); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#tbxAccessLength').type(randnumber(2)); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#tbxAccessWidth').type(randnumber(2)); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#btnModalAddBAKPayment', { timeout: 10000 })
+      .should('exist')
+      .click({ force: true });
+
+    cy.wait(1000);
+    cy.get('#tbxPeriodYear').clear().type('21'); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#dpkStartLease')
+      .invoke('val', dateleasestart)
+      .trigger('change');
+    cy.get('#slsLandStatus').then(($select) => {
+      cy.wrap($select).select('0009', { force: true })
+    })
+    cy.get('#dpkEndLease')
+      .invoke('val', dateleaseend)
+      .trigger('change');
+
+    cy.get('#slsLandStatus').then(($select) => {
+      cy.wrap($select).select('0009', { force: true })
+    })
+
+    cy.wait(200);
+    cy.get('#tbxNettTotal').type(randnumber(6)); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#tbxDPPercent').type(randnumber(2)); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#btnAddBakPayment', { timeout: 10000 })
+      .should('exist')
+      .click({ force: true });
+
+    cy.wait(1000);
+    cy.get('#slsOwnershipDocument').then(($select) => {
+      cy.wrap($select).select('1', { force: true })
+    })
+
+    cy.wait(1000);
+    cy.get('#tbxOwnershipNumber').type(`${randomNum(1000, 999999)}`); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#tbxNPWPNumber').type(`${randomNum(1000, 999999)}`); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#tbxNPWPName').clear().type(randomStr(8));
+
+    cy.wait(200);
+    cy.get('#tarNPWPAddress').type(randomStr(50) + `${randomNum(1000, 9999)}`); // 4-digit random
+
+    cy.wait(200);
+    cy.get('#slsElectricity').then(($select) => {
+      cy.wrap($select).select('1', { force: true })
+    })
+
+    cy.wait(200);
+    cy.get('#fleBAKDocument').attachFile(filePath);
+
+    cy.get('.nav-tabs a[href="#tabBAKUpload"]').click();
+    cy.wait(3000);
+
+    cy.wait(200);
+    cy.get('body').then($body => {
+      if ($body.find('#fleOwnershipDocRFL').length > 0) {
+        cy.get('#fleOwnershipDocRFL').attachFile(filePath);
+      } else {
+        cy.log('Ownership document upload field not found, skipping upload');
+      }
+    });
+
+    cy.wait(200);
+    cy.get('body').then($body => {
+      if ($body.find('#fleSPPT').length > 0) {
+        cy.get('#fleSPPT').attachFile(filePath);
+      } else {
+        cy.log('Ownership document upload field not found, skipping upload');
+      }
+    });
+
+    cy.wait(200);
+    cy.get('body').then($body => {
+      if ($body.find('#fleOwnerID').length > 0) {
+        cy.get('#fleOwnerID').attachFile(filePath);
+      } else {
+        cy.log('Ownership document upload field not found, skipping upload');
+      }
+    });
+
+    cy.wait(200);
+    cy.get('body').then($body => {
+      if ($body.find('#fleSpouseID').length > 0) {
+        cy.get('#fleSpouseID').attachFile(filePath);
+      } else {
+        cy.log('Ownership document upload field not found, skipping upload');
+      }
+    });
+
+    cy.wait(200);
+    cy.get('body').then($body => {
+      if ($body.find('#fleKK').length > 0) {
+        cy.get('#fleKK').attachFile(filePath);
+      } else {
+        cy.log('Ownership document upload field not found, skipping upload');
+      }
+    });
+
+    cy.get('.nav-tabs a[href="#tabBAKInput"]').click();
+
     cy.wait(2000);
-
 
     cy.get("#btnSubmit").click();
     cy.wait(5000);
-    // cy.get('.confirm.btn-success').click({ force: true });
-    // cy.wait(5000)
 
-    // cy.get("#btnSubmit").click();
-    // cy.wait(7000);
-
-    // cy.get('.confirm.btn-success').click({ force: true });
-    // cy.wait(5000)
-    // cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
-    //   .should('be.visible');
-
-    // cy.get('.sweet-alert button.confirm')
-    //   .click({ force: true });
 
     cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });
