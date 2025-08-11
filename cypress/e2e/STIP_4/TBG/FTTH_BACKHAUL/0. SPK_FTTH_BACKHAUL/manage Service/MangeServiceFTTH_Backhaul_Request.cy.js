@@ -29,12 +29,13 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/soDataBackhaul.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_4/FTTH_BACKHAUL/DataVariable.json').then((values) => {
+
+    cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -102,7 +103,7 @@ describe('template spec', () => {
     })
     cy.wait(2000);
     cy.get('#slSubType').then(($select) => {
-      cy.wrap($select).select('91', { force: true })
+      cy.wrap($select).select('54', { force: true })
     })
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful

@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserSPKProject, UserRequestSPKApproval, PICVendor, UserRequestSPKFTTH, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, Uservendor;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, UserRequestSPKFTTH, UserRequestSPKApproval;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -34,25 +34,21 @@ describe('template spec', () => {
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
+
     cy.readFile('cypress/e2e/STIP_4/TBG/FTTH_BACKHAUL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
       userInputStip = values.userInputStip;
+      UserRequestSPKFTTH = values.UserRequestSPKFTTH;
+      UserRequestSPKApproval = values.UserRequestSPKApproval
       userLeadAM = values.userLeadAM;
       userLeadPM = values.userLeadPM;
       userPMFO = values.userPMFO;
       userARO = values.userARO;
-      UserSPKProject = values.UserSPKProject;
-      UserRequestSPKApproval = values.UserRequestSPKApproval;
+      UserRequestSPKProject = values.UserRequestSPKProject;
       Uservendor = values.Uservendor;
       pass = values.pass;
-      UserRequestSPKFTTH = values.UserRequestSPKFTTH;
-      UserRequestSPKFTTH = values.UserRequestSPKFTTH;
-      UserRequestSPKApproval = values.UserRequestSPKApproval;
-      Uservendor = values.Uservendor;
-      pass = values.pass;
-      PICVendor = values.PICVendor;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
       menu1 = values.menu1;

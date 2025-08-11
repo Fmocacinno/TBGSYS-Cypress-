@@ -150,7 +150,7 @@ describe('template spec', () => {
 
 
 
-      cy.wait(2000)
+      cy.wait(5000)
 
       cy.visit(`${baseUrlTBGSYS}/STIP/Input`);
       cy.url().should('include', `${baseUrlTBGSYS}/STIP/Input`);
