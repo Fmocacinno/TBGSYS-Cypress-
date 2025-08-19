@@ -225,14 +225,14 @@ describe('template spec', () => {
     cy.get('.slsBatchSLD').eq(8)
       .select('1', { force: true });
 
-    cy.get('#tbxNewSiteName').type('Site_' + unique + randomNum(5));
-    cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique + randomNum(5));
+    cy.get('#tbxNewSiteName').type('Site_' + unique + randnumber(5));
+    cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique + randnumber(5));
 
     cy.get('#slsNewDocumentOrder').then(($select) => {
       cy.wrap($select).select('7', { force: true })
     })
 
-    cy.get('#tbxNewDocumentName').type('DocName_' + unique + randomNum(5));
+    cy.get('#tbxNewDocumentName').type('DocName_' + unique + randnumber(5));
 
     cy.get('#fleNewDocument').attachFile(filePath);
 

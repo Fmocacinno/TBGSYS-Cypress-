@@ -1,5 +1,5 @@
 {
-  "unique": "_CAPEX_",
+  "unique": "_BulkSPK_",
   "date": "2-Jan-2025",
   "dateleasestart": "2-Jan-2025",
   "dateleaseend": "31-Dec-2045",
@@ -27,8 +27,8 @@
   "UserRequestSPKProjectOPSIC": "202311020148",
   "UserRequestSPKApproval": "201410180258",
   "pass": "123456",
-  "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8127",
-  "baseUrlVP": "http://tbgappdev111.tbg.local:8128",
+  "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8044",
+  "baseUrlVP": "http://tbgappdev111.tbg.local:8139",
   "login": "/Login",
   "logout": "/Logout",
   "dashboard": "/ProjectActivity/ProjectActivityHeader",
