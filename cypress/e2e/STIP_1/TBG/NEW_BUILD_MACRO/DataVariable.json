@@ -28,7 +28,7 @@
   "UserRequestSPKApproval": "201410180258",
   "pass": "123456",
   "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8044",
-  "baseUrlVP": "http://tbgappdev111.tbg.local:8139",
+  "baseUrlVP": "http://tbgappdev111.tbg.local:8045",
   "login": "/Login",
   "logout": "/Logout",
   "dashboard": "/ProjectActivity/ProjectActivityHeader",

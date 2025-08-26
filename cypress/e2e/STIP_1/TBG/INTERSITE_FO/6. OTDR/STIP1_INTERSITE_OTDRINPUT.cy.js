@@ -261,7 +261,7 @@ describe('template spec', () => {
       cy.wait(2000);
     }
     cy.get('#tarOTDRInstallationRemark').type('Remark FROM AUTOMATION' + unique + randomRangeValue);
-    cy.wait(4000);
+    cy.wait(7000);
     cy.get("#btnSubmit").click();
     // cy.wait(30000);
     cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 70000 })
