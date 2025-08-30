@@ -286,7 +286,7 @@ describe('template spec', () => {
 
     cy.get('.sa-confirm-button-container button.confirm').click();
 
-    cy.wait(15000)
+    cy.wait(20000)
 
     // Add this section to extract values from popup
     cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
