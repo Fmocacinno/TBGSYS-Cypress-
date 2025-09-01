@@ -200,7 +200,7 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(3000);
+    cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.wait(4000);
 

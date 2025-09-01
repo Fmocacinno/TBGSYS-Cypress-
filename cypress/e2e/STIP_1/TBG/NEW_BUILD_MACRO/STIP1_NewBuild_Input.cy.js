@@ -149,6 +149,7 @@ describe('template spec', () => {
     });
 
     cy.get('#btnSubmit').click();
+     cy.wait(2000)
     cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
     testResults.push({
       Test: 'Button Clicked',

@@ -129,7 +129,7 @@ describe('template spec', () => {
     });
 
     cy.get("#btnSubmit").click();
-    cy.wait(3000);
+    cy.wait(5000);
     cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
     cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
     // Ensure the page changes or some result occurs
@@ -138,7 +138,7 @@ describe('template spec', () => {
       Status: 'Pass',
       timeStamp: new Date().toISOString(),
     });
-    cy.wait(3000);
+    cy.wait(5000);
 
     // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
     //   // Log the test result if button click is successful
@@ -170,11 +170,11 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(3000);
+    cy.wait(5000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
-      cy.wait(3000);
+      cy.wait(5000);
 
       if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "Lead AM" is in the status
         cy.log("✅ Status contains 'AM', proceeding with approval...");
@@ -189,9 +189,9 @@ describe('template spec', () => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
             cy.wrap($btn).click();
             cy.log("✅ Button clicked successfully");
-            cy.wait(3000);
+            cy.wait(5000);
           } else {
-            cy.wait(3000);
+            cy.wait(5000);
             cy.log("⚠️ Button not clickable, skipping...");
           }
         });
@@ -201,7 +201,7 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(3000);
+    cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.wait(4000);
 
@@ -223,7 +223,7 @@ describe('template spec', () => {
     });
 
     cy.get('#btnSubmit').click();
-    cy.wait(3000);
+    cy.wait(5000);
     cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
     cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
     testResults.push({
@@ -231,7 +231,7 @@ describe('template spec', () => {
       Status: 'Pass',
       timeStamp: new Date().toISOString(),
     });
-    cy.wait(3000);
+    cy.wait(5000);
 
 
     // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
@@ -291,7 +291,7 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(3000);
+    cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.wait(4000);
 
@@ -314,7 +314,7 @@ describe('template spec', () => {
 
     cy.get('#btnSubmit').click();
 
-    cy.wait(3000);
+    cy.wait(5000);
     cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
     cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
     testResults.push({
@@ -322,7 +322,7 @@ describe('template spec', () => {
       Status: 'Pass',
       TimeStamp: new Date().toISOString(),
     });
-    cy.wait(3000);
+    cy.wait(5000);
     cy.contains('label', /^\s *By SO Number\s*$/)
       .click(); // search By Radio Button SONumber
     cy.get('#tbxApprovalSONumber').type(sonumb).should('have.value', sonumb).then(() => {
@@ -358,13 +358,13 @@ describe('template spec', () => {
         cy.wait(10000);
         cy.get("#btnConfirm").then(($btn) => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
-            cy.wait(3000);
+            cy.wait(5000);
             cy.get('.nav-tabs a[href="#tabPMAssignment"]').click();
-            cy.wait(3000);
+            cy.wait(5000);
             cy.get('#slsPMSitac').select(userPMSitac, { force: true });
             cy.get('#slsPMCME').select(userPMCME, { force: true });
             cy.get('.nav-tabs a[href="#tabApprovalDetail"]').click();
-            cy.wait(3000);
+            cy.wait(5000);
             cy.wrap($btn).click();
             cy.wait(10000);
             cy.log("✅ Button clicked successfully");
@@ -417,10 +417,10 @@ describe('template spec', () => {
     });
 
     cy.get('#btnSubmit').click();
-    cy.wait(3000);
+    cy.wait(5000);
     cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
     cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
-    cy.wait(3000);
+    cy.wait(5000);
     cy.contains('label', /^\s *By SO Number\s*$/)
       .click(); // search By Radio Button SONumber
     cy.get('#tbxApprovalSONumber').type(sonumb).should('have.value', sonumb).then(() => {
@@ -440,7 +440,7 @@ describe('template spec', () => {
         TimeStamp: new Date().toISOString(),
       });
     });
-    cy.wait(3000);
+    cy.wait(5000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -467,9 +467,9 @@ describe('template spec', () => {
       } else {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
-      cy.wait(3000);
+      cy.wait(5000);
     });
-    cy.wait(3000);
+    cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.wait(4000);
 

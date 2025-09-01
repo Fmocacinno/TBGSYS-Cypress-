@@ -189,9 +189,9 @@ describe('template spec', () => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
             cy.wrap($btn).click();
             cy.log("✅ Button clicked successfully");
-            cy.wait(3000);
+            cy.wait(5000);
           } else {
-            cy.wait(3000);
+            cy.wait(5000);
             cy.log("⚠️ Button not clickable, skipping...");
           }
         });
@@ -201,7 +201,7 @@ describe('template spec', () => {
       }
     });
 
-    cy.wait(3000);
+    cy.wait(5000);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.wait(4000);
 
