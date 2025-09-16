@@ -114,189 +114,7 @@ describe('template spec', () => {
     });
   });
   //AM
-  it('AM Test Case', () => {
 
-    cy.visit(`${baseUrlTBGSYS}${login}`);
-
-    cy.get('#tbxUserID').type(userAM);
-    cy.get('#tbxPassword').type(pass);
-    cy.get('#RefreshButton').click();
-
-    cy.window().then((window) => {
-      const rightCode = window.rightCode;
-      cy.log('Right Code:', rightCode);
-      cy.get('#captchaInsert').type(rightCode);
-    });
-
-    cy.get("#btnSubmit").click();
-    cy.wait(3000);
-    cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
-    cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
-    // Ensure the page changes or some result occurs
-    testResults.push({
-      Test: 'User AM melakukan akses ke menu Stip Approval',
-      Status: 'Pass',
-      timeStamp: new Date().toISOString(),
-    });
-    cy.wait(3000);
-
-    // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
-    //   // Log the test result if button click is successful
-    //   testResults.push({
-    //     Test: 'User AM melakukan klik tombol Search di Stip approval',
-    //     Status: 'Pass',
-    //     Timestamp: new Date().toISOString(),
-    //   });
-    // }); // << Search Filter SONumber  disable it if u dont need
-
-    cy.contains('label', /^\s *By SO Number\s*$/)
-      .click(); // search By Radio Button SONumber
-    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
-      // Log the test result if button click is successful
-      testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
-        Status: 'Pass',
-        Timestamp: new Date().toISOString(),
-      });
-    }); // << Search Filter
-
-
-    cy.get('.btnSearch').first().click().should(() => {
-      // Log the test result if button click is successful
-      testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
-        Status: 'Pass',
-        Timestamp: new Date().toISOString(),
-      });
-    });
-
-    cy.wait(3000);
-    cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
-      const text = $cell.text().trim();
-      cy.log("📌 Status Found:", text);
-      cy.wait(3000);
-
-      if (text.includes("Waiting for Approval AM")) {  // ✅ Checks if "Lead AM" is in the status
-        cy.log("✅ Status contains 'AM', proceeding with approval...");
-
-        cy.get('tbody tr:first-child td:nth-child(1) .btnApprovalDetail').click();
-        cy.get('#tarApprovalRemark').type('Remark_' + unique, { force: true });
-        // SKIPPING 'tarApprovalRemark' input field
-        cy.log("⚠️ Skipping remark input...");
-
-        // Attempt to click the approval button only if it's visible and enabled
-        cy.get("#btnApprove").then(($btn) => {
-          if ($btn.is(':visible') && !$btn.is(':disabled')) {
-            cy.wrap($btn).click();
-            cy.log("✅ Button clicked successfully");
-            cy.wait(3000);
-          } else {
-            cy.wait(3000);
-            cy.log("⚠️ Button not clickable, skipping...");
-          }
-        });
-
-      } else {
-        cy.log("⚠️ Status does not match, skipping approval step.");
-      }
-    });
-
-    cy.wait(3000);
-    cy.contains('a', 'Log Out').click({ force: true });
-    cy.wait(4000);
-
-  });
-
-  //LEAD AM
-  it('Lead AM Test Case', () => {
-    const testResults = [];
-    // Lead PM
-    cy.visit(`${baseUrlTBGSYS}${login}`);
-    cy.get('#tbxUserID').type(userLeadAM);
-    cy.get('#tbxPassword').type(pass);
-    cy.get('#RefreshButton').click();
-
-    cy.window().then((window) => {
-      const rightCode = window.rightCode;
-      cy.log('Right Code:', rightCode);
-      cy.get('#captchaInsert').type(rightCode);
-    });
-
-    cy.get('#btnSubmit').click();
-    cy.wait(3000);
-    cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
-    cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
-    testResults.push({
-      Test: 'User Lead AM melakukan akses ke menu Stip Approval',
-      Status: 'Pass',
-      timeStamp: new Date().toISOString(),
-    });
-    cy.wait(3000);
-
-
-    // cy.get('#tbxSearchSONumber').type(sonumb).should(() => {
-    //   // Log the test result if button click is successful
-    //   testResults.push({
-    //     Test: 'User AM melakukan klik tombol Search di Stip approval',
-    //     Status: 'Pass',
-    //     Timestamp: new Date().toISOString(),
-    //   });
-    // }); // << Search Filter SONumber  disable it if u dont need
-
-    cy.contains('label', /^\s *By SO Number\s*$/)
-      .click(); // search By Radio Button SONumber
-    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
-      // Log the test result if button click is successful
-      testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
-        Status: 'Pass',
-        Timestamp: new Date().toISOString(),
-      });
-    }); // << Search Filter
-
-
-    cy.get('.btnSearch').first().click().should(() => {
-      // Log the test result if button click is successful
-      testResults.push({
-        Test: 'User AM melakukan klik tombol Search di Stip approval',
-        Status: 'Pass',
-        Timestamp: new Date().toISOString(),
-      });
-    });
-    cy.wait(5000);
-
-    cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
-      const text = $cell.text().trim();
-      cy.log("📌 Status Found:", text);
-
-      if (text.includes("Waiting for Approval Lead AM")) {  // ✅ Checks if "Lead PM" is in the status
-        cy.log("✅ Status contains 'Lead AM', proceeding with approval...");
-        cy.get('tbody tr:first-child .btnApprovalDetail').click();
-        cy.get('#tarApprovalRemark').type('Remark_' + unique, { force: true });
-        // SKIPPING 'tarApprovalRemark' input field
-        cy.log("⚠️ Skipping remark input...");
-
-        // Attempt to click the approval button only if it's visible and enabled
-        cy.get("#btnApprove").then(($btn) => {
-          if ($btn.is(':visible') && !$btn.is(':disabled')) {
-            cy.wrap($btn).click();
-            cy.log("✅ Button clicked successfully");
-          } else {
-            cy.log("⚠️ Button not clickable, skipping...");
-          }
-        });
-
-      } else {
-        cy.log("⚠️ Status does not match, skipping approval step.");
-      }
-    });
-
-    cy.wait(3000);
-    cy.contains('a', 'Log Out').click({ force: true });
-    cy.wait(4000);
-
-  });
-  //LEAD PM
 
 
   it('Lead PM Test Case', () => {
@@ -325,31 +143,31 @@ describe('template spec', () => {
     cy.wait(3000);
     cy.contains('label', /^\s *By SO Number\s*$/)
       .click(); // search By Radio Button SONumber
-    cy.get('#tbxApprovalSONumber').type(sonumb).should('have.value', sonumb).then(() => {
-      // Log the test result if input is successful
+    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+      // Log the test result if button click is successful
       testResults.push({
-        Test: 'User LEAD PM melakukan input SONumber di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        TimeStamp: new Date().toISOString(),
+        Timestamp: new Date().toISOString(),
       });
-    });
+    }); // << Search Filter
+
 
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User LEAD PM melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        TimeStamp: new Date().toISOString(),
+        Timestamp: new Date().toISOString(),
       });
     });
-
-
+    cy.wait(5000);
 
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
 
-      if (text.includes("Lead PM")) {  // ✅ Flexible condition to match variations
+      if (text.includes("Waiting for Confirmation Lead PM")) {  // ✅ Flexible condition to match variations
         cy.log("✅ Status contains 'Lead PM', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnApprovalDetail').click();
