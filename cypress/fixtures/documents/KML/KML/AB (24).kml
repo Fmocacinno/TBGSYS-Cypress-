@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Cand Renom Petogogan.csv</name>
+	<open>1</open>
+	<Schema name="Cand Renom Petogogan" id="S_Cand_Renom_Petogogan_SDDSSSSIS">
+		<SimpleField type="string" name="PROPOSE_SITENAME"><displayName>&lt;b&gt;PROPOSE_SITENAME&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="LONG"><displayName>&lt;b&gt;LONG&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="double" name="LAT"><displayName>&lt;b&gt;LAT&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="Desa"><displayName>&lt;b&gt;Desa&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="Kecamatan"><displayName>&lt;b&gt;Kecamatan&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="Kabupaten"><displayName>&lt;b&gt;Kabupaten&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="Provinsi"><displayName>&lt;b&gt;Provinsi&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="int" name="RANKING"><displayName>&lt;b&gt;RANKING&lt;/b&gt;</displayName>
+</SimpleField>
+		<SimpleField type="string" name="TP"><displayName>&lt;b&gt;TP&lt;/b&gt;</displayName>
+</SimpleField>
+	</Schema>
+	<StyleMap id="pointStyleMap">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#normPointStyle</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#hlightPointStyle</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="normPointStyle">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<table border="0">
+  <tr><td><b>PROPOSE_SITENAME</b></td><td>$[Cand Renom Petogogan/PROPOSE_SITENAME]</td></tr>
+  <tr><td><b>LONG</b></td><td>$[Cand Renom Petogogan/LONG]</td></tr>
+  <tr><td><b>LAT</b></td><td>$[Cand Renom Petogogan/LAT]</td></tr>
+  <tr><td><b>Desa</b></td><td>$[Cand Renom Petogogan/Desa]</td></tr>
+  <tr><td><b>Kecamatan</b></td><td>$[Cand Renom Petogogan/Kecamatan]</td></tr>
+  <tr><td><b>Kabupaten</b></td><td>$[Cand Renom Petogogan/Kabupaten]</td></tr>
+  <tr><td><b>Provinsi</b></td><td>$[Cand Renom Petogogan/Provinsi]</td></tr>
+  <tr><td><b>RANKING</b></td><td>$[Cand Renom Petogogan/RANKING]</td></tr>
+  <tr><td><b>TP</b></td><td>$[Cand Renom Petogogan/TP]</td></tr>
+</table>
+]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="hlightPointStyle">
+		<IconStyle>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<table border="0">
+  <tr><td><b>PROPOSE_SITENAME</b></td><td>$[Cand Renom Petogogan/PROPOSE_SITENAME]</td></tr>
+  <tr><td><b>LONG</b></td><td>$[Cand Renom Petogogan/LONG]</td></tr>
+  <tr><td><b>LAT</b></td><td>$[Cand Renom Petogogan/LAT]</td></tr>
+  <tr><td><b>Desa</b></td><td>$[Cand Renom Petogogan/Desa]</td></tr>
+  <tr><td><b>Kecamatan</b></td><td>$[Cand Renom Petogogan/Kecamatan]</td></tr>
+  <tr><td><b>Kabupaten</b></td><td>$[Cand Renom Petogogan/Kabupaten]</td></tr>
+  <tr><td><b>Provinsi</b></td><td>$[Cand Renom Petogogan/Provinsi]</td></tr>
+  <tr><td><b>RANKING</b></td><td>$[Cand Renom Petogogan/RANKING]</td></tr>
+  <tr><td><b>TP</b></td><td>$[Cand Renom Petogogan/TP]</td></tr>
+</table>
+]]></text>
+		</BalloonStyle>
+	</Style>
+	<Folder id="layer 0">
+		<name>Cand Renom Petogogan</name>
+		<open>1</open>
+		<Placemark>
+			<styleUrl>#pointStyleMap</styleUrl>
+			<Style id="inline">
+				<IconStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+					<Icon>
+						<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>
+					</Icon>
+				</IconStyle>
+				<LineStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</LineStyle>
+				<PolyStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</PolyStyle>
+			</Style>
+			<ExtendedData>
+				<SchemaData schemaUrl="#S_Cand_Renom_Petogogan_SDDSSSSIS">
+					<SimpleData name="PROPOSE_SITENAME">PEPAYAJAGAKARSA</SimpleData>
+					<SimpleData name="LONG">106.82</SimpleData>
+					<SimpleData name="LAT">-6.32466</SimpleData>
+					<SimpleData name="Desa">JAGAKARSA</SimpleData>
+					<SimpleData name="Kecamatan">JAGAKARSA</SimpleData>
+					<SimpleData name="Kabupaten">JAKARTA SELATAN</SimpleData>
+					<SimpleData name="Provinsi">DKI JAKARTA</SimpleData>
+					<SimpleData name="RANKING">35</SimpleData>
+					<SimpleData name="TP">TBG</SimpleData>
+				</SchemaData>
+			</ExtendedData>
+			<Point>
+				<coordinates>106.819902,-6.324664000000007,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<styleUrl>#pointStyleMap</styleUrl>
+			<Style id="inline">
+				<IconStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+					<Icon>
+						<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>
+					</Icon>
+				</IconStyle>
+				<LineStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</LineStyle>
+				<PolyStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</PolyStyle>
+			</Style>
+			<ExtendedData>
+				<SchemaData schemaUrl="#S_Cand_Renom_Petogogan_SDDSSSSIS">
+					<SimpleData name="PROPOSE_SITENAME">KAMALMUARAPENJARINGAN</SimpleData>
+					<SimpleData name="LONG">106.735</SimpleData>
+					<SimpleData name="LAT">-6.12404</SimpleData>
+					<SimpleData name="Desa">KAMAL MUARA</SimpleData>
+					<SimpleData name="Kecamatan">PENJARINGAN</SimpleData>
+					<SimpleData name="Kabupaten">JAKARTA UTARA</SimpleData>
+					<SimpleData name="Provinsi">DKI JAKARTA</SimpleData>
+					<SimpleData name="RANKING">36</SimpleData>
+					<SimpleData name="TP">TBG</SimpleData>
+				</SchemaData>
+			</ExtendedData>
+			<Point>
+				<coordinates>106.73491,-6.124040000000004,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<styleUrl>#pointStyleMap</styleUrl>
+			<Style id="inline">
+				<IconStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+					<Icon>
+						<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>
+					</Icon>
+				</IconStyle>
+				<LineStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</LineStyle>
+				<PolyStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</PolyStyle>
+			</Style>
+			<ExtendedData>
+				<SchemaData schemaUrl="#S_Cand_Renom_Petogogan_SDDSSSSIS">
+					<SimpleData name="PROPOSE_SITENAME">EDELWEIS3</SimpleData>
+					<SimpleData name="LONG">106.953</SimpleData>
+					<SimpleData name="LAT">-6.1902</SimpleData>
+					<SimpleData name="Desa">UJUNG MENTENG</SimpleData>
+					<SimpleData name="Kecamatan">CAKUNG</SimpleData>
+					<SimpleData name="Kabupaten">JAKARTA TIMUR</SimpleData>
+					<SimpleData name="Provinsi">DKI JAKARTA</SimpleData>
+					<SimpleData name="RANKING">39</SimpleData>
+					<SimpleData name="TP">TBG</SimpleData>
+				</SchemaData>
+			</ExtendedData>
+			<Point>
+				<coordinates>106.953104,-6.190201999999991,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<styleUrl>#pointStyleMap</styleUrl>
+			<Style id="inline">
+				<IconStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+					<Icon>
+						<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>
+					</Icon>
+				</IconStyle>
+				<LineStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</LineStyle>
+				<PolyStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</PolyStyle>
+			</Style>
+			<ExtendedData>
+				<SchemaData schemaUrl="#S_Cand_Renom_Petogogan_SDDSSSSIS">
+					<SimpleData name="PROPOSE_SITENAME">JALANKAPUK1</SimpleData>
+					<SimpleData name="LONG">106.902</SimpleData>
+					<SimpleData name="LAT">-6.21686</SimpleData>
+					<SimpleData name="Desa">KLENDER</SimpleData>
+					<SimpleData name="Kecamatan">DURENSAWIT</SimpleData>
+					<SimpleData name="Kabupaten">JAKARTA TIMUR</SimpleData>
+					<SimpleData name="Provinsi">DKI JAKARTA</SimpleData>
+					<SimpleData name="RANKING">40</SimpleData>
+					<SimpleData name="TP">TBG</SimpleData>
+				</SchemaData>
+			</ExtendedData>
+			<Point>
+				<coordinates>106.902058,-6.216857,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<styleUrl>#pointStyleMap</styleUrl>
+			<Style id="inline">
+				<IconStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+					<Icon>
+						<href>http://maps.google.com/mapfiles/kml/pushpin/blue-pushpin.png</href>
+					</Icon>
+				</IconStyle>
+				<LineStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</LineStyle>
+				<PolyStyle>
+					<color>ffe7ebef</color>
+					<colorMode>normal</colorMode>
+				</PolyStyle>
+			</Style>
+			<ExtendedData>
+				<SchemaData schemaUrl="#S_Cand_Renom_Petogogan_SDDSSSSIS">
+					<SimpleData name="PROPOSE_SITENAME">RYJAGAKARSA</SimpleData>
+					<SimpleData name="LONG">106.832</SimpleData>
+					<SimpleData name="LAT">-6.3308</SimpleData>
+					<SimpleData name="Desa">LENTENG AGUNG</SimpleData>
+					<SimpleData name="Kecamatan">JAGAKARSA</SimpleData>
+					<SimpleData name="Kabupaten">JAKARTA SELATAN</SimpleData>
+					<SimpleData name="Provinsi">DKI JAKARTA</SimpleData>
+					<SimpleData name="RANKING">41</SimpleData>
+					<SimpleData name="TP">TBG</SimpleData>
+				</SchemaData>
+			</ExtendedData>
+			<Point>
+				<coordinates>106.831816,-6.330794999999993,0</coordinates>
+			</Point>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>

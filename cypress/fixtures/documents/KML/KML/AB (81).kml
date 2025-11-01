@@ -1,0 +1,32 @@
+﻿<kml xmlns:kml="http://www.opengis.net/kml/2.2">
+	<Document>
+		<Style id="lineColor">
+			<LineStyle>
+				<color>ffff0000</color>
+				<width>5</width>
+			</LineStyle>
+		</Style>
+		<Style id="polyColor">
+			<PolyStyle>
+				<color>7f0000ff</color>
+				<width>5</width>
+			</PolyStyle>
+		</Style>
+		<Style id="baloonStyle">
+			<BalloonStyle>
+				<text><![CDATA[<table border="0"><tr><td><b>Tag Name:</b></td><td> $[name] </td></tr><tr><td><b>Latitude:</b></td><td>$[latitudeData]</td></tr><tr><td><b>Longitude:</b></td><td>$[longitudeData]</td></tr></table>]]></text>
+			</BalloonStyle>
+                <Placemark id="Line">
+                    <name>Line</name>
+                    <ExtendedData>
+                        <SchemaData schemaUrl="#temp"/>
+                    </ExtendedData>
+                    <styleUrl>#lineColor</styleUrl>
+                    <LineString>
+                        <tessellate>true</tessellate>
+                        <coordinates>106.83561899999999,-6.2163700000000004,0,106.83582800000001,-6.2161580000000001,0,106.83588899999999,-6.2160019999999996,0,106.835945,-6.2158329999999999,0,106.83598600000001,-6.2156200000000004,0</coordinates>
+                    </LineString>
+                </Placemark>
+                </Style>
+	</Document>
+</kml>
