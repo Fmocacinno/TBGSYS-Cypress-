@@ -17,22 +17,132 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
-describe('template spec', () => {
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass;
+const testResults = []; // Array to store test results
+const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
+// const unique = `APP_PKP_`;
 
+function generateRandomString(minLength, maxLength) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+}
+function clickAllEnabledButtons(buttons, index = 0, callback) {
+  if (index >= buttons.length) {
+    callback(); // Done with this page
+    return;
+  }
+
+  cy.wrap(buttons[index])
+    .scrollIntoView()
+    .should('be.visible')
+    .click()
+    .then(() => {
+      // Small wait to allow DOM updates after click
+      cy.wait(1000);
+      clickAllEnabledButtons(buttons, index + 1, callback);
+    });
+}
+
+function checkRowsSequentially(page = 1, maxPages = 10) {
+  if (page > maxPages) return;
+
+  // Optional wait to ensure table content is rendered
+  cy.wait(1000);
+
+  cy.get('button.btnSelect').then(($buttons) => {
+    const $enabledBtns = $buttons.filter((i, el) =>
+      !el.disabled && Cypress.$(el).is(':visible')
+    );
+
+    if ($enabledBtns.length > 0) {
+      cy.wrap($enabledBtns[0])
+        .scrollIntoView()
+        .should('be.visible')
+        .click();
+    } else {
+      // Try going to the next page
+      cy.get('a[title="Next"]:visible').then(($next) => {
+        if ($next.length > 0) {
+          cy.wrap($next).click();
+          cy.wait(2000); // wait for table to update
+          checkRowsSequentially(page + 1, maxPages);
+        } else {
+          cy.log('No next page available');
+        }
+      });
+    }
+  });
+}
+
+
+
+let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
+
+const minLength = 5;
+const maxLength = 15;
+const randomString = generateRandomString(minLength, maxLength);
+// const date = "2-Jan-2025";
+// const user = "555504220025"
+// const pass = "123456"
+const filePath = 'documents/pdf/C (1).pdf';
+const latMin = -11.0; // Southernmost point
+const latMax = 6.5;   // Northernmost point
+const longMin = 94.0; // Westernmost point
+const longMax = 141.0; // Easternmost point
+
+// Generate random latitude and longitude within bounds
+const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
+const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
+//Batas
+
+describe('template spec', () => {
+  let testResults = []; // Shared results array
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
+
+  before(() => {
+    testResults = []; // Reset results before all tests
+  });
+
+  after(() => {
+    exportToExcel(testResults); // Export after all tests complete
+  });
   beforeEach(() => {
     cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
-      unique = "ATP_19";
-      date = "2-Jan-2025";
-      userAM = "201301180003";
-      userLeadAM = "201301180003";
-      userLeadPM = "201102180019";
-      userARO = "201103180016";
-      pass = "123456";
     });
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO/DataVariable.json').then((values) => {
+      cy.log(values);
+      unique = values.unique;
+      userAM = values.userAM;
+      userInputStip = values.userInputStip;
+      userLeadAM = values.userLeadAM;
+      userLeadPM = values.userLeadPM;
+      userPMFO = values.userPMFO;
+      userARO = values.userARO;
+      pass = values.pass;
+      date = values.date;
+      baseUrlVP = values.baseUrlVP;
+      baseUrlTBGSYS = values.baseUrlTBGSYS;
+      menu1 = values.menu1;
+      menu2 = values.menu2;
+      menu3 = values.menu3;
+      menu4 = values.menu4;
+      login = values.login;
+      logout = values.logout;
+      dashboard = values.dashboard;
+      PICVendorMobile1 = values.PICVendorMobile1;
+      PICVendorMobile2 = values.PICVendorMobile2;
+    });
+
 
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false;

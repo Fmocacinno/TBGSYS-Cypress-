@@ -291,7 +291,6 @@ describe('template spec', () => {
 
       cy.get('#fleColocationDocument').attachFile(filePath);
 
-
       cy.get('#fleColocationColocationForm').attachFile(filePath);
 
       cy.get('#slsColocationLeadProjectManager').then(($select) => {

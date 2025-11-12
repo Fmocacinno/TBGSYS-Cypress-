@@ -367,6 +367,14 @@ describe('template spec', () => {
 
       cy.get('#fleColocationColocationForm').attachFile(filePath);
 
+      cy.wait(1000); // Ensure dropdown selection is applied
+      /// radio button with regex
+      cy.contains('label', /^\s *Acceleration\s*$/)
+        .click(); // Click the label
+
+
+      // Assert that the "Segment" radio button is selected
+      cy.get('input[type="radio"][value="Acceleration"]').should('be.checked');
       cy.get('#slsColocationLeadProjectManager').then(($select) => {
         cy.wrap($select).select('201102180019', { force: true })
       })
