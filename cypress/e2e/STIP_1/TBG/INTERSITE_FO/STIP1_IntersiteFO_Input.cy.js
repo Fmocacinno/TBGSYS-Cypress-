@@ -317,11 +317,21 @@ describe('template spec', () => {
       // input value No
 
 
-      // cy.get('input[name="rdoOverlapping"][value="0"]').parent().click();
+      cy.get('input[name="rdoOverlapping"][value="0"]').parent().click();
       // cy.get('input[name="rdoOverlapping"]').second().click({ force: true });
       // cy.get('input[name="rdoOverlapping"][value="0"]').click({ force: true });
-      cy.get('input[name="rdoOverlapping"]').last().check({ force: true }); // "No"
+      // const selectOverlapping = (answer) => {
+      //   if (answer.toLowerCase() === '0') {
+      //     cy.get('.divNewIntersiteFO .icheck-inline label').eq(0).click({ force: true });
+      //   } else if (answer.toLowerCase() === '1') {
+      //     cy.get('.divNewIntersiteFO .icheck-inline label').eq(1).click({ force: true });
+      //   } else {
+      //     throw new Error('Use "Yes" or "No" only');
+      //   }
+      // };
 
+      // // Usage:
+      // selectOverlapping('No');
       // cy.get('input[name="rdoOverlapping"]').eq(2).click({ force: true });
       // cy.get('input[name="rdoOverlapping"][value="0"]').click({ force: true });
       // cy.get('input[name="rdoOverlapping"]').eq(1).click({ force: true });
@@ -404,8 +414,8 @@ describe('template spec', () => {
   }
 })
 
-it('awd', function() {
+it('awd', function () {
   cy.visit('http://tbgappdev111.tbg.local:8041/')
   cy.visit('http://tbgappdev111.tbg.local:8041/')
-  
+
 });
