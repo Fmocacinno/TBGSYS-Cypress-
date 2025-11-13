@@ -114,12 +114,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -224,8 +224,8 @@ describe('template spec', () => {
       })
 
       cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('2', { force: true })
-          .should('have.value', '2') // Menunggu hingga value benar-benar berubah
+        cy.wrap($select).select('103', { force: true })
+          .should('have.value', '103') // Menunggu hingga value benar-benar berubah
           .then(() => {
             // Log the test result if selection is successful
             testResults.push({
@@ -236,7 +236,7 @@ describe('template spec', () => {
           });
       })
 
-      cy.get('#slsColocationCompany').then(($select) => {
+      cy.get('#slsColocationFWACompany').then(($select) => {
         cy.wrap($select).select('TB', { force: true })
           .should('have.value', 'TB') // Menunggu hingga value benar-benar berubah
           .then(() => {
@@ -249,9 +249,9 @@ describe('template spec', () => {
           });
       })
 
-      cy.get('#slsColocationCustomer').then(($select) => {
-        cy.wrap($select).select('XL', { force: true })
-          .should('have.value', 'XL') // Menunggu hingga value benar-benar berubah
+      cy.get('#slsColocationFWACustomer').then(($select) => {
+        cy.wrap($select).select('SURGE', { force: true })
+          .should('have.value', 'SURGE') // Menunggu hingga value benar-benar berubah
           .then(() => {
             // Log the test result if selection is successful
             testResults.push({
@@ -262,7 +262,7 @@ describe('template spec', () => {
           });
       })
 
-      cy.get('#slsColocationRegion').then(($select) => {
+      cy.get('#slsColocationFWARegion').then(($select) => {
         cy.wrap($select).select('1', { force: true })
           .should('have.value', '1') // Menunggu hingga value benar-benar berubah
           .then(() => {
@@ -276,7 +276,7 @@ describe('template spec', () => {
       });
 
 
-      cy.get('#btnColocationPriceAmountPopUp')
+      cy.get('#btnColocationFWAPriceAmountPopUp')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
@@ -288,6 +288,9 @@ describe('template spec', () => {
             Timestamp: new Date().toISOString(),
           });
         });
+
+
+      cy.wait(2000)
       cy.get('tbody > tr:nth-child(3) .btnSelect')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
@@ -303,33 +306,33 @@ describe('template spec', () => {
       cy.wait(2000)
 
       cy.get('.slsBatchSLD').eq(0)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('29', { force: true });
+        .select('1111', { force: true });
 
-      cy.get('#btnColocationSitePopUp')
+      cy.get('#btnColocationFWASitePopUp')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
@@ -353,61 +356,61 @@ describe('template spec', () => {
       checkRowsSequentially();
 
 
-      cy.get('#tbxColocationCustomerSiteID').type('Site_' + unique);
-      cy.get('#tbxColocationCustomerSiteName').type('Cust_' + unique);
+      cy.get('#tbxColocationFWACustomerSiteID').type('Site_' + unique);
+      cy.get('#tbxColocationFWACustomerSiteName').type('Cust_' + unique);
 
-      cy.get('#slsColocationDocumentOrder').then(($select) => {
+      cy.get('#slsColocationFWADocumentOrder').then(($select) => {
         cy.wrap($select).select('7', { force: true })
       })
 
-      cy.get('#tbxColocationDocumentName').type('DoctName_' + unique);
+      cy.get('#tbxColocationFWADocumentName').type('DoctName_' + unique);
 
-      cy.get('#fleColocationDocument').attachFile(filePath);
-
-
-      cy.get('#fleColocationColocationForm').attachFile(filePath);
-
-      cy.wait(1000); // Ensure dropdown selection is applied
-      /// radio button with regex
-      cy.contains('label', /^\s *Acceleration\s*$/)
-        .click(); // Click the label
+      cy.get('#fleColocationFWADocument').attachFile(filePath);
 
 
-      // Assert that the "Segment" radio button is selected
-      cy.get('input[type="radio"][value="Acceleration"]').should('be.checked');
-      cy.get('#slsColocationLeadProjectManager').then(($select) => {
+
+      // cy.wait(1000); // Ensure dropdown selection is applied
+      // /// radio button with regex
+      // cy.contains('label', /^\s *Acceleration\s*$/)
+      //   .click(); // Click the label
+
+
+      // // Assert that the "Segment" radio button is selected
+      // cy.get('input[type="radio"][value="Acceleration"]').should('be.checked');
+
+      cy.get('#slsColocationFWALeadProjectManager').then(($select) => {
         cy.wrap($select).select('201102180019', { force: true })
       })
-      cy.get('#slsColocationAccountManager').then(($select) => {
+      cy.get('#slsColocationFWAAccountManager').then(($select) => {
         cy.wrap($select).select('201301180003', { force: true })
       })
 
-      cy.get('#slsNewTowerHeight').then(($select) => {
-        cy.wrap($select).select('0', { force: true })
-      })
+      // cy.get('#slsNewTowerHeight').then(($select) => {
+      //   cy.wrap($select).select('0', { force: true })
+      // })
 
-      cy.get('#slsColocationShelterType').then(($select) => {
-        cy.wrap($select).select('4', { force: true })
-      })
-      cy.get('#tbxColocationPLNPowerKVA').type(RangerandomValue);
+      // cy.get('#slsColocationShelterType').then(($select) => {
+      //   cy.wrap($select).select('4', { force: true })
+      // })
+      // cy.get('#tbxColocationRWAPLNPowerKVA').type(RangerandomValue);
 
-      cy.get('#dpkColocationRFITarget')
+      cy.get('#dpkColocationFWARFITarget')
         .invoke('val', date)
         .trigger('change');
+      cy.get('#tbxColocationFWALeasePeriod').type(RangerandomValue);
 
-      cy.get('#slsColocationMLANumber').then(($select) => {
+      cy.get('#slsColocationFWAMLANumber').then(($select) => {
         cy.wrap($select).select('0010-14-F07-39033', { force: true })
       })
-      cy.get('#tbxColocationLeasePeriod').type(RangerandomValue);
 
-      cy.get('#dpkColocationMLADate')
+      cy.get('#dpkColocationFWAMLADate')
         .invoke('val', date)
         .trigger('change');
 
-      cy.get('#tarColocationRemark').type('Remark' + unique);
+      cy.get('#tarColocationFWARemark').type('Remark' + unique);
 
 
-      cy.get("#btnSubmitColocation").click();
+      cy.get("#btnSubmitColocationFWA").click();
 
       cy.wait(2000)
 
@@ -444,7 +447,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/COLLOCATION_MACRO/soDataCOLLOCATION_MACRO.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/soDataCOLLOCATION_MACRO_FWA(SURGE).json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

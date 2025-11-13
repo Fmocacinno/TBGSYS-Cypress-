@@ -1,4 +1,5 @@
 import { timeStamp } from 'console';
+
 import 'cypress-file-upload';
 const XLSX = require('xlsx');
 const fs = require('fs');
@@ -17,9 +18,11 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
+
 const testResults = []; // Array to store test results
 const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
 const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
+
 // const unique = `APP_PKP_`;
 
 function generateRandomString(minLength, maxLength) {
@@ -35,14 +38,15 @@ function generateRandomString(minLength, maxLength) {
 }
 
 let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
-
 const minLength = 5;
 const maxLength = 15;
 const randomString = generateRandomString(minLength, maxLength);
+
 // const date = "2-Jan-2025";
 // const user = "555504220025"
 // const pass = "123456"
 const filePath = 'documents/pdf/C (1).pdf';
+
 const latMin = -11.0; // Southernmost point
 const latMax = 6.5;   // Northernmost point
 const longMin = 94.0; // Westernmost point
@@ -50,7 +54,9 @@ const longMax = 141.0; // Easternmost point
 
 // Generate random latitude and longitude within bounds
 const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
+
 const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
+
 //Batas
 
 describe('template spec', () => {
@@ -302,6 +308,7 @@ describe('template spec', () => {
 
       // // cy.get('input[name=""][value="0"]').check({ force: true });
       // cy.get('input[type="Radio"][value="0"]').check().should('be.checked')
+      // cy.get('input[type="Radio"][value="0"]').check().should('be.checked')
 
       cy.wait(1000); // Ensure dropdown selection is applied
       /// radio button with regex
@@ -310,7 +317,14 @@ describe('template spec', () => {
       // input value No
 
 
-      cy.get('input[name="rdoOverlapping"][value="0"]').parent().click()
+      // cy.get('input[name="rdoOverlapping"][value="0"]').parent().click();
+      // cy.get('input[name="rdoOverlapping"]').second().click({ force: true });
+      // cy.get('input[name="rdoOverlapping"][value="0"]').click({ force: true });
+      cy.get('input[name="rdoOverlapping"]').last().check({ force: true }); // "No"
+
+      // cy.get('input[name="rdoOverlapping"]').eq(2).click({ force: true });
+      // cy.get('input[name="rdoOverlapping"][value="0"]').click({ force: true });
+      // cy.get('input[name="rdoOverlapping"]').eq(1).click({ force: true });
 
       cy.get('#dpkIntersiteFORFSTarget')
         .invoke('val', date)
@@ -389,3 +403,9 @@ describe('template spec', () => {
     })
   }
 })
+
+it('awd', function() {
+  cy.visit('http://tbgappdev111.tbg.local:8041/')
+  cy.visit('http://tbgappdev111.tbg.local:8041/')
+  
+});
