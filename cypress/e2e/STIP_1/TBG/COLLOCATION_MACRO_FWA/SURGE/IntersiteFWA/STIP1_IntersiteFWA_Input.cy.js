@@ -71,12 +71,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/IntersiteFWA/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -174,30 +174,25 @@ describe('template spec', () => {
       })
 
       cy.get('#slsProduct').then(($select) => {
-        cy.wrap($select).select('83', { force: true })
+        cy.wrap($select).select('104', { force: true })
       })
 
-      cy.get('#slsIntersiteFOCompany').then(($select) => {
+      cy.get('#slsIntersiteFWACompany').then(($select) => {
         cy.wrap($select).select('TB', { force: true })
       })
 
-      cy.get('#slsIntersiteFOCustomer').then(($select) => {
-        cy.wrap($select).select('XL', { force: true })
+      cy.get('#slsIntersiteFWACustomer').then(($select) => {
+        cy.wrap($select).select('SURGE', { force: true })
       })
 
-      cy.get('#slsIntersiteFORegion').then(($select) => {
+      cy.get('#slsIntersiteFWARegion').then(($select) => {
         cy.wrap($select).select('1', { force: true })
       })
       cy.wait(1000); // Ensure dropdown selection is applied
       /// radio button with regex
-      cy.contains('label', /^\s *Segment\s*$/)
-        .click(); // Click the label
 
 
-      // Assert that the "Segment" radio button is selected
-      cy.get('input[type="radio"][value="Segment"]').should('be.checked');
-
-      cy.get('#btnIntersiteFOPriceAmountPopUp').click();
+      cy.get('#btnIntersiteFWAPriceAmountPopUp').click();
 
       cy.get('tbody tr:first-child .btnSelect').click();
 
@@ -234,29 +229,36 @@ describe('template spec', () => {
       // cy.get('.slsBatchSLD').eq(8)
       //   .select('180', { force: true });
       // handle HTML
+      cy.get('button[href="#PopUpSiteIntersiteFWA"]:visible')
+        .first()
+        .click({ force: true });
 
-      cy.get('#tbxIntersiteFOSiteName').type('Site_' + unique + randomValue);
-      cy.get('#tbxIntersiteFOCustomerSiteID').type('Cust_' + unique + randomValue);
-      cy.get('#tbxIntersiteFOSPKWOLOINumber').type('WO_' + unique + randomValue);
 
-      cy.get('#slsIntersiteFODocumentOrder').then(($select) => {
+      cy.wait(2000)
+      // Find and click the button
+
+      cy.get('#tbxIntersiteFWASiteName').type('Site_' + unique + randomValue);
+      cy.get('#tbxIntersiteFWACustomerSiteID').type('Cust_' + unique + randomValue);
+      cy.get('#tbxIntersiteFWASPKWOLOINumber').type('WO_' + unique + randomValue);
+
+      cy.get('#slsIntersiteFWADocumentOrder').then(($select) => {
         cy.wrap($select).select('7', { force: true })
       })
 
-      cy.get('#tbxIntersiteFODocumentName').type('DoctName_' + unique + randomValue);
+      cy.get('#tbxIntersiteFWADocumentName').type('DoctName_' + unique + randomValue);
 
-      cy.get('#fleIntersiteFODocument').attachFile(filePath);
+      cy.get('#fleIntersiteFWADocument').attachFile(filePath);
 
-      cy.get('#slsIntersiteFOProvince').then(($select) => {
+      cy.get('#slsIntersiteFWAProvince').then(($select) => {
         cy.wrap($select).select('11', { force: true })
       })
       cy.wait(2000)
       // Near ENd
-      cy.get('#slsIntersiteFOResidence').then(($select) => {
+      cy.get('#slsIntersiteFWATowerProviderNearEnd').then(($select) => {
         cy.wrap($select).select('178', { force: true })
       })
 
-      cy.get('#slsFOHubIntersiteFO').then(($select) => {
+      cy.get('#slsFOHubIntersiteFWA').then(($select) => {
         cy.wrap($select).select('2', { force: true })
       })
 
@@ -321,6 +323,15 @@ describe('template spec', () => {
         .first()
         .siblings('ins.iCheck-helper')
         .click({ force: true });
+
+
+      cy.get('.icheck-inline')   // Ambil semua grup radio
+        .eq(1)                    // Pilih grup pertama
+        .within(() => {          // Batasi pencarian hanya dalam grup ini
+          cy.contains('label', 'Segment')  // Cari label yg tulisannya Segment
+            .find('ins.iCheck-helper')     // Temukan helper iCheck
+            .click({ force: true });       // Klik radio
+        });
       // cy.get('input[name="rdoOverlapping"]').second().click({ force: true });
       // cy.get('input[name="rdoOverlapping"][value="0"]').click({ force: true });
       // const selectOverlapping = (answer) => {
@@ -402,7 +413,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFo.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/IntersiteFWA/soDataINTERSITE_FWA(SURGE).json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
