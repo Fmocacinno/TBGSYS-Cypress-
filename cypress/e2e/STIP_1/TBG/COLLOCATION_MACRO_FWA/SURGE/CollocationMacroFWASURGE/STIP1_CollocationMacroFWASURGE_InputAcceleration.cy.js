@@ -114,12 +114,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -306,31 +306,31 @@ describe('template spec', () => {
       cy.wait(2000)
 
       cy.get('.slsBatchSLD').eq(0)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('1111', { force: true });
+        .select('1304', { force: true });
 
       cy.get('#btnColocationFWASitePopUp')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
@@ -369,14 +369,11 @@ describe('template spec', () => {
 
 
 
-      // cy.wait(1000); // Ensure dropdown selection is applied
-      // /// radio button with regex
-      // cy.contains('label', /^\s *Acceleration\s*$/)
-      //   .click(); // Click the label
-
-
-      // // Assert that the "Segment" radio button is selected
-      // cy.get('input[type="radio"][value="Acceleration"]').should('be.checked');
+      cy.wait(3000); // Ensure dropdown selection is applied
+      /// radio button with regex
+      cy.get('#rdoColoFWAProjectTypeAcceleration')
+        .siblings('ins.iCheck-helper')
+        .click({ force: true });
 
       cy.get('#slsColocationFWALeadProjectManager').then(($select) => {
         cy.wrap($select).select('201102180019', { force: true })
@@ -389,10 +386,10 @@ describe('template spec', () => {
       //   cy.wrap($select).select('0', { force: true })
       // })
 
-      // cy.get('#slsColocationShelterType').then(($select) => {
-      //   cy.wrap($select).select('4', { force: true })
-      // })
-      // cy.get('#tbxColocationRWAPLNPowerKVA').type(RangerandomValue);
+      cy.get('#slsColocationFWAShelterType').then(($select) => {
+        cy.wrap($select).select('4', { force: true })
+      })
+      cy.get('#tbxColocationFWAPLNPowerKVA').type(RangerandomValue);
 
       cy.get('#dpkColocationFWARFITarget')
         .invoke('val', date)
@@ -400,7 +397,7 @@ describe('template spec', () => {
       cy.get('#tbxColocationFWALeasePeriod').type(RangerandomValue);
 
       cy.get('#slsColocationFWAMLANumber').then(($select) => {
-        cy.wrap($select).select('0010-14-F07-39033', { force: true })
+        cy.wrap($select).select('SURGE0010-14-F07-390333', { force: true })
       })
 
       cy.get('#dpkColocationFWAMLADate')
