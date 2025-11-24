@@ -371,9 +371,9 @@ describe('template spec', () => {
 
       cy.wait(3000); // Ensure dropdown selection is applied
       /// radio button with regex
-      cy.get('#rdoColoFWAProjectTypeAcceleration')
-        .siblings('ins.iCheck-helper')
-        .click({ force: true });
+      // cy.get('#rdoColoFWAProjectTypeAcceleration')
+      //   .siblings('ins.iCheck-helper')
+      //   .click({ force: true });
 
       cy.get('#slsColocationFWALeadProjectManager').then(($select) => {
         cy.wrap($select).select('201102180019', { force: true })
@@ -444,9 +444,8 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/soDataCOLLOCATION_MACRO_FWA(SURGE).json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json';
             cy.writeFile(filePath, { soNumber, siteId });
-
           });
         });
         // Add your logic here using the Site ID

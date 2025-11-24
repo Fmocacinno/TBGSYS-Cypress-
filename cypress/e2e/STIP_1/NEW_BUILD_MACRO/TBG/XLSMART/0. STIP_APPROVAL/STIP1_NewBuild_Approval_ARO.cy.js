@@ -1,11 +1,17 @@
-import { timeStamp } from 'console';
 import 'cypress-file-upload';
+const minLength = 5;
+const maxLength = 15;
+const randomString = generateRandomString(minLength, maxLength);
+const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+// Daftar indeks baris yang ingin diubah
+const worktypeRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 const XLSX = require('xlsx');
 const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
+  const filePath = 'test-StipinputNewBuildMacroresults.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -17,10 +23,6 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
-const testResults = []; // Array to store test results
-const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
-const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
-// const unique = `APP_PKP_`;
 
 function generateRandomString(minLength, maxLength) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -33,61 +35,6 @@ function generateRandomString(minLength, maxLength) {
   }
   return result;
 }
-function clickAllEnabledButtons(buttons, index = 0, callback) {
-  if (index >= buttons.length) {
-    callback(); // Done with this page
-    return;
-  }
-
-  cy.wrap(buttons[index])
-    .scrollIntoView()
-    .should('be.visible')
-    .click()
-    .then(() => {
-      // Small wait to allow DOM updates after click
-      cy.wait(1000);
-      clickAllEnabledButtons(buttons, index + 1, callback);
-    });
-}
-
-function checkRowsSequentially(page = 1, maxPages = 10) {
-  if (page > maxPages) return;
-
-  // Optional wait to ensure table content is rendered
-  cy.wait(1000);
-
-  cy.get('button.btnSelect').then(($buttons) => {
-    const $enabledBtns = $buttons.filter((i, el) =>
-      !el.disabled && Cypress.$(el).is(':visible')
-    );
-
-    if ($enabledBtns.length > 0) {
-      cy.wrap($enabledBtns[0])
-        .scrollIntoView()
-        .should('be.visible')
-        .click();
-    } else {
-      // Try going to the next page
-      cy.get('a[title="Next"]:visible').then(($next) => {
-        if ($next.length > 0) {
-          cy.wrap($next).click();
-          cy.wait(2000); // wait for table to update
-          checkRowsSequentially(page + 1, maxPages);
-        } else {
-          cy.log('No next page available');
-        }
-      });
-    }
-  });
-}
-
-
-
-let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
-
-const minLength = 5;
-const maxLength = 15;
-const randomString = generateRandomString(minLength, maxLength);
 // const date = "2-Jan-2025";
 // const user = "555504220025"
 // const pass = "123456"
@@ -101,25 +48,41 @@ const longMax = 141.0; // Easternmost point
 const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
 const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 //Batas
-
 describe('template spec', () => {
-  let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
 
+  let testResults = []; // Shared results array
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, userPMSitac, userPMCME;
+  const baseId = 24; // Base ID
+  const index = 1; // Increment index for unique IDs
   before(() => {
     testResults = []; // Reset results before all tests
   });
 
+  const minLength = 5;
+  const maxLength = 15;
+  const randomString = generateRandomString(minLength, maxLength);
+  const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+
   after(() => {
     exportToExcel(testResults); // Export after all tests complete
   });
+  const sorFilePath = "documents/SOR/1a0863_TO_0492_1550_14_20.sor"; // .sor file path
+  const photoFilePath = "documents/IMAGE/adopt.png"; // Photo file path\
+  const excelfilepath = "documents/EXCEL/.xlsx/EXCEL_(1).xlsx"; // Photo file path
+  const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
+  const PDFFilepath = "documents/PDF/C (1).pdf"; // Photo file path
+
+
+
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json').then((values) => {
+    const testResults = []; // Array to store test results
+    const user = "555504220025";
+    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/TBG/XLSMART/soDataNewBuild.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/TBG/XLSMART/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -128,8 +91,11 @@ describe('template spec', () => {
       userLeadPM = values.userLeadPM;
       userPMFO = values.userPMFO;
       userARO = values.userARO;
-      pass = values.pass;
+      PICVendor = values.PICVendor;
+      userPMSitac = values.userPMSitac;
+      userPMCME = values.userPMCME;
       date = values.date;
+      pass = values.pass;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
       menu1 = values.menu1;
@@ -142,7 +108,6 @@ describe('template spec', () => {
       PICVendorMobile1 = values.PICVendorMobile1;
       PICVendorMobile2 = values.PICVendorMobile2;
     });
-
 
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false;

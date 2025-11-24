@@ -1,11 +1,17 @@
-import { timeStamp } from 'console';
 import 'cypress-file-upload';
+const minLength = 5;
+const maxLength = 15;
+const randomString = generateRandomString(minLength, maxLength);
+const randomRangeValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+// Daftar indeks baris yang ingin diubah
+const worktypeRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 const XLSX = require('xlsx');
 const fs = require('fs');
 
 // Function to export test results to Excel
 function exportToExcel(testResults) {
-  const filePath = 'resultsApproval_NewBuildMacro.xlsx'; // Path to the Excel file
+  const filePath = 'test-StipinputNewBuildMacroresults.xlsx'; // Path to the Excel file
 
   // Create a worksheet from the test results
   const worksheet = XLSX.utils.json_to_sheet(testResults);
@@ -17,10 +23,6 @@ function exportToExcel(testResults) {
   // Write the workbook to a file
   XLSX.writeFile(workbook, filePath);
 }
-const testResults = []; // Array to store test results
-const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
-const RangerandomValue = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 1000
-// const unique = `APP_PKP_`;
 
 function generateRandomString(minLength, maxLength) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -33,61 +35,6 @@ function generateRandomString(minLength, maxLength) {
   }
   return result;
 }
-function clickAllEnabledButtons(buttons, index = 0, callback) {
-  if (index >= buttons.length) {
-    callback(); // Done with this page
-    return;
-  }
-
-  cy.wrap(buttons[index])
-    .scrollIntoView()
-    .should('be.visible')
-    .click()
-    .then(() => {
-      // Small wait to allow DOM updates after click
-      cy.wait(1000);
-      clickAllEnabledButtons(buttons, index + 1, callback);
-    });
-}
-
-function checkRowsSequentially(page = 1, maxPages = 10) {
-  if (page > maxPages) return;
-
-  // Optional wait to ensure table content is rendered
-  cy.wait(1000);
-
-  cy.get('button.btnSelect').then(($buttons) => {
-    const $enabledBtns = $buttons.filter((i, el) =>
-      !el.disabled && Cypress.$(el).is(':visible')
-    );
-
-    if ($enabledBtns.length > 0) {
-      cy.wrap($enabledBtns[0])
-        .scrollIntoView()
-        .should('be.visible')
-        .click();
-    } else {
-      // Try going to the next page
-      cy.get('a[title="Next"]:visible').then(($next) => {
-        if ($next.length > 0) {
-          cy.wrap($next).click();
-          cy.wait(2000); // wait for table to update
-          checkRowsSequentially(page + 1, maxPages);
-        } else {
-          cy.log('No next page available');
-        }
-      });
-    }
-  });
-}
-
-
-
-let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip;
-
-const minLength = 5;
-const maxLength = 15;
-const randomString = generateRandomString(minLength, maxLength);
 // const date = "2-Jan-2025";
 // const user = "555504220025"
 // const pass = "123456"
@@ -101,25 +48,41 @@ const longMax = 141.0; // Easternmost point
 const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
 const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 //Batas
-
 describe('template spec', () => {
-  let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
 
+  let testResults = []; // Shared results array
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, userPMSitac, userPMCME;
+  const baseId = 24; // Base ID
+  const index = 1; // Increment index for unique IDs
   before(() => {
     testResults = []; // Reset results before all tests
   });
 
+  const minLength = 5;
+  const maxLength = 15;
+  const randomString = generateRandomString(minLength, maxLength);
+  const randomValue = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+
   after(() => {
     exportToExcel(testResults); // Export after all tests complete
   });
+  const sorFilePath = "documents/SOR/1a0863_TO_0492_1550_14_20.sor"; // .sor file path
+  const photoFilePath = "documents/IMAGE/adopt.png"; // Photo file path\
+  const excelfilepath = "documents/EXCEL/.xlsx/EXCEL_(1).xlsx"; // Photo file path
+  const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
+  const PDFFilepath = "documents/PDF/C (1).pdf"; // Photo file path
+
+
+
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json').then((values) => {
+    const testResults = []; // Array to store test results
+    const user = "555504220025";
+    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/TBG/XLSMART/soDataNewBuild.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/TBG/XLSMART/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -128,8 +91,11 @@ describe('template spec', () => {
       userLeadPM = values.userLeadPM;
       userPMFO = values.userPMFO;
       userARO = values.userARO;
-      pass = values.pass;
+      PICVendor = values.PICVendor;
+      userPMSitac = values.userPMSitac;
+      userPMCME = values.userPMCME;
       date = values.date;
+      pass = values.pass;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
       menu1 = values.menu1;
@@ -143,18 +109,18 @@ describe('template spec', () => {
       PICVendorMobile2 = values.PICVendorMobile2;
     });
 
-
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false;
     });
   });
   //AM
 
-  //ARO
-  it('ARO Test Case', () => {
-    // ARO
+
+
+  it('Lead PM Test Case', () => {
+    // Lead PM
     cy.visit(`${baseUrlTBGSYS}${login}`);
-    cy.get('#tbxUserID').type(userARO);
+    cy.get('#tbxUserID').type(userLeadPM);
     cy.get('#tbxPassword').type(pass);
     cy.get('#RefreshButton').click();
 
@@ -165,66 +131,95 @@ describe('template spec', () => {
     });
 
     cy.get('#btnSubmit').click();
+
     cy.wait(3000);
     cy.visit(`${baseUrlTBGSYS}/STIP/Approval`);
     cy.url().should('include', `${baseUrlTBGSYS}/STIP/Approval`);
+    testResults.push({
+      Test: 'User LEAD PM melakukan akses ke menu Stip Approval',
+      Status: 'Pass',
+      TimeStamp: new Date().toISOString(),
+    });
     cy.wait(3000);
     cy.contains('label', /^\s *By SO Number\s*$/)
       .click(); // search By Radio Button SONumber
-    cy.get('#tbxApprovalSONumber').type(sonumb).should('have.value', sonumb).then(() => {
-      // Log the test result if input is successful
+    cy.get('#tbxApprovalSONumber').type(sonumb).should(() => {
+      // Log the test result if button click is successful
       testResults.push({
-        Test: 'User ARO melakukan input SONumber di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        TimeStamp: new Date().toISOString(),
+        Timestamp: new Date().toISOString(),
       });
-    });
+    }); // << Search Filter
+
 
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User ARO melakukan klik tombol Search di Stip approval',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
-        TimeStamp: new Date().toISOString(),
+        Timestamp: new Date().toISOString(),
       });
     });
-    cy.wait(3000);
+    cy.wait(5000);
+
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
 
-      if (text === "Waiting for Confirmation ARO") {
-        cy.log("✅ Status matches, proceeding with approval...");
+      if (text.includes("Waiting for Confirmation Lead PM")) {  // ✅ Flexible condition to match variations
+        cy.log("✅ Status contains 'Lead PM', proceeding with approval...");
 
-        cy.get('tbody tr:first-child .btnApprovalDetail').click();
+        cy.get('tbody tr:first-child td:nth-child(1) .btnApprovalDetail').click();
         cy.get('#tarApprovalRemark').type('Remark_' + unique, { force: true });
-        // SKIPPING 'tarApprovalRemark' input field
         cy.log("⚠️ Skipping remark input...");
-
-        // Attempt to click the approval button only if it's visible and enabled
+        cy.wait(10000);
         cy.get("#btnConfirm").then(($btn) => {
           if ($btn.is(':visible') && !$btn.is(':disabled')) {
+            cy.wait(3000);
+            cy.get('.nav-tabs a[href="#tabPMAssignment"]').click();
+            cy.wait(3000);
+            cy.get('#slsPMSitac').select(userPMSitac, { force: true });
+            cy.get('#slsPMCME').select(userPMCME, { force: true });
+            cy.get('.nav-tabs a[href="#tabApprovalDetail"]').click();
+            cy.wait(3000);
             cy.wrap($btn).click();
-
+            cy.wait(10000);
             cy.log("✅ Button clicked successfully");
           } else {
             cy.log("⚠️ Button not clickable, skipping...");
           }
+          // if ($btn.is(':visible')) {
+          //   // Use dynamic values in select fields
+          //   if (userPMSitac) {
+          //     cy.get('#slsPMSitac').select(userPMSitac, { force: true });
+          //   } else {
+          //     cy.log('userPMSitac is missing or invalid');
+          //   }
+
+          //   if (userPMCME) {
+          //     cy.get('#slsPMCME').select(userPMCME, { force: true });
+          //   } else {
+          //     cy.log('userPMCME is missing or invalid');
+          //   } // Use dynamic values in 
+          //   cy.wrap($btn).click();
+          //   cy.log("✅ Button clicked successfully");
+          //   cy.wait(6000);
+          // } else {
+          //   cy.log("⚠️ Button not clickable, skipping...");
+          // }
         });
 
       } else {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
-      cy.wait(3000);
     });
-    cy.wait(3000);
+
+    cy.wait(4000);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.wait(4000);
 
-    cy.then(() => {
-      exportToExcel(testResults);
-    });
-
   });
+  //ARO
 
 });
