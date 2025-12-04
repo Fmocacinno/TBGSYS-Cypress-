@@ -142,14 +142,14 @@ describe('template spec', () => {
         cy.get('#captchaInsert').type(rightCode);
       });
 
-      cy.get('#btnSubmit').click();
-      cy.wait(5000)
-      cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
-      testResults.push({
-        Test: 'Button Clicked',
-        Status: 'Pass',
-        Timestamp: new Date().toISOString(),
-      });
+        cy.get('#btnSubmit').click();
+        cy.wait(5000)
+        cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
+        testResults.push({
+          Test: 'Button Clicked',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
 
       // Export results to Excel after the test
 
