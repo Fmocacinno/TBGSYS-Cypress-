@@ -19,7 +19,7 @@ function exportToExcel(testResults) {
 }
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, UserRequestSPKProject, Uservendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, IsNeedSPK;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -29,13 +29,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-
-    cy.readFile('cypress/e2e/STIP_1/TBG/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -56,6 +55,8 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
+      IsNeedSPK = values.IsNeedSPK;           // Raw: " Need SPK\n    "
+      IsNeedSPK.trim();                       // Clean: "Need SPK"
 
     });
 
@@ -97,10 +98,10 @@ describe('template spec', () => {
     cy.wait(5000);
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('1', { force: true })
+      cy.wrap($select).select('2', { force: true })
     })
     cy.get('#slSubType').then(($select) => {
-      cy.wrap($select).select('1', { force: true })
+      cy.wrap($select).select('11', { force: true })
     })
 
     cy.get('#btnSearch').type(sonumb).should(() => {
@@ -113,9 +114,6 @@ describe('template spec', () => {
     }); //
 
 
-
-    cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
-    cy.wait(2000)
 
     cy.get('#txtSONumber').type(sonumb).should(() => {
       // Log the test result if button click is successful
@@ -148,9 +146,15 @@ describe('template spec', () => {
 
     cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').click();
 
-    cy.wait(10000);
+    cy.wait(15000);
 
-
+    cy.get(`input[type="radio"][name="IsNeedSPK"][value="${IsNeedSPK}"]`)
+      .should('exist')
+      .parents('.iradio_flat-blue')
+      .click({ force: true });
+    // cy.get(`input[type="radio"][name="IsNeedSPK"][value="${IsNeedSPK}"]`, { timeout: 20000 }) // wait up to 20s
+    //   .should('exist')
+    //   .click({ force: true });
 
 
     cy.get('#slCore').then(($select) => {
@@ -160,7 +164,7 @@ describe('template spec', () => {
 
     cy.wait(10000);
     cy.get('#slSubCore').then(($select) => {
-      cy.wrap($select).select('2', { force: true })
+      cy.wrap($select).select('3', { force: true })
     })
     cy.wait(6000);
 

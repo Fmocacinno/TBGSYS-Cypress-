@@ -12,7 +12,8 @@ module.exports = defineConfig({
       // implement node event listeners here if needed
     },
     chromeWebSecurity: false,
-
+    experimentalMemoryManagement: true,
+    numTestsKeptInMemory: 1,
     // ✅ Conditional config based on debug mode
     experimentalMemoryManagement: !isDebugMode,
     numTestsKeptInMemory: isDebugMode ? 50 : 1,

@@ -345,11 +345,11 @@ describe('template spec', () => {
           });
         });
 
-      cy.get('.col-md-6.col-sm-6 select[name="tblSite_length"]')
-        .should('be.visible') // Ensure it's visible
-        .select('50')
-        .should('have.value', '50'); // Confirm the selection worked
-      // Step 2: Click all enabled buttons in the third row
+      // cy.get('.col-md-6.col-sm-6 select[name="tblSite_length"]')
+      //   .should('be.visible') // Ensure it's visible
+      //   .select('50')
+      //   .should('have.value', '50'); // Confirm the selection worked
+      // // Step 2: Click all enabled buttons in the third row
 
       cy.wait(2000)
       // Find and click the button

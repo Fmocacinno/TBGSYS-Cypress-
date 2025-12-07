@@ -28,13 +28,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/NEW_BUILD_MACRO/soDataNewBuild.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/soDataCOLLOCATION_MACRO_FWA(SURGE).json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-
-    cy.readFile('cypress/e2e/STIP_1/TBG/NEW_BUILD_MACRO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/CollocationMacroFWASURGE/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -92,10 +91,10 @@ describe('template spec', () => {
 
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('1', { force: true })
+      cy.wrap($select).select('2', { force: true })
     })
     cy.get('#slSubType').then(($select) => {
-      cy.wrap($select).select('1', { force: true })
+      cy.wrap($select).select('11', { force: true })
     })
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
