@@ -97,8 +97,13 @@ describe('template spec', () => {
     cy.wait(5000);
 
     cy.get('#slType').then(($select) => {
-      cy.wrap($select).select('9', { force: true })
+      cy.wrap($select).select('10', { force: true })
     })
+    cy.get('#slSubType').then(($select) => {
+      cy.wrap($select).select('45', { force: true })
+    })
+
+
     cy.get('#btnSearch').type(sonumb).should(() => {
       // Log the test result if button click is successful
       testResults.push({

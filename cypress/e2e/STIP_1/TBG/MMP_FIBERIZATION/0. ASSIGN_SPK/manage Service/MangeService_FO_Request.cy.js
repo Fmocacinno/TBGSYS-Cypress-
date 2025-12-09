@@ -47,7 +47,6 @@ describe('template spec', () => {
       UserRequestSPKProject = values.UserRequestSPKProject;
       Uservendor = values.Uservendor;
       pass = values.pass;
-      UservendorManageService = values.UservendorManageService;
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
       menu1 = values.menu1;
@@ -57,6 +56,7 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
+
     });
 
 
