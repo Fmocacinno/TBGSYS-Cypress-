@@ -53,6 +53,7 @@ describe('template spec', () => {
 
     const user = "555504220025";
     const filePath = 'documents/pdf/receipt.pdf';
+
     cy.readFile('cypress/e2e/STIP_1/TBG/COLLOCATION_MACRO_FWA/SURGE/IntersiteFWA/soDataINTERSITE_FWA(SURGE).json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
@@ -78,6 +79,7 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
+
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -89,7 +91,6 @@ describe('template spec', () => {
   it('OTDR Input by vendor', () => {
 
     cy.visit(`${baseUrlTBGSYS}${login}`);
-
     cy.get('#tbxUserID').type(userPMFO);
     cy.get('#tbxPassword').type(pass);
 
@@ -111,7 +112,7 @@ describe('template spec', () => {
     });
     cy.get('.blockUI', { timeout: 300000 }).should('not.exist');
 
-    // Check if the error pop-up is visible
+    // Check if the error pop-up exists without failing the test
     cy.document().then((doc) => {
       const errorPopup = doc.querySelector('h2');
 
@@ -145,7 +146,7 @@ describe('template spec', () => {
       });
     });
 
-    cy.wait(2000);
+    cy.wait(4000);
     cy.get('tbody tr:first-child td:nth-child(2)').then(($cell) => {
       const text = $cell.text().trim();
       cy.log("📌 Status Found:", text);
@@ -159,25 +160,28 @@ describe('template spec', () => {
         cy.log("⚠️ Status does not match, skipping approval step.");
       }
     });
-    cy.wait(2000);
+    cy.wait(5000);
 
     cy.get('tr')
-      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '5') // Find the row where the first column contains '6'    cy.wait(2000);
+      .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'    cy.wait(2000);
 
       .find('td:nth-child(2) .btnSelect') // Find the button in the second column
       .click(); // Click the button
 
-    cy.wait(4000);
-    cy.get('#tarMaterialDeliveryApprovalRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.get('#tarMaterialOnSiteApprovalRemark', { timeout: 10000 }) // Tunggu hingga 10 detik
+      .should('be.visible') // Pastikan elemen terlihat
+      .type('Remark FROM AUTOMATION' + unique + randomString);
     cy.wait(2000);
 
     cy.get('#btnApprove').click();
-    cy.wait(7000);
-    cy.get('.sa-confirm-button-container button.confirm').click();
+    // cy.get('.confirm.btn-success').click({ force: true });
+    cy.wait(5000)
+    cy.get('.sweet-alert', { timeout: 20000 }) // Wait up to 10s for the modal
+      .should('be.visible');
 
-    cy.wait(2000);
+    cy.get('.sweet-alert button.confirm')
+      .click({ force: true });
 
-    // cy.visit('http://tbgappdev111.tbg.local:8042/Login/Logout');
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);

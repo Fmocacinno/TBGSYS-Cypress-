@@ -51,7 +51,7 @@ const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 describe('template spec', () => {
 
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, PICVendor, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2;
   const baseId = 24; // Base ID
   const index = 1; // Increment index for unique IDs
   before(() => {
@@ -108,6 +108,8 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
+      PICVendorMobile1 = values.PICVendorMobile1;
+      PICVendorMobile2 = values.PICVendorMobile2;
     });
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -120,6 +122,7 @@ describe('template spec', () => {
 
     cy.visit(`${baseUrlVP}${login}`);
 
+
     cy.get('#tbUserID').type(PICVendor);
     cy.get('#tbPassword').type(pass);
 
@@ -130,7 +133,7 @@ describe('template spec', () => {
     });
 
     cy.get("#btnsubmit").click();
-    cy.wait(2000);
+    cy.wait(2000)
 
     cy.visit(`${baseUrlVP}/ProjectActivity/ProjectActivityHeader`)
       .url().should('include', `${baseUrlVP}/ProjectActivity/ProjectActivityHeader`);
@@ -172,7 +175,7 @@ describe('template spec', () => {
     cy.get('.btnSearch').first().click().should(() => {
       // Log the test result if button click is successful
       testResults.push({
-        Test: 'User AM melakukan klik tombol Search di PROJECT ACTIVITY',
+        Test: 'User AM melakukan klik tombol Search di Stip approval',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
@@ -185,7 +188,7 @@ describe('template spec', () => {
       cy.wait(2000);
 
       if (text.includes(sonumb)) {  // ✅ Checks if "Lead PM" is in the status
-        cy.log("✅ Status contains 'SONUUMBER', proceeding with approval...");
+        cy.log("✅ Status contains 'AM', proceeding with approval...");
 
         cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').invoke('removeAttr', 'target').click();
       } else {
@@ -215,161 +218,59 @@ describe('template spec', () => {
 
       // Run the second block of code (always executed)
       cy.get('tr')
-        .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '5') // Find the row where the first column contains '6'
+        .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6') // Find the row where the first column contains '6'
         .find('td:nth-child(2) .btnSelect') // Find the button in the second column
         .click(); // Click the button
       cy.wait(1000);
     });
 
 
-    cy.get('#dpkMaterialDeliveryDate')
+    // Always execute this part
+    // cy.get('tr')
+    //   .filter((index, element) => Cypress.$(element).find('td').first().text().trim() === '6')
+    //   .find('td:nth-child(2) .btnSelect')
+    //   .click();
+    // cy.wait(1000);
+
+
+
+
+
+
+    cy.get('#dpkMaterialOnSiteDate')
       .invoke('val', date)
       .trigger('change');
-
-
-    cy.get('#tbxVechicleNumber').type('B-' + randomValue + '-ZZH');
-    cy.wait(1000);
-    cy.get('#tbxDriverName').type('Driver' + randomValue + randomString);
+    cy.get('#fleMaterialOnSiteDocument').attachFile(PDFFilepath);
     cy.wait(1000);
 
-    cy.get('#tbxDriverPhone').type('089' + randomValue + '928282923');
-    cy.wait(1000);
+    cy.get('.form-group')
+      .contains('Penyimpanan Material yang Memadai')
+      .parent()
+      .find('.iradio_flat-blue')
+      .eq(0) // Click the second radio button (Not OK)
+      .click({ force: true }); //<<radio button
 
-    cy.get('#fleMaterialDeliveryDocument').attachFile(PDFFilepath);
-    cy.wait(1000);
-
-
-    // cy.get('#tbxFOLengthInlineKAI').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxFOLengthCrossFOKAI').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxFOLengthTol').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxFOLengthHutan').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxFOLengthKorporasi').type(randomValue);
-    // cy.wait(1000);
-    // //----
-
-
-    // cy.get('#fleKickOffMeetingDocument').attachFile(PDFFilepath);
-    // cy.wait(1000);
-
-    // cy.get('#tbxSSRLatitudeA').type(lat);
-    // cy.wait(1000);
-    // cy.get('#tbxSSRLongitudeA').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tarMMPAddressNearEnd').type('address FROM AUTOMATION' + unique + randomString);
-    // cy.wait(1000);
-    // cy.get('#slsProviderNE').then(($select) => {
-    //   cy.wrap($select).select('10', { force: true })
-    // })
-
-
-    // cy.get('#tbxSSRLatitudeB').type(lat);
-    // cy.wait(1000);
-    // cy.get('#tbxSSRLongitudeB').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tarMMPAddress').type('address FROM AUTOMATION' + unique + randomString);
-    // cy.wait(1000);
-    // cy.get('#slsProviderFE').then(($select) => {
-    //   cy.wrap($select).select('10', { force: true })
-    // })
-    // cy.get('#fleDocumentPolePositionPhoto').attachFile(photoFilePath);
-    // cy.wait(1000);
-    // //SUMMARY PLAN LENGTH FO (M)
-
-    // cy.get('#tbxKabupaten').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxProvinsi').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxNasional').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxAerial').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxBurial').type(randomValue);
-    // cy.wait(1000);
-    // //SUMMARY MATERIAL
-    // // Plan(DRM)
-    // cy.get('#tbxPlanCable').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxPlanPole7m').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxPlanPole9m').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxPlanODP').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxPlanOTB').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxPlanHDPE').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxPlanPatchCore').type(randomValue);
-    // cy.wait(1000);
-    // //survey
-    // cy.get('#tbxSurveyCable').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxSurveyPole7m').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxSurveyPole9m').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxSurveyODP').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxSurveyOTB').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxSurveyHDPE').type(randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxSurveyPatchCore').type(randomValue);
-    // cy.wait(1000);
-
-
-
-    // cy.get('#flePhotoAccessNE').attachFile(photoFilePath);
-    // cy.wait(1000);
-    // cy.get('#flePhotoAccessFE').attachFile(photoFilePath);
-    // cy.wait(1000);
-    // cy.get('#flePhotoSiteNE').attachFile(photoFilePath);
-    // cy.wait(1000);
-    // cy.get('#flePhotoSiteFE').attachFile(photoFilePath);
-    // cy.wait(1000);
-
-    // // RESULT
-    // cy.get('#slsIssue').then(($select) => {
-    //   cy.wrap($select).select('2', { force: true })
-    // })
-    // cy.get('#tbxDetailIssue').type('Issue' + randomString + randomValue);
-    // cy.wait(1000);
-    // cy.get('#tbxAlternatifAction').type('Action' + randomString);
-    // cy.wait(1000);
-    // cy.get('#tbxPIC').type('PIC' + randomString + randomString);
-    // cy.wait(1000);
-    // cy.get('#dpkEstimateClose')
-    //   .invoke('val', date)
-    //   .trigger('change');
-    // cy.get("#btnAddResult").click();
-    // cy.wait(5000);
-
-    cy.get('#tarMaterialDeliveryRemark').type('Remark FROM AUTOMATION' + unique + randomString);
+    cy.get('#tarMaterialOnSiteRemark').type('Remark FROM AUTOMATION' + unique + randomString);
     cy.wait(2000);
 
 
-    // cy.get("#btnProcess").click();
-    // cy.wait(5000);
-    // cy.get('.confirm.btn-success').click({ force: true });
-    // cy.wait(5000)
-
     cy.get("#btnSubmit").click();
-    cy.wait(7000);
+    cy.wait(5000);
+    cy.get('.confirm.btn-success').click({ force: true });
+    cy.wait(5000)
+
+    // cy.get("#btnSubmit").click();
+    // cy.wait(7000);
 
     // cy.get('.confirm.btn-success').click({ force: true });
     // cy.wait(5000)
-    cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
-      .should('be.visible');
+    // cy.get('.sweet-alert', { timeout: 10000 }) // Wait up to 10s for the modal
+    //   .should('be.visible');
 
-    cy.get('.sweet-alert button.confirm')
-      .click({ force: true });
+    // cy.get('.sweet-alert button.confirm')
+    //   .click({ force: true });
 
     cy.wait(5000);
-    //cy.visit(`${baseUrlTBGSYS}${logout}`);
     cy.contains('a', 'Log Out').click({ force: true });
     cy.then(() => {
       exportToExcel(testResults);

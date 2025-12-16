@@ -56,7 +56,8 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
-
+      IsNeedSPK = values.IsNeedSPK;           // Raw: " Need SPK\n    "
+      IsNeedSPK.trim();                       // Clean: "Need SPK"
     });
 
 
@@ -159,7 +160,7 @@ describe('template spec', () => {
     //   .should('exist')
     //   .click({ force: true });
     cy.get('#slCore').then(($select) => {
-      cy.wrap($select).select('10', { force: true })
+      cy.wrap($select).select('23', { force: true })
     })
 
     cy.wait(5000);
@@ -184,10 +185,10 @@ describe('template spec', () => {
     cy.wait(2000);
     cy.get('#txtRemark').type('Remark' + unique);
     cy.get('#btnAssign').click();
-    cy.wait(2000);
+    cy.wait(5000);
     cy.contains('.sa-confirm-button-container button', 'Ok').click();
 
-    cy.wait(2000)
+    cy.wait(5000)
     cy.contains('a', 'Log Out').click({ force: true });
 
   });

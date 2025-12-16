@@ -291,7 +291,7 @@ describe('template spec', () => {
 
 
       cy.wait(2000)
-      cy.get('tbody > tr:nth-child(3) .btnSelect')
+      cy.get('tbody > tr:nth-child(1) .btnSelect')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
         .click()
         // .should('be.disabled') // Opsional: Pastikan tombol berubah status setelah diklik (jika ada perubahan status)
@@ -306,31 +306,31 @@ describe('template spec', () => {
       cy.wait(2000)
 
       cy.get('.slsBatchSLD').eq(0)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('.slsBatchSLD').eq(1)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('.slsBatchSLD').eq(2)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('.slsBatchSLD').eq(3)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('.slsBatchSLD').eq(4)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('.slsBatchSLD').eq(5)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('.slsBatchSLD').eq(6)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('.slsBatchSLD').eq(7)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('.slsBatchSLD').eq(8)
-        .select('1304', { force: true });
+        .select('1061', { force: true });
 
       cy.get('#btnColocationFWASitePopUp')
         .should('be.visible') // Pastikan tombol terlihat sebelum diklik
@@ -378,10 +378,15 @@ describe('template spec', () => {
       cy.get('#slsColocationFWALeadProjectManager').then(($select) => {
         cy.wrap($select).select('201102180019', { force: true })
       })
-      cy.get('#slsColocationFWAAccountManager').then(($select) => {
-        cy.wrap($select).select('201301180003', { force: true })
-      })
+      // cy.get('#slsColocationFWAAccountManager').then(($select) => {
+      //   cy.wrap($select).select('201301180003', { force: true })
+      // })
 
+      cy.wait(2000)
+
+      cy.get('#slsColocationFWAAccountManager').then(($select) => {
+        cy.wrap($select).select(userAM, { force: true })
+      })
       // cy.get('#slsNewTowerHeight').then(($select) => {
       //   cy.wrap($select).select('0', { force: true })
       // })
