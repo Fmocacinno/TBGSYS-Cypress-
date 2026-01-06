@@ -61,7 +61,7 @@ const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 
 describe('template spec', () => {
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, baseUrlCompass;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, baseUrlCompass, Company;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -90,7 +90,7 @@ describe('template spec', () => {
       baseUrlVP = values.baseUrlVP;
       baseUrlTBGSYS = values.baseUrlTBGSYS;
       baseUrlCompass = values.baseUrlCompass;
-
+      Company = values.Company;
       menu1 = values.menu1;
       menu2 = values.menu2;
       menu3 = values.menu3;
@@ -110,7 +110,7 @@ describe('template spec', () => {
   const loopCount = 1; // Jumlah iterasi loop
 
   for (let i = 0; i < loopCount; i++) {
-    it.only(`passes iteration ${i + 1}`, () => {
+    it(`THiS FOR CHECK ALL FILTER ${i + 1}`, () => {
 
       cy.visit(`${baseUrlTBGSYS}${login}`);
 
@@ -176,7 +176,180 @@ describe('template spec', () => {
           ...(ok ? {} : { Error: 'Company label not visible' }),
         });
       });
+      // Collect all Company options
+      cy.get('#ddlCompany').then(($select) => {
+        const options = [...$select.find('option')];
 
+        options.forEach((opt) => {
+          const value = opt.value;
+          const text = opt.textContent.trim();
+
+          // Optional: skip empty option if you want
+          // if (value === "") return;
+
+          const isValid =
+            value !== undefined &&
+            text !== "";
+
+          testResults.push({
+            Test: `Company filter option exists: ${text}`,
+            Status: isValid ? 'Pass' : 'Fail',
+            Timestamp: new Date().toISOString(),
+            ...(isValid ? {} : { Error: 'Invalid company option' }),
+          });
+        });
+      });
+
+
+
+      // Add this section to extract values from popup
+      // cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
+      //   const text = $el.text();
+
+      //   // Extract SO Number using regex
+      //   const soNumber = text.match(/\bSO Number = (\d+)\b/)[1];
+      //   // Extract Site ID using regex
+      //   const siteId = text.match(/\bSite ID = (\d+)\b/)[1];
+
+      //   // Save to aliases for later use
+      //   cy.wrap(soNumber).as('soNumber');
+      //   cy.wrap(siteId).as('siteId');
+
+      //   // Optional: log the values to Cypress console
+      //   cy.log(`Captured SO Number: ${soNumber}`);
+      //   cy.log(`Captured Site ID: ${siteId}`);
+      // });
+
+      // To use these values later in the test or other tests:
+      // cy.get('@soNumber').then((soNumber) => {
+      //   cy.log(`Using SO Number: ${soNumber}`);
+      //   // Add your logic here using the SO Number
+      // });
+
+      // cy.get('@siteId').then((siteId) => {
+      //   cy.log(`Using Site ID: ${siteId}`);
+
+      //   cy.get('@soNumber').then((soNumber) => {
+      //     cy.get('@siteId').then((siteId) => {
+      //       const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFo.json';
+      //       cy.writeFile(filePath, { soNumber, siteId });
+
+      //     });
+      //   });
+      // Add your logic here using the Site ID
+      // });
+
+    })
+    it(`THIS FLOW FOR ASSIGN MAINTENANCE ${i + 1}`, () => {
+
+      cy.visit(`${baseUrlTBGSYS}${login}`);
+
+      cy.get('#tbxUserID').type(userInputStip).should('have.value', userInputStip).then(() => {
+        // Log the test result if input is successful
+        testResults.push({
+          Test: 'User ID Input',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
+      });
+
+      cy.get('#tbxPassword').type(pass).should('have.value', pass).then(() => {
+        // Log the test result if input is successful
+        testResults.push({
+          Test: 'Password has been inputed',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
+      });
+
+      cy.get('#RefreshButton').click();
+
+      cy.window().then((window) => {
+        const rightCode = window.rightCode;
+        cy.log('Right Code:', rightCode);
+
+        cy.get('#captchaInsert').type(rightCode);
+      });
+
+      cy.get('#btnSubmit').click();
+      cy.wait(5000)
+      cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
+      testResults.push({
+        Test: 'Button Clicked',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+
+      // Export results to Excel after the test
+      cy.wait(2000)
+      cy.visit(`${baseUrlTBGSYS}/pv/master/maintenance`);
+      cy.url().should('include', `${baseUrlTBGSYS}/pv/master/maintenance`);
+      // Ensure the page changes or some result occurs
+      testResults.push({
+        Test: 'User masuk ke Page PV Master List Maintenance',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+      cy.wait(2000)
+
+      // Check label "Company" is shown (visible)
+      // cy.contains('label.control-label', 'Company')
+      //   .should('be.visible');
+
+      // // (optional) log to your testResults (soft)
+      // cy.contains('label.control-label', 'Company').then(($el) => {
+      //   const ok = Cypress.$($el).is(':visible');
+      //   testResults.push({
+      //     Test: 'Label Company is shown',
+      //     Status: ok ? 'Pass' : 'Fail',
+      //     Timestamp: new Date().toISOString(),
+      //     ...(ok ? {} : { Error: 'Company label not visible' }),
+      //   });
+      // });
+      cy.get('#ddlCompany').then(($select) => {
+        cy.wrap($select).select('TB', { force: true })
+      })
+
+
+      cy.contains('label.mt-radio', 'No').then(($label) => {
+        const visible = $label.is(':visible');
+
+        if (visible) {
+          cy.wrap($label).click();
+        }
+
+        testResults.push({
+          Test: 'Radio "No" can be clicked via label',
+          Status: visible ? 'Pass' : 'Fail',
+          Timestamp: new Date().toISOString(),
+          ...(visible ? {} : { Error: 'Radio label not visible' }),
+        });
+      });
+      cy.get('#btMtSearch').then(($btn) => {
+        const ok = $btn.is(':visible') && !$btn.is(':disabled');
+
+        if (ok) {
+          cy.wrap($btn).click();
+        }
+
+        testResults.push({
+          Test: 'Search button can be clicked',
+          Status: ok ? 'Pass' : 'Fail',
+          Timestamp: new Date().toISOString(),
+          ...(ok ? {} : { Error: 'Search button not clickable' }),
+        });
+      });
+      cy.get('#tblMasterlistMaintenance_processing', { timeout: 30000 })
+        .should('not.be.visible')
+        .then(() => {
+          testResults.push({
+            Test: 'Maintenance table loading spinner disappears',
+            Status: 'Pass',
+            Timestamp: new Date().toISOString(),
+          });
+        });
+
+      cy.wait(6000)
 
 
       // Add this section to extract values from popup
@@ -220,6 +393,8 @@ describe('template spec', () => {
         exportToExcel(testResults);
       });
     })
+
+
   }
 })
 
