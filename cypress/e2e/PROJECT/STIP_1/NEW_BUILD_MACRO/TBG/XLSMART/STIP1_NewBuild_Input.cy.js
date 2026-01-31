@@ -55,6 +55,8 @@ const longMax = 141.0; // Easternmost point
 const lat = (Math.random() * (latMax - latMin) + latMin).toFixed(6);
 const long = (Math.random() * (longMax - longMin) + longMin).toFixed(6);
 //Batas
+
+
 describe('template spec', () => {
 
   let testResults = []; // Shared results array
