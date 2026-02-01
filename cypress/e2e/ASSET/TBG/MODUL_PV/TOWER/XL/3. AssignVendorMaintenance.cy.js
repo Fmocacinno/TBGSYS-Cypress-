@@ -202,34 +202,43 @@ describe('template spec', () => {
           Status: 'Pass',
           Timestamp: new Date().toISOString(),
         });
-      }); // << Search Filter SONumber  disable it if u dont need
-      // cy.get('.btnSearch').first().click().should(() => {
-      //   // Log the test result if button click is successful
+      });
+
+      cy.get('.btnNySearch')
+        .eq(0)
+        .should('be.visible')
+        .click();
+
+      cy.wait(2000)
+      cy.get('#tblNYAssign tbody tr')
+        .first()
+        .find('input.icheckNY')
+        .invoke('attr', 'data-siteid')
+        .then((siteId) => {
+
+          cy.log('Captured Site ID: ' + siteId);
+        });
+
+      cy.wait(6000)
       //   testResults.push({
       //     Test: 'User AM melakukan klik tombol Search di Stip approval',
       //     Status: 'Pass',
       //     Timestamp: new Date().toISOString(),
       //   });
       // });
-      cy.get('.btnNySearch')
-        .eq(1)
-        .should('be.visible')
+      cy.get('.icheckbox_minimal-grey')
+        .first()
         .click();
 
+      cy.get('#btnAssign').click();
+      cy.wait(5000)
+      cy.get('#dpkNYAssignVendorStartDate')
+        .clear()
+        .type('01-Jan-2024{enter}', { force: true });
 
-      cy.get('tbody tr:first-child td:nth-child(0)').then(($cell) => {
-        const text = $cell.text().trim();
-        cy.log("📌 Status Found:", text);
-        cy.wait(5000);
-
-        if (text.includes(siteId)) {  // ✅ Checks if "Lead PM" is in the status
-          cy.log("✅ Status contains 'AM', proceeding with approval...");
-
-          cy.get('tbody tr:first-child td:nth-child(1) .btnSelect').invoke('removeAttr', 'target').click();
-        } else {
-          cy.log("⚠️ Status does not match, skipping approval step.");
-        }
-      });
+      cy.get('#dpkNYAssignVendorEndDate')
+        .clear()
+        .type('31-Jan-2024{enter}', { force: true });
 
 
       cy.get('#ddlCompany').then(($select) => {
@@ -285,6 +294,8 @@ describe('template spec', () => {
             Timestamp: new Date().toISOString(),
           });
         });
+
+
 
       cy.get('tbody tr').first().within(() => {
         cy.get('td').then(($tds) => {
