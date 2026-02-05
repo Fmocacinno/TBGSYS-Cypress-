@@ -170,15 +170,15 @@ describe('template spec', () => {
 
       // Export results to Excel after the test
       cy.wait(2000)
-      cy.visit(`${baseUrlTBGSYS}/pv/master/assignvendor`);
-      cy.url().should('include', `${baseUrlTBGSYS}/pv/master/assignvendor`);
+      cy.visit(`${baseUrlTBGSYS}/pv/master/assigncluster`);
+      cy.url().should('include', `${baseUrlTBGSYS}/pv/master/assigncluster`);
       // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'User masuk ke Page PV Master List Maintenance',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
-      cy.get('#tblNYAssign_processing', { timeout: 20000 })
+      cy.get('#tblNYAssign_processing', { timeout: 40000 })
         .should('not.be.visible');
 
       cy.document().then((doc) => {
@@ -198,7 +198,7 @@ describe('template spec', () => {
       cy.get('#tbxNySiteID').type(siteId).should(() => {
         // Log the test result if button click is successful
         testResults.push({
-          Test: 'User AM melakukan klik tombol Search di Stip approval',
+          Test: 'Site ID has been found',
           Status: 'Pass',
           Timestamp: new Date().toISOString(),
         });
@@ -231,163 +231,38 @@ describe('template spec', () => {
         .click();
 
       cy.get('#btnAssign').click();
-      cy.wait(5000)
-      cy.get('#dpkNYAssignVendorStartDate')
-        .clear()
-        .type('01-Jan-2024{enter}', { force: true });
 
-      cy.get('#dpkNYAssignVendorEndDate')
-        .clear()
-        .type('31-Jan-2024{enter}', { force: true });
-
-
-      cy.get('#ddlCompany').then(($select) => {
-        cy.wrap($select).select('TB', { force: true })
+      cy.get('#ddlCluster').then(($select) => {
+        cy.wrap($select).select('34', { force: true })
       })
-      cy.get('#ddlCustomer').then(($select) => {
-        cy.wrap($select).select('XL', { force: true })
-      })
-      cy.get('#ddlDeviceStatus').then(($select) => {
-        cy.wrap($select).select('ONAIR', { force: true })
-      })
-      cy.get('#ddlProductType').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
-      })
-      cy.contains('th', 'RFI Date').click();
-      cy.contains('th', 'RFI Date').click();
+      cy.wait(2000)
 
-      cy.contains('label.mt-radio', 'No').then(($label) => {
-        const visible = $label.is(':visible');
+      cy.get('#ddlSPVOME').then(($select) => {
+        cy.wrap($select).select('201810020073', { force: true })
+      })
+      cy.wait(2000)
 
-        if (visible) {
-          cy.wrap($label).click();
-        }
 
-        testResults.push({
-          Test: 'Radio "No" can be clicked via label',
-          Status: visible ? 'Pass' : 'Fail',
-          Timestamp: new Date().toISOString(),
-          ...(visible ? {} : { Error: 'Radio label not visible' }),
-        });
+      cy.get("#btnSubmitAssign").click();
+      testResults.push({
+        Test: 'user check button assign Vendor in tbigsys',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
       });
-      cy.wait(6000)
-      cy.get('#btMtSearch').then(($btn) => {
-        const ok = $btn.is(':visible') && !$btn.is(':disabled');
-
-        if (ok) {
-          cy.wrap($btn).click();
-        }
-
-        testResults.push({
-          Test: 'Search button can be clicked',
-          Status: ok ? 'Pass' : 'Fail',
-          Timestamp: new Date().toISOString(),
-          ...(ok ? {} : { Error: 'Search button not clickable' }),
-        });
-      });
-      cy.get('#tblMasterlistMaintenance_processing', { timeout: 30000 })
-        .should('not.be.visible')
-        .then(() => {
-          testResults.push({
-            Test: 'Maintenance table loading spinner disappears',
-            Status: 'Pass',
-            Timestamp: new Date().toISOString(),
-          });
-        });
-
-
-
-      cy.get('tbody tr').first().within(() => {
-        cy.get('td').then(($tds) => {
-          const rowData = {
-            siteId: $tds.eq(1).text().trim(),
-            soNumber: $tds.eq(2).text().trim(),
-            siteName: $tds.eq(3).text().trim(),
-            company: $tds.eq(4).text().trim(),
-            tenant: $tds.eq(5).text().trim(),
-            region: $tds.eq(6).text().trim(),
-            rfiDate: $tds.eq(7).text().trim(),
-            status: $tds.eq(15).text().trim()
-          };
-          cy.log(JSON.stringify(rowData));
-
-          const filePath =
-            Cypress.config('fileServerFolder') +
-            '/cypress/e2e/ASSET/TBG/MODUL_PV/TOWER/XL/DataPV.json';
-
-          cy.writeFile(filePath, rowData);
-        });
-      });
-      cy.wait(3000)
-      cy.get('button.btnSelect').first().click();
-      cy.wait(6000)
-
-
-      cy.get('#slsSlMaintenanceStatus').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
-      })
-
-      cy.get('#txtSlRemark').type('Remark_' + unique + randnumber(5), { force: true });
-      cy.get("#btnUpdateSingle").click();
-
-
-      cy.get('.sweet-alert')
+      cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
         .should('be.visible')
         .within(() => {
+          // Verifikasi isi teks popup
+          cy.contains('Successfully Assigned').should('be.visible');
 
-          cy.get('h2').invoke('text').then((title) => {
-            cy.get('p.lead.text-muted').invoke('text').then((message) => {
 
-
-              testResults.push({
-                Test: 'User masuk ke Page PV Master List Maintenance',
-                Status: 'Pass',
-                Timestamp: new Date().toISOString(),
-              });
-            });
-          });
+          // Klik tombol "OK"
+          cy.get('.confirm.btn-success').should('be.visible').click();
         });
-      cy.wait(2000)
-      // Add this section to extract values from popup
-      // cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
-      //   const text = $el.text();
-
-      //   // Extract SO Number using regex
-      //   const soNumber = text.match(/\bSO Number = (\d+)\b/)[1];
-      //   // Extract Site ID using regex
-      //   const siteId = text.match(/\bSite ID = (\d+)\b/)[1];
-
-      //   // Save to aliases for later use
-      //   cy.wrap(soNumber).as('soNumber');
-      //   cy.wrap(siteId).as('siteId');
-
-      //   // Optional: log the values to Cypress console
-      //   cy.log(`Captured SO Number: ${soNumber}`);
-      //   cy.log(`Captured Site ID: ${siteId}`);
-      // });
-
-      // To use these values later in the test or other tests:
-      // cy.get('@soNumber').then((soNumber) => {
-      //   cy.log(`Using SO Number: ${soNumber}`);
-      //   // Add your logic here using the SO Number
-      // });
-
-      // cy.get('@siteId').then((siteId) => {
-      //   cy.log(`Using Site ID: ${siteId}`);
-
-      //   cy.get('@soNumber').then((soNumber) => {
-      //     cy.get('@siteId').then((siteId) => {
-      //       const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFo.json';
-      //       cy.writeFile(filePath, { soNumber, siteId });
-
-      //     });
-      //   });
-      // Add your logic here using the Site ID
-      // });
-      // // cy.contains('a', 'Log Out').click({ force: true });
-      // // cy.then(() => {
-      // //   exportToExcel(testResults);
-      // });
+      cy.contains('a', 'Log Out').click({ force: true });
+      cy.then(() => {
+        exportToExcel(testResults);
+      });
     })
   }
 })
