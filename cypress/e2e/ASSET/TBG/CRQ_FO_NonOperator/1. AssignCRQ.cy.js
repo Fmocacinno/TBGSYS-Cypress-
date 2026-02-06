@@ -204,12 +204,12 @@ describe('template spec', () => {
 
 
       cy.get('#slServiceType').then(($select) => {
-        cy.wrap($select).select('2', { force: true })
+        cy.wrap($select).select('4', { force: true })
       })
       cy.wait(2000)
 
       cy.get('#slRequestType').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
+        cy.wrap($select).select('2', { force: true })
       })
       cy.wait(2000)
 
