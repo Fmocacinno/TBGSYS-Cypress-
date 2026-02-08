@@ -90,12 +90,12 @@ describe('template spec', () => {
   const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
   const PDFFilepath = "documents/PDF/C (1).pdf"; // Photo file path
   beforeEach(() => {
-    cy.readFile('cypress/e2e/ASSET/TBG/CRQ_FO_NonOperator/DataCRQ.json').then((values) => {
+    cy.readFile('cypress/e2e/ASSET/TBG/CRQ/CRQ_FO/DataCRQ.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/ASSET/TBG/CRQ_FO_NonOperator/DataVariableCRQ.json').then((values) => {
+    cy.readFile('cypress/e2e/ASSET/TBG/CRQ/CRQ_FO/DataVariableCRQ.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -130,7 +130,7 @@ describe('template spec', () => {
 
   for (let i = 0; i < loopCount; i++) {
 
-    it(`THIS FLOW FOR ASSIGN MAINTENANCE ${i + 1}`, () => {
+    it(`THIS FLOW SUBMIT CRQ OPERATOR WITH REQUEST TYPE Additional Core Intersite ${i + 1}`, () => {
 
       cy.visit(`${baseUrlTBGSYS}${login}`);
 
@@ -171,16 +171,16 @@ describe('template spec', () => {
       });
 
       // Export results to Excel after the test
-      cy.wait(2000)
-      cy.visit(`${baseUrlTBGSYS}/Asset/CRQFO/NonOperator/Create`);
-      cy.url().should('include', `${baseUrlTBGSYS}/Asset/CRQFO/NonOperator/Create`);
+      cy.wait(200)
+      cy.visit(`${baseUrlTBGSYS}/Asset/CRQFO/Operator/Create`);
+      cy.url().should('include', `${baseUrlTBGSYS}/Asset/CRQFO/Operator/Create`);
       // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'User masuk ke Page PV Master List Maintenance',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
-      // cy.get('#tblNYAssign_processing', { timeout: 20000 })
+      // cy.get('#tblNYAssign_processing', { timeout: 2000 })
       //   .should('not.be.visible');
 
 
@@ -198,51 +198,27 @@ describe('template spec', () => {
           cy.log('✅ No error pop-up detected, continuing...');
         }
       });
-      cy.get('#txtTenant').type('Tenant' + unique + randnumber(5), { force: true });
-      cy.get('#txtProjectName').type('Tenant' + unique + randnumber(5), { force: true });
-      cy.get('#txtSONumber').type(randnumber(5), { force: true });
-
-
-      cy.get('#slServiceType').then(($select) => {
-        cy.wrap($select).select('2', { force: true })
+      cy.get('#slTenant').then(($select) => {
+        cy.wrap($select).select('TSEL', { force: true })
       })
-      cy.wait(2000)
+      cy.wait(200)
 
+      cy.get('#txtProjectName').type('Project Name' + unique + randnumber(5), { force: true });
+
+
+      //-- Ganti ke pproduct type
+      cy.get('#slProductType').then(($select) => {
+        cy.wrap($select).select('3', { force: true })
+      })
+      cy.wait(200)
+      // EDIT VALUE TO 3 FOR Additional Core Intersite
+      // EDIT VALUE TO 4 FOR Insert
       cy.get('#slRequestType').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
+        cy.wrap($select).select('7', { force: true })
       })
       cy.wait(2000)
 
-
-
-      cy.get('.btnAddNewOUTEquip')
-        .eq(0)
-        .should('be.visible')
-        .click();
-
-      cy.get('#slEquipmentIN1').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
-      })
-      cy.wait(2000)
-      cy.get('#slEquipmentOUT1').then(($select) => {
-        cy.wrap($select).select('5', { force: true })
-      })
-      cy.wait(2000)
-      cy.get('#txtLongitudeIN1')
-        .clear()
-        .type(long, { force: true });
-      cy.wait(2000)
-      cy.get('#txtLatitudeIN1')
-        .clear()
-        .type(lat, { force: true });
-
-      cy.get('#txtLongitudeOUT1')
-        .clear()
-        .type(long, { force: true });
-      cy.wait(2000)
-      cy.get('#txtLatitudeOUT1')
-        .clear()
-        .type(lat, { force: true });
+      // --
       cy.get('.btnAddSiteIDIN')
         .eq(0)
         .should('be.visible')
@@ -270,11 +246,40 @@ describe('template spec', () => {
         .contains('.select2-results__option', '24')
         .click()
       cy.get('#btnSelectSite').click();
-      cy.wait(5000)
+      cy.wait(2000)
 
-      //-----
+      // --
+      cy.get('.btnAddNewOUTEquip')
+        .wait(500)
+        .eq(0)
+        .should('be.visible')
+        .click();
+      cy.wait(1000)
 
-      cy.get('.btnAddSiteIDOUT')
+      cy.get('#slEquipmentIN1').then(($select) => {
+        cy.wrap($select).select('1', { force: true })
+      })
+      cy.wait(200)
+      cy.get('#slEquipmentOUT1').then(($select) => {
+        cy.wrap($select).select('5', { force: true })
+      })
+      cy.wait(200)
+      cy.get('#txtLongitudeIN1')
+        .clear()
+        .type(long, { force: true });
+      cy.wait(200)
+      cy.get('#txtLatitudeIN1')
+        .clear()
+        .type(lat, { force: true });
+
+      cy.get('#txtLongitudeOUT1')
+        .clear()
+        .type(long, { force: true });
+      cy.wait(200)
+      cy.get('#txtLatitudeOUT1')
+        .clear()
+        .type(lat, { force: true });
+      cy.get('.btnAddSiteIDIN')
         .eq(0)
         .should('be.visible')
         .click();
@@ -295,18 +300,25 @@ describe('template spec', () => {
         .closest('.select2')
         .find('.select2-selection--single')
         .click()
-
+      cy.wait(1000)
       cy.get('.select2-results__options')
         .should('be.visible')
         .contains('.select2-results__option', '24')
         .click()
       cy.get('#btnSelectSite').click();
-      cy.wait(5000)
+      cy.wait(1000)
 
+      //-----
+
+
+      cy.get('#txtNewTowerIDNearEndIN1')
+        .clear()
+        .type('Tower_NE1' + generateRandomString(3), { force: true });
+      cy.wait(200)
       cy.get('#txtLongitudePullingIN1')
         .clear()
         .type(long, { force: true });
-      cy.wait(2000)
+      cy.wait(200)
       cy.get('#txtLatitudePullingIN1')
         .clear()
         .type(lat, { force: true });
@@ -314,11 +326,41 @@ describe('template spec', () => {
       cy.get('#txtLongitudePullingOUT1')
         .clear()
         .type(long, { force: true });
-      cy.wait(2000)
+      cy.wait(200)
       cy.get('#txtLatitudePullingOUT1')
         .clear()
         .type(lat, { force: true });
 
+
+      cy.get('.btnAddSiteIDOUT')
+        .eq(0)
+        .should('be.visible')
+        .click();
+      cy.wait(500)
+      cy.get('#slFilterProduct').then(($select) => {
+        cy.wrap($select).select('45', { force: true })
+      })
+      cy.wait(200)
+      cy.get('ins.iCheck-helper')
+        .eq(0)
+        .click();
+      cy.wait(2000)
+
+      cy.get('.modal-dialog')   // atau container popup-mu
+        .find('input.txtExistingCableUse')
+        .type(randnumber(5) + '.22');
+
+      cy.contains('Select Type Cable')
+        .closest('.select2')
+        .find('.select2-selection--single')
+        .click()
+
+      cy.get('.select2-results__options')
+        .should('be.visible')
+        .contains('.select2-results__option', '24')
+        .click()
+      cy.get('#btnSelectSite').click();
+      cy.wait(2000)
 
       cy.get('#slImplementationTypeIN1').then(($select) => {
         cy.wrap($select).select('Aerial', { force: true })
@@ -357,39 +399,29 @@ describe('template spec', () => {
         cy.wrap($select).select('24', { force: true })
       })
 
-      cy.get('#txtNewPullingCableOUT1').type(randnumber(5), { force: true });
+      cy.get('#txtNewPullingCableOUT1')
+        .clear()
+        .type(randnumber(5), { force: true });
+      cy.wait(200)
 
       //---
-      cy.get('.btnAddPOP')
-        .eq(0)
-        .should('be.visible')
-        .click();
-      cy.wait(500)
-
-
-      cy.get('#txtPOPName').type('POPNAME' + unique + randnumber(5), { force: true });
 
 
 
-
-      cy.get('#txtLongitudePOP')
+      cy.get('#txtCoreProposeIN1')
         .clear()
-        .type(long, { force: true });
-      cy.wait(2000)
-      cy.get('#txtLatitudePOP')
+        .type(randnumber(5), { force: true });
+      cy.wait(200)
+      cy.get('#txtCoreProposeOUT1')
         .clear()
-        .type(lat, { force: true });
-      cy.get('#txtCoreProposePOP').type(randnumber(5), { force: true });
-
-
-      cy.get('#btnSelectPOP').click();
-      cy.wait(5000)
+        .type(randnumber(5), { force: true });
+      cy.wait(200)
 
 
       cy.get('#flKMZPlan').attachFile(KMLfilepath);
 
       cy.get('#btnSubmit').click();
-      cy.wait(5000)
+      cy.wait(3000)
 
 
       cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
