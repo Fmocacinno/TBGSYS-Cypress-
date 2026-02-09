@@ -90,12 +90,12 @@ describe('template spec', () => {
   const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
   const PDFFilepath = "documents/PDF/C (1).pdf"; // Photo file path
   beforeEach(() => {
-    cy.readFile('cypress/e2e/ASSET/TBG/CRQ_FO_NonOperator/DataCRQ.json').then((values) => {
+    cy.readFile('cypress/e2e/ASSET/TBG/CRQ/CRQ_FO/DataCRQ.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/ASSET/TBG/CRQ_FO_NonOperator/DataVariableCRQ.json').then((values) => {
+    cy.readFile('cypress/e2e/ASSET/TBG/CRQ/CRQ_FO/DataVariableCRQ.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
