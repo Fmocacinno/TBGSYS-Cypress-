@@ -1,3 +1,4 @@
+import cluster from 'cluster';
 import { timeStamp } from 'console';
 
 import 'cypress-file-upload';
@@ -33,8 +34,6 @@ const randnumber = (length) => {
 };
 
 const filePath = 'documents/pdf/C (1).pdf';
-const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
-
 const latMin = -11.0; // Southernmost point
 const latMax = 6.5;   // Northernmost point
 const longMin = 94.0; // Westernmost point
@@ -74,7 +73,7 @@ describe('template spec', () => {
 
 
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputCRQ, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, baseUrlCompass, Company;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, baseUrlCompass, Company, PICCSAadmin, PICCSACoordinator, PICCSAAFO, PICCSAEngineer, Cluster, region;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -90,16 +89,22 @@ describe('template spec', () => {
   const KMLfilepath = "documents/KML/KML/KML_BAGUS1.kml"; // Photo file path
   const PDFFilepath = "documents/PDF/C (1).pdf"; // Photo file path
   beforeEach(() => {
-    cy.readFile('cypress/e2e/ASSET/TBG/CRQ/CRQ_FO/DataCRQ.json').then((values) => {
+    cy.readFile('cypress/e2e/ASSET/TBG/MODUL_PV/TOWER/XL/DataPV.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
+      region = values.region;
     });
-    cy.readFile('cypress/e2e/ASSET/TBG/CRQ/CRQ_FO/DataVariableCRQ.json').then((values) => {
+    cy.readFile('cypress/e2e/ASSET/TBG/MODUL_PV/TOWER/XL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
-      userInputCRQ = values.userInputCRQ;
+      PICCSAadmin = values.PICCSAadmin;
+      PICCSACoordinator = values.PICCSACoordinator;
+      PICCSAAFO = values.PICCSAAFO;
+      PICCSAEngineer = values.PICCSAEngineer;
+      Cluster = values.Cluster;
+      userInputStip = values.userInputStip;
       userLeadAM = values.userLeadAM;
       userLeadPM = values.userLeadPM;
       userPMFO = values.userPMFO;
@@ -117,9 +122,9 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
-      PICVendorMobile1 = values.PICVendorMobile1;
-      PICVendorMobile2 = values.PICVendorMobile2;
+
     });
+
 
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -130,11 +135,11 @@ describe('template spec', () => {
 
   for (let i = 0; i < loopCount; i++) {
 
-    it(`THIS FLOW SUBMIT CRQ OPERATOR WITH REQUEST TYPE Additional Core Intersite ${i + 1}`, () => {
+    it(`THIS FLOW FOR ASSIGN MAINTENANCE ${i + 1}`, () => {
 
-      cy.visit(`${baseUrlTBGSYS}${login}`);
+      cy.visit(`${baseUrlCompass}${login}`);
 
-      cy.get('#tbxUserID').type(userInputCRQ).should('have.value', userInputCRQ).then(() => {
+      cy.get('#tbxUserID').type(PICCSAadmin).should('have.value', PICCSAadmin).then(() => {
         // Log the test result if input is successful
         testResults.push({
           Test: 'User ID Input',
@@ -163,7 +168,7 @@ describe('template spec', () => {
 
       cy.get('#btnSubmit').click();
       cy.wait(5000)
-      cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
+      cy.visit(`${baseUrlCompass}${dashboard}`); // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'Button Clicked',
         Status: 'Pass',
@@ -171,122 +176,79 @@ describe('template spec', () => {
       });
 
       // Export results to Excel after the test
-      cy.wait(200)
-      cy.visit(`${baseUrlTBGSYS}/Asset/CRQFO/Operator/Create`);
-      cy.url().should('include', `${baseUrlTBGSYS}/Asset/CRQFO/Operator/Create`);
+      cy.wait(2000)
+      cy.visit(`${baseUrlCompass}AssetManagement/SiteClusterAssignment`);
+      cy.url().should('include', `${baseUrlCompass}AssetManagement/SiteClusterAssignment`);
       // Ensure the page changes or some result occurs
       testResults.push({
         Test: 'User masuk ke Page PV Master List Maintenance',
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
-      // cy.get('#tblNYAssign_processing', { timeout: 2000 })
-      //   .should('not.be.visible');
 
 
+      cy.get('#slsRegion').then(($select) => {
+        cy.wrap($select).select(region, { force: true })
+      })
+      cy.wait(2000)
 
 
-      cy.document().then((doc) => {
-        const errorPopup = doc.querySelector('h2');
-
-        if (errorPopup && errorPopup.innerText.includes('Error on System')) {
-          cy.log('🚨 Error pop-up detected! Clicking OK.');
-
-          // Click the "OK" button if the pop-up is present
-          cy.get('.confirm.btn-error').should('be.visible').click();
-        } else {
-          cy.log('✅ No error pop-up detected, continuing...');
-        }
+      cy.get('#tbxNyAssignedSearchSiteID').type(siteId).should(() => {
+        // Log the test result if button click is successful
+        testResults.push({
+          Test: 'Site ID has been found',
+          Status: 'Pass',
+          Timestamp: new Date().toISOString(),
+        });
       });
-      cy.get('#slTenant').then(($select) => {
-        cy.wrap($select).select('TSEL', { force: true })
-      })
-      cy.wait(200)
 
-      cy.get('#txtProjectName').type('Project Name' + unique + randnumber(5), { force: true });
-
-
-      //-- Ganti ke pproduct type
-      cy.get('#slProductType').then(($select) => {
-        cy.wrap($select).select('2', { force: true })
-      })
-      cy.wait(200)
-      // EDIT VALUE TO 3 FOR Additional Core Intersite
-      // EDIT VALUE TO 4 FOR Insert
-      cy.get('#slRequestType').then(($select) => {
-        cy.wrap($select).select('6', { force: true })
-      })
-      cy.wait(2000)
-
-      // --
-
-
-
-
-      cy.get('#slEquipmentIN1').then(($select) => {
-        cy.wrap($select).select('1', { force: true })
-      })
-      cy.wait(2000)
-
-      cy.get('#txtLongitudeIN1')
-        .clear()
-        .type(long, { force: true });
-      cy.wait(2000)
-      cy.get('#txtLatitudeIN1')
-        .clear()
-        .type(lat, { force: true });
-
-
-      // cy.get('#btnAddSiteIDIN1').click();
-      // cy.wait(2000)
-      cy.get('#btnAddSiteIDIN1')
-        .wait(200)
-        .eq(0)
+      cy.get('.btn-ny-assigned-search')
+        .eq(1)
         .should('be.visible')
         .click();
 
-      cy.get('#slFilterProduct').then(($select) => {
-        cy.wrap($select).select('45', { force: true })
-      })
       cy.wait(2000)
-      cy.get('ins.iCheck-helper')
-        .eq(0)
-        .click();
+      cy.get('.icheckbox_flat-blue').first().click()
 
-      cy.get('.modal-dialog')   // atau container popup-mu
-        .find('input.txtExistingCableUse')
-        .type(randnumber(5) + '.22');
+      cy.wait(1000)
 
-      cy.contains('Select Type Cable')
-        .closest('.select2')
-        .find('.select2-selection--single')
-        .click()
+      cy.get('#btnAssignCluster').click();
 
-      cy.get('.select2-results__options')
-        .should('be.visible')
-        .contains('.select2-results__option', '24')
-        .click()
-      cy.get('#btnSelectSite').click();
-      cy.wait(5000)
-
-
-      cy.get('#txtCoreProposeIN1')
-        .clear()
-        .type(randnumber(5), { force: true });
+      cy.get('#slsAssignCluster').then(($select) => {
+        cy.wrap($select).select(Cluster, { force: true })
+      })
       cy.wait(200)
 
+      cy.get('#slsAssignCoordinator').then(($select) => {
+        cy.wrap($select).select(PICCSACoordinator, { force: true })
+      })
+      cy.wait(200)
+      cy.get('#slsAssignAFO').then(($select) => {
+        cy.wrap($select).select(PICCSAAFO, { force: true })
+      })
+      cy.wait(200)
+      cy.get('#slsAssignEngineer').then(($select) => {
+        cy.wrap($select).select(PICCSAEngineer, { force: true })
+      })
+      cy.wait(200)
 
-      cy.get('#flKMZPlan').attachFile(KMLfilepath);
-
-      cy.get('#btnSubmit').click();
-      cy.wait(3000)
-
-
+      cy.get("#btnSubmitAssign").click();
+      testResults.push({
+        Test: 'user check button assign Vendor in tbigsys',
+        Status: 'Pass',
+        Timestamp: new Date().toISOString(),
+      });
+      cy.wait(200)
+      cy.contains("Yes, I'm sure")
+        .should('be.visible')
+        .wait(300)   // tunggu animasi selesai
+        .click()
+      cy.wait(200)
       cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
         .should('be.visible')
         .within(() => {
           // Verifikasi isi teks popup
-          cy.contains('CRQ success submitted').should('be.visible');
+          cy.contains('Cluster assignment successful').should('be.visible');
 
 
           // Klik tombol "OK"

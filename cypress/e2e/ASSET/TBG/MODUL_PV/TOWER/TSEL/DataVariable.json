@@ -24,7 +24,7 @@
   "UserRequestSPKProjectOPSIC": "202311020148",
   "UserRequestSPKApproval": "201810150080",
   "pass": "123456",
-  "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8140/",
+  "baseUrlTBGSYS": "http://tbgappdev111.tbg.local:8065/",
   "baseUrlVP": "http://tbgappdev111.tbg.local:8046/",
   "baseUrlCompass": "http://tbgappdev111.tbg.local:8093/",
   "IsNeedSPK": "Yes",

@@ -72,7 +72,7 @@ describe('template spec', () => {
 
 
   let testResults = []; // Shared results array
-  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, baseUrlCompass, Company, PICCSAadmin;
+  let sonumb, siteId, unique, date, userAM, userLeadAM, userLeadPM, userARO, pass, userPMFO, userInputStip, baseUrlVP, baseUrlTBGSYS, login, dashboard, menu1, menu2, menu3, menu4, logout, PICVendorMobile1, PICVendorMobile2, baseUrlCompass, Company, PICCSAadmin, PICCSACoordinator, PICCSAAFO, PICCSAEngineer, Cluster;
 
   before(() => {
     testResults = []; // Reset results before all tests
@@ -98,6 +98,10 @@ describe('template spec', () => {
       unique = values.unique;
       userAM = values.userAM;
       PICCSAadmin = values.PICCSAadmin;
+      PICCSACoordinator = values.PICCSACoordinator;
+      PICCSAAFO = values.PICCSAAFO;
+      PICCSAEngineer = values.PICCSAEngineer;
+      Cluster = values.Cluster;
       userInputStip = values.userInputStip;
       userLeadAM = values.userLeadAM;
       userLeadPM = values.userLeadPM;
@@ -116,8 +120,7 @@ describe('template spec', () => {
       login = values.login;
       logout = values.logout;
       dashboard = values.dashboard;
-      PICVendorMobile1 = values.PICVendorMobile1;
-      PICVendorMobile2 = values.PICVendorMobile2;
+
     });
 
 
@@ -211,38 +214,47 @@ describe('template spec', () => {
         .click();
 
       cy.wait(2000)
-      cy.get('#tblNYAssign tbody tr')
-        .first()
-        .find('input.icheckNY')
-        .invoke('attr', 'data-siteid')
-        .then((siteId) => {
+      cy.get('.icheckbox_flat-blue').first().click()
+      cy.wait(1000)
 
-          cy.log('Captured Site ID: ' + siteId);
-        });
 
-      cy.wait(6000)
-      //   testResults.push({
-      //     Test: 'User AM melakukan klik tombol Search di Stip approval',
-      //     Status: 'Pass',
-      //     Timestamp: new Date().toISOString(),
+      // cy.get('#btnAssignVendor tbody tr')
+      //   .first()
+      //   .find('input.icheckNY')
+      //   .invoke('attr', 'data-siteid')
+      //   .then((siteId) => {
+
+      //     cy.log('Captured Site ID: ' + siteId);
       //   });
-      // });
-      cy.get('.icheckbox_minimal-grey')
-        .first()
-        .click();
 
-      cy.get('#btnAssign').click();
+      // cy.wait(6000)
+      // //   testResults.push({
+      // //     Test: 'User AM melakukan klik tombol Search di Stip approval',
+      // //     Status: 'Pass',
+      // //     Timestamp: new Date().toISOString(),
+      // //   });
+      // // });
+      // cy.get('.icheckbox_minimal-grey')
+      //   .first()
+      //   .click();
+
+
+      cy.get('#btnAssignVendor').click();
       cy.wait(5000)
-      cy.get('#dpkNYAssignVendorStartDate')
-        .clear()
+      cy.get('#dpkAssignStartDate')
+
         .type('Feb-2026{enter}', { force: true });
 
-      cy.get('#dpkNYAssignVendorEndDate')
-        .clear()
+      cy.get('#dpkAssignEndDate')
+
         .type('Feb-2026{enter}', { force: true });
       cy.wait(5000)
-      cy.get('#ddlNYVendor').then(($select) => {
-        cy.wrap($select).select('0033', { force: true })
+      cy.get('#slsAssignVendor').then(($select) => {
+        cy.wrap($select).select('CSA0000', { force: true })
+      })
+      cy.wait(2000)
+      cy.get('#slsAssignRAB').then(($select) => {
+        cy.wrap($select).select('RAB000002/03/2025', { force: true })
       })
       cy.wait(2000)
 
@@ -252,6 +264,12 @@ describe('template spec', () => {
         Status: 'Pass',
         Timestamp: new Date().toISOString(),
       });
+
+
+      cy.get('.sa-confirm-button-container button.confirm')
+        .should('be.visible')
+        .click()
+      cy.wait(200)
       cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
         .should('be.visible')
         .within(() => {
@@ -260,7 +278,11 @@ describe('template spec', () => {
 
 
           // Klik tombol "OK"
-          cy.get('.confirm.btn-success').should('be.visible').click();
+          cy.get('.confirm.btn-success')
+            .should('be.visible')
+            .click()
+            .wait(300);   // tunggu animasi selesai
+
         });
       cy.contains('a', 'Log Out').click({ force: true });
       cy.then(() => {
