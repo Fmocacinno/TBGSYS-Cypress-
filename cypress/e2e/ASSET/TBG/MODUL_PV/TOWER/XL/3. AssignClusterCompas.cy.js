@@ -186,7 +186,7 @@ describe('template spec', () => {
         Timestamp: new Date().toISOString(),
       });
 
-
+      cy.wait(3000)
       cy.get('#slsRegion').then(($select) => {
         cy.wrap($select).select(region, { force: true })
       })
@@ -213,7 +213,7 @@ describe('template spec', () => {
       cy.wait(1000)
 
       cy.get('#btnAssignCluster').click();
-
+      cy.wait(1000)
       cy.get('#slsAssignCluster').then(($select) => {
         cy.wrap($select).select(Cluster, { force: true })
       })

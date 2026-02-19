@@ -266,15 +266,16 @@ describe('template spec', () => {
       });
 
 
-      cy.get('.sa-confirm-button-container button.confirm')
+      cy.contains("Yes, I'm sure")
         .should('be.visible')
+        .wait(1000)   // tunggu animasi selesai
         .click()
-      cy.wait(200)
+      cy.wait(1000)
       cy.get('.sweet-alert.showSweetAlert.visible', { timeout: 20000 })
         .should('be.visible')
         .within(() => {
           // Verifikasi isi teks popup
-          cy.contains('Successfully Assigned').should('be.visible');
+          cy.contains('Vendor assignment successful').should('be.visible');
 
 
           // Klik tombol "OK"
