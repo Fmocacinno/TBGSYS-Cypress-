@@ -206,6 +206,8 @@ describe('template spec', () => {
       cy.get('#ddlProductType').then(($select) => {
         cy.wrap($select).select('1', { force: true })
       })
+      cy.wait(2000)
+
       cy.contains('th', 'RFI Date').click();
       cy.contains('th', 'RFI Date').click();
 
