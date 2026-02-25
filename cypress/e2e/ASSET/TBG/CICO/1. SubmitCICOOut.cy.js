@@ -36,6 +36,11 @@ const randomYear = (min = 1980, max = new Date().getFullYear()) => {
 };
 
 const year = randomYear();
+const today = new Date()
+const getyear = today.getFullYear()
+const month = String(today.getMonth() + 1).padStart(2, '0')
+const day = String(today.getDate()).padStart(2, '0')
+
 
 const filePath = 'documents/pdf/C (1).pdf';
 const latMin = -11.0; // Southernmost point
@@ -130,8 +135,8 @@ describe('template spec', () => {
       cy.visit(`${baseUrlCICOOut}`);
       cy.contains('button', 'Next').click()
 
-      cy.get('#heyform-date-day').type(randnumber(2), { force: true });
-      cy.get('#heyform-date-month').type(randnumber(2), { force: true });
+      cy.get('#heyform-date-day').type(day, { force: true });
+      cy.get('#heyform-date-month').type(month, { force: true });
       cy.get('#heyform-date-year').type(String(year));
       cy.get('#heyform-date-hour').type(randnumber(2), { force: true });
       cy.get('#heyform-date-minute').type(randnumber(2), { force: true });

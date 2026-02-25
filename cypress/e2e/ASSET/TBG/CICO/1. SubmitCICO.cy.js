@@ -31,12 +31,17 @@ const randnumber = (length) => {
   }
   return result;
 };
-const randomYear = (min = 1980, max = new Date().getFullYear()) => {
+const randomYear = (min = 2026, max = new Date().getFullYear()) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 const year = randomYear();
+const today = new Date()
+const getyear = today.getFullYear()
+const month = String(today.getMonth() + 1).padStart(2, '0')
+const day = String(today.getDate()).padStart(2, '0')
 
+const formattedDate = `${year}-${month}-${day}`
 const filePath = 'documents/pdf/C (1).pdf';
 const latMin = -11.0; // Southernmost point
 const latMax = 6.5;   // Northernmost point
@@ -128,8 +133,8 @@ describe('template spec', () => {
       cy.visit(`${baseUrlCICO}`);
       cy.contains('button', 'Next').click()
 
-      cy.get('#heyform-date-day').type(randnumber(2), { force: true });
-      cy.get('#heyform-date-month').type(randnumber(2), { force: true });
+      cy.get('#heyform-date-day').type(day, { force: true });
+      cy.get('#heyform-date-month').type(month, { force: true });
       cy.get('#heyform-date-year').type(String(year));
       cy.get('#heyform-date-hour').type(randnumber(2), { force: true });
       cy.get('#heyform-date-minute').type(randnumber(2), { force: true });
@@ -152,7 +157,7 @@ describe('template spec', () => {
       cy.wait(500)
       cy.get('.heyform-input')
         .should('be.visible')
-        .type(company)
+        .type(company + ' ' + unique + +' ' + randnumber(1))
       cy.wait(500)
       cy.contains('button', 'Next').click()
 
@@ -177,7 +182,7 @@ describe('template spec', () => {
         .type(randnumber(11))
       cy.wait(500)
       cy.contains('button', 'Next').click()
-      cy.get('input[type="file"]').attachFile(filePath);
+      cy.get('input[type="file"]').attachFile(photoFilePath);
       cy.wait(500)
       cy.contains('button', 'Next').click()
       cy.get('.heyform-input')
