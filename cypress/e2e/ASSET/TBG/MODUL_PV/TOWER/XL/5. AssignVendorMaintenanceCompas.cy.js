@@ -250,13 +250,13 @@ describe('template spec', () => {
         .type('Feb-2026{enter}', { force: true });
       cy.wait(5000)
       cy.get('#slsAssignVendor').then(($select) => {
-        cy.wrap($select).select('CSA0000', { force: true })
+        cy.wrap($select).select('TNI0000', { force: true })
       })
       cy.wait(2000)
-      cy.get('#slsAssignRAB').then(($select) => {
-        cy.wrap($select).select('RAB000002/03/2025', { force: true })
-      })
-      cy.wait(2000)
+      // cy.get('#slsAssignRAB').then(($select) => {
+      //   cy.wrap($select).select('RAB000002/03/2025', { force: true })
+      // })
+      // cy.wait(2000)
 
       cy.get("#btnSubmitAssign").click();
       testResults.push({

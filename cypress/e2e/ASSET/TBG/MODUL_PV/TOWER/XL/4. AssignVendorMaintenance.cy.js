@@ -241,7 +241,7 @@ describe('template spec', () => {
         .type('Feb-2026{enter}', { force: true });
       cy.wait(5000)
       cy.get('#ddlNYVendor').then(($select) => {
-        cy.wrap($select).select('0033', { force: true })
+        cy.wrap($select).select('4505', { force: true })
       })
       cy.wait(2000)
 
