@@ -65,13 +65,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/MCP_FO/soDataMCPFO.json').then((values) => {
+    cy.readFile('cypress/e2e/PROJECT/STIP_1/MCP_FO/TBG/TSEL/soDataMCPFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-
-    cy.readFile('cypress/e2e/STIP_1/TBG/MCP_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/PROJECT/STIP_1/MCP_FO/TBG/TSEL/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -321,7 +320,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/MCP_FO/soDataMCPFO.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/PROJECT/STIP_1/MCP_FO/TBG/TSEL/soDataMCPFO.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });

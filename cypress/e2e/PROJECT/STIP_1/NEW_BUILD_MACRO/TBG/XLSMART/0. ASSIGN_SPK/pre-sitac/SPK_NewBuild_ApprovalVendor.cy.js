@@ -28,13 +28,11 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/TBG/XLSMART/soDataNewBuild.json').then((values) => {
-      cy.log(values);
+    cy.readFile('cypress/e2e/PROJECT/STIP_1/NEW_BUILD_MACRO/TBG/XLSMART/soDataNewBuild.json').then((values) => {
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/NEW_BUILD_MACRO/TBG/XLSMART/DataVariable.json').then((values) => {
-      cy.log(values);
+    cy.readFile('cypress/e2e/PROJECT/STIP_1/NEW_BUILD_MACRO/TBG/XLSMART/DataVariable.json').then((values) => {
       unique = values.unique;
       userAM = values.userAM;
       userInputStip = values.userInputStip;

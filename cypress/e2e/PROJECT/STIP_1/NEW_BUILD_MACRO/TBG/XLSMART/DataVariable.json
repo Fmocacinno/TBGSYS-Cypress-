@@ -1,5 +1,5 @@
 {
-  "unique": "_XLSMART_",
+  "unique": "_TEST_",
   "date": "2-Jan-2025",
   "dateleasestart": "2-Jan-2025",
   "dateleaseend": "31-Dec-2045",
@@ -28,8 +28,8 @@
   "UserRequestSPKApproval": "201810150080",
   "pass": "123456",
   "IsNeedSPK": "Yes",
-  "baseUrlTBGSYS": "http://tbgappdev111:8041/",
-  "baseUrlVP": "http://tbgappdev111:8047/",
+  "baseUrlTBGSYS": "http://tbgappdev111:8021/",
+  "baseUrlVP": "http://tbgappdev111:8022/",
   "login": "/Login",
   "logout": "/Logout",
   "dashboard": "/ProjectActivity/ProjectActivityHeader",
