@@ -71,12 +71,12 @@ describe('template spec', () => {
     exportToExcel(testResults); // Export after all tests complete
   });
   beforeEach(() => {
-    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
+    cy.readFile('cypress/e2e/PROJECT/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json').then((values) => {
       cy.log(values);
       sonumb = values.soNumber;
       siteId = values.siteId;
     });
-    cy.readFile('cypress/e2e/STIP_1/TBG/INTERSITE_FO/DataVariable.json').then((values) => {
+    cy.readFile('cypress/e2e/PROJECT/STIP_1/TBG/INTERSITE_FO/DataVariable.json').then((values) => {
       cy.log(values);
       unique = values.unique;
       userAM = values.userAM;
@@ -176,6 +176,7 @@ describe('template spec', () => {
       cy.get('#slsProduct').then(($select) => {
         cy.wrap($select).select('83', { force: true })
       })
+      cy.wait(2000)
 
       cy.get('#slsIntersiteFOCompany').then(($select) => {
         cy.wrap($select).select('TB', { force: true })
@@ -257,7 +258,7 @@ describe('template spec', () => {
       })
 
       cy.get('#slsFOHubIntersiteFO').then(($select) => {
-        cy.wrap($select).select('2', { force: true })
+        cy.wrap($select).select('3', { force: true })
       })
 
 
@@ -367,11 +368,10 @@ describe('template spec', () => {
 
       cy.get("#btnSubmitIntersiteFO").click();
 
-      cy.wait(2000)
+      cy.wait(5000)
 
       cy.get('.sa-confirm-button-container button.confirm').click();
-
-      cy.wait(15000)
+      cy.wait(50000)
 
       // Add this section to extract values from popup
       cy.get('p.lead.text-muted').should('be.visible').then(($el) => {
@@ -402,7 +402,7 @@ describe('template spec', () => {
 
         cy.get('@soNumber').then((soNumber) => {
           cy.get('@siteId').then((siteId) => {
-            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFo.json';
+            const filePath = Cypress.config('fileServerFolder') + '/cypress/e2e/PROJECT/STIP_1/TBG/INTERSITE_FO/soDataIntersiteFO.json';
             cy.writeFile(filePath, { soNumber, siteId });
 
           });
@@ -416,9 +416,3 @@ describe('template spec', () => {
     })
   }
 })
-
-it('awd', function () {
-  cy.visit('http://tbgappdev111.tbg.local:8041/')
-  cy.visit('http://tbgappdev111.tbg.local:8041/')
-
-});

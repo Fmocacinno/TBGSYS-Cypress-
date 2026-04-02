@@ -79,6 +79,7 @@ describe('template spec', () => {
     cy.wait(2000);
 
     cy.visit(`${baseUrlVP}/BusinessSupport/SPKProject/List`)
+
       .url().should('include', `${baseUrlVP}/BusinessSupport/SPKProject/List`);
     testResults.push({
       Test: 'User PM FO melakukan akses ke menu Project activity Header',
