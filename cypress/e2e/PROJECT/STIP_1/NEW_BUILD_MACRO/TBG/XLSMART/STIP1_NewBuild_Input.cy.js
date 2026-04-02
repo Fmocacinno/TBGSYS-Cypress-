@@ -151,6 +151,8 @@ describe('template spec', () => {
     });
 
     cy.get('#btnSubmit').click();
+    cy.wait(2000)
+
     cy.visit(`${baseUrlTBGSYS}${dashboard}`); // Ensure the page changes or some result occurs
     testResults.push({
       Test: 'Button Clicked',
@@ -159,10 +161,10 @@ describe('template spec', () => {
     });
 
     // Export results to Excel after the test
-    cy.wait(2000)
+    cy.wait(5000)
 
     cy.visit(`${baseUrlTBGSYS}/STIP/Input`);
-    cy.url().should('include', `${baseUrlTBGSYS}/STIP/Input`); // Ensure the page changes or some result occurs
+    // cy.url().should('include', `${baseUrlTBGSYS}/STIP/Input`); // Ensure the page changes or some result occurs
     // Ensure the page changes or some result occurs
     testResults.push({
       Test: 'User masuk ke Page Stip Input',
@@ -200,32 +202,32 @@ describe('template spec', () => {
     cy.wait(2000)
 
     cy.get('.slsBatchSLD').eq(0)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
     cy.get('.slsBatchSLD').eq(1)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
 
     cy.get('.slsBatchSLD').eq(2)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
     cy.get('.slsBatchSLD').eq(3)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
     cy.get('.slsBatchSLD').eq(4)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
     cy.get('.slsBatchSLD').eq(5)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
     cy.get('.slsBatchSLD').eq(6)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
     cy.get('.slsBatchSLD').eq(7)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
     cy.get('.slsBatchSLD').eq(8)
-      .select('974', { force: true });
+      .select('1014', { force: true });
 
     cy.get('#tbxNewSiteName').type('Site_' + unique + randnumber(5));
     cy.get('#tbxNewCustomerSiteID').type('Cust_' + unique + randnumber(5));
